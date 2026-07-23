@@ -8,9 +8,9 @@ export const CHURCH = {
     "We are committed to championing the high and heavenly call from Jesus to reach out to people of all race, social economic class and language with the message of God's love and grace and in turn discipling them into spiritual maturity “…till we all come in the unity of the faith, and of the knowledge of the Son of God, unto a perfect man, unto the measure of the stature of the fullness of Christ” (Ephesians 4:13).",
   ],
   address: {
-    line1: "Jeffers Hill Center",
-    line2: "6031 Tamar Dr.",
-    line3: "Columbia, MD 21045",
+    line1: "6031 Tamar Dr.",
+    line2: "Columbia, MD 21045",
+    line3: "(Jeffers Hill Center)",
   },
   phone: "+14105550123",
   phoneDisplay: "(410) 555-0123",
