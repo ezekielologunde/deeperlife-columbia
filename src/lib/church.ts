@@ -1,4 +1,4 @@
-// Phone and email are still placeholders — replace before launch.
+// Phone is still a placeholder — replace before launch.
 export const CHURCH = {
   name: "Deeper Life Bible Church Columbia",
   tagline:
@@ -14,7 +14,7 @@ export const CHURCH = {
   },
   phone: "+14105550123",
   phoneDisplay: "(410) 555-0123",
-  email: "info@deeperlifecolumbia.org",
+  email: "deepercolumbia@gmail.com",
   pastor: "Pastor John Ahmed",
   pastorPhoto: "/images/pastor-john-ahmed.jpg",
   services: [
