@@ -159,16 +159,18 @@ export default function Home() {
               More about us on YouTube →
             </a>
 
-            <div className="mt-8 flex items-center gap-4 rounded-2xl bg-white p-4 shadow-sm">
+            <div className="mt-8 flex items-center gap-6 rounded-2xl bg-white p-5 shadow-sm">
               <Image
                 src={CHURCH.pastorPhoto}
                 alt={CHURCH.pastor}
-                width={72}
-                height={72}
-                className="h-[72px] w-[72px] rounded-full object-cover"
+                width={180}
+                height={220}
+                className="h-[220px] w-[180px] shrink-0 rounded-2xl object-cover object-top"
               />
               <div>
-                <p className="font-bold text-indigo-950">{CHURCH.pastor}</p>
+                <p className="text-lg font-bold text-indigo-950">
+                  {CHURCH.pastor}
+                </p>
                 <p className="text-sm text-slate-500">Senior Pastor</p>
               </div>
             </div>
