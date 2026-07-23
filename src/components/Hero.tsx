@@ -45,13 +45,13 @@ export default function Hero() {
           className="mt-10 flex flex-col items-center justify-center gap-4 sm:flex-row"
         >
           <a
-            href="#visit"
+            href="/contact"
             className="rounded-full bg-white px-8 py-3 text-sm font-semibold text-indigo-900 transition-all hover:scale-105 hover:bg-indigo-100"
           >
             Plan Your Visit
           </a>
           <a
-            href="#services"
+            href="/services"
             className="rounded-full border border-white/40 px-8 py-3 text-sm font-semibold text-white transition-all hover:scale-105 hover:bg-white/10"
           >
             Service Times

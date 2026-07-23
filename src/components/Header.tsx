@@ -5,13 +5,14 @@ import { useState } from "react";
 import Logo from "@/components/Logo";
 
 const NAV_LINKS = [
-  { href: "/#about", label: "About" },
-  { href: "/#services", label: "Service Times" },
-  { href: "/#join-online", label: "Join Online" },
-  { href: "/#ministries", label: "Ministries" },
-  { href: "/#events", label: "Events" },
-  { href: "/#give", label: "Give" },
-  { href: "/#contact", label: "Contact" },
+  { href: "/about", label: "About" },
+  { href: "/services", label: "Service Times" },
+  { href: "/join-online", label: "Join Online" },
+  { href: "/ministries", label: "Ministries" },
+  { href: "/events", label: "Events" },
+  { href: "/sermons", label: "Sermons" },
+  { href: "/give", label: "Give" },
+  { href: "/contact", label: "Contact" },
 ];
 
 export default function Header() {
@@ -24,28 +25,28 @@ export default function Header() {
           <Logo variant="dark" />
         </Link>
 
-        <nav className="hidden items-center gap-8 md:flex">
+        <nav className="hidden items-center gap-6 lg:flex">
           {NAV_LINKS.map((link) => (
-            <a
+            <Link
               key={link.href}
               href={link.href}
               className="text-sm font-medium text-slate-700 transition-colors hover:text-indigo-900"
             >
               {link.label}
-            </a>
+            </Link>
           ))}
-          <a
-            href="/#visit"
+          <Link
+            href="/contact"
             className="rounded-full bg-indigo-900 px-5 py-2 text-sm font-semibold text-white transition-colors hover:bg-indigo-800"
           >
             Plan a Visit
-          </a>
+          </Link>
         </nav>
 
         <button
           type="button"
           onClick={() => setOpen((v) => !v)}
-          className="flex h-10 w-10 items-center justify-center rounded-md border border-slate-200 md:hidden"
+          className="flex h-10 w-10 items-center justify-center rounded-md border border-slate-200 lg:hidden"
           aria-label="Toggle menu"
         >
           <span className="sr-only">Menu</span>
@@ -58,25 +59,25 @@ export default function Header() {
       </div>
 
       {open && (
-        <nav className="border-t border-slate-200 bg-white px-6 py-4 md:hidden">
+        <nav className="border-t border-slate-200 bg-white px-6 py-4 lg:hidden">
           <div className="flex flex-col gap-4">
             {NAV_LINKS.map((link) => (
-              <a
+              <Link
                 key={link.href}
                 href={link.href}
                 onClick={() => setOpen(false)}
                 className="text-sm font-medium text-slate-700"
               >
                 {link.label}
-              </a>
+              </Link>
             ))}
-            <a
-              href="/#visit"
+            <Link
+              href="/contact"
               onClick={() => setOpen(false)}
               className="rounded-full bg-indigo-900 px-5 py-2 text-center text-sm font-semibold text-white"
             >
               Plan a Visit
-            </a>
+            </Link>
           </div>
         </nav>
       )}
