@@ -55,7 +55,7 @@ export const CHURCH = {
     link: "https://www.aslpn.org",
   },
   social: {
-    facebook: "https://facebook.com",
+    facebook: "https://www.facebook.com/profile.php?id=61583635292454",
     instagram: "https://instagram.com",
     youtube: "https://www.youtube.com/@DeeperChristianLifeMinistryCol",
   },

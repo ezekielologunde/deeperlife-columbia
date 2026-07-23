@@ -57,6 +57,15 @@ export default function Footer() {
             <li>
               <a href={`mailto:${CHURCH.email}`}>{CHURCH.email}</a>
             </li>
+            <li>
+              <a
+                href={CHURCH.social.facebook}
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                Facebook
+              </a>
+            </li>
           </ul>
         </div>
       </div>
