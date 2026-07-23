@@ -7,8 +7,9 @@ import Logo from "@/components/Logo";
 const NAV_LINKS = [
   { href: "/#about", label: "About" },
   { href: "/#services", label: "Service Times" },
+  { href: "/#join-online", label: "Join Online" },
   { href: "/#ministries", label: "Ministries" },
-  { href: "/#sermons", label: "Sermons" },
+  { href: "/#give", label: "Give" },
   { href: "/#contact", label: "Contact" },
 ];
 

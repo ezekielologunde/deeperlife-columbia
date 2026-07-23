@@ -80,8 +80,56 @@ export default function Home() {
                 <p className="mt-3 text-lg font-bold text-indigo-950">
                   {s.time}
                 </p>
+                <span
+                  className={`mt-3 inline-block rounded-full px-3 py-1 text-xs font-semibold ${
+                    s.mode === "In Person"
+                      ? "bg-emerald-100 text-emerald-800"
+                      : "bg-indigo-100 text-indigo-800"
+                  }`}
+                >
+                  {s.mode}
+                </span>
               </div>
             ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Join Online */}
+      <section id="join-online" className="border-b border-slate-100 bg-indigo-50">
+        <div className="mx-auto max-w-6xl px-6 py-16">
+          <div className="rounded-2xl border border-indigo-100 bg-white p-8 shadow-sm sm:p-10">
+            <h2 className="text-2xl font-bold tracking-tight text-indigo-950">
+              Join Us on Zoom
+            </h2>
+            <p className="mt-3 max-w-2xl text-sm leading-6 text-slate-600">
+              Monday Bible Study, Friday Revival Hour, and other midweek
+              meetings are held online. Use the link below to join.
+            </p>
+            <div className="mt-6 flex flex-col gap-4 sm:flex-row sm:items-center">
+              <a
+                href={CHURCH.zoom.link}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center justify-center rounded-full bg-indigo-900 px-6 py-3 text-sm font-semibold text-white transition-colors hover:bg-indigo-800"
+              >
+                Join Zoom Meeting
+              </a>
+              <div className="text-sm text-slate-600">
+                <p>
+                  <span className="font-semibold text-indigo-950">
+                    Meeting ID:
+                  </span>{" "}
+                  {CHURCH.zoom.meetingId}
+                </p>
+                <p>
+                  <span className="font-semibold text-indigo-950">
+                    Passcode:
+                  </span>{" "}
+                  {CHURCH.zoom.passcode}
+                </p>
+              </div>
+            </div>
           </div>
         </div>
       </section>
@@ -219,10 +267,32 @@ export default function Home() {
           <div className="overflow-hidden rounded-2xl border border-slate-200 shadow-sm">
             <iframe
               title="Church location map"
-              src="https://www.google.com/maps?q=Columbia,MD&output=embed"
+              src="https://www.google.com/maps?q=6031+Tamar+Dr,+Columbia,+MD+21045&output=embed"
               className="h-full min-h-[320px] w-full"
               loading="lazy"
             />
+          </div>
+        </div>
+      </section>
+
+      {/* Give */}
+      <section id="give" className="bg-indigo-950 text-white">
+        <div className="mx-auto max-w-3xl px-6 py-20 text-center">
+          <h2 className="text-3xl font-bold tracking-tight">
+            Tithes &amp; Offerings
+          </h2>
+          <p className="mx-auto mt-4 max-w-xl text-indigo-200">
+            &ldquo;Bring ye all the tithes into the storehouse&rdquo; —
+            Malachi 3:10. Thank you for sowing into the work of God through
+            this ministry.
+          </p>
+          <div className="mx-auto mt-8 max-w-sm rounded-2xl border border-white/15 bg-white/5 p-8">
+            <p className="text-xs font-semibold uppercase tracking-wide text-indigo-300">
+              Give via Zelle
+            </p>
+            <p className="mt-2 text-xl font-bold text-white">
+              {CHURCH.giving.zelleId}
+            </p>
           </div>
         </div>
       </section>

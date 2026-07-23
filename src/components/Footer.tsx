@@ -30,7 +30,7 @@ export default function Footer() {
           <ul className="mt-3 space-y-1 text-sm leading-6 text-indigo-200">
             {CHURCH.services.map((s) => (
               <li key={s.name}>
-                {s.name} — {s.time}
+                {s.name} — {s.time} ({s.mode})
               </li>
             ))}
           </ul>
