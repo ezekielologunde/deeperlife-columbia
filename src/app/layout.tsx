@@ -17,7 +17,7 @@ const geistMono = Geist_Mono({
 export const metadata: Metadata = {
   title: "Deeper Life Bible Church Columbia | Columbia, MD",
   description:
-    "Deeper Life Bible Church Columbia — a Bible-believing church in Columbia, MD. Join us for worship, prayer, and fellowship. All are welcome.",
+    "The citadel for Christ-centered living in Columbia, Maryland — a family-oriented church for true worship, undiluted teaching, and the Gospel of Jesus Christ.",
 };
 
 export default function RootLayout({

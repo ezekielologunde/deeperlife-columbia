@@ -2,7 +2,11 @@
 export const CHURCH = {
   name: "Deeper Life Bible Church Columbia",
   tagline:
-    "A Bible-believing, Christ-centered church serving Columbia, Maryland and the surrounding Howard County community.",
+    "The citadel for Christ-centered living — a place of hunger and insatiable thirst for more of God.",
+  description: [
+    "Deeper Life Bible Church, Columbia, Maryland is the citadel for Christ-centered living, a place of hunger and insatiable thirst for more of God. We are a family-oriented place for true worship, undiluted teachings, and unwavering charge to preach the Gospel of Jesus to a dying world.",
+    "We are committed to championing the high and heavenly call from Jesus to reach out to people of all race, social economic class and language with the message of God's love and grace and in turn discipling them into spiritual maturity “…till we all come in the unity of the faith, and of the knowledge of the Son of God, unto a perfect man, unto the measure of the stature of the fullness of Christ” (Ephesians 4:13).",
+  ],
   address: {
     line1: "Jeffers Hill Center",
     line2: "6031 Tamar Dr.",

@@ -142,18 +142,22 @@ export default function Home() {
             <h2 className="text-3xl font-bold tracking-tight text-indigo-950">
               About Our Church
             </h2>
-            <p className="mt-5 leading-7 text-slate-700">
-              {CHURCH.name} is a Bible-believing, Christ-centered church
-              committed to helping people grow deeper in their walk with
-              God. We are part of the Deeper Life Bible Church family,
-              rooted in the teaching of God&apos;s Word, prayer, and holy
-              living.
-            </p>
-            <p className="mt-4 leading-7 text-slate-700">
-              Whether you&apos;re new to faith or have walked with Christ
-              for years, you&apos;ll find a warm community here in
-              Columbia, Maryland ready to welcome you home.
-            </p>
+            {CHURCH.description.map((paragraph, i) => (
+              <p
+                key={i}
+                className={`${i === 0 ? "mt-5" : "mt-4"} leading-7 text-slate-700`}
+              >
+                {paragraph}
+              </p>
+            ))}
+            <a
+              href={CHURCH.social.youtube}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="mt-4 inline-block text-sm font-semibold text-indigo-700 hover:text-indigo-900"
+            >
+              More about us on YouTube →
+            </a>
 
             <div className="mt-8 flex items-center gap-4 rounded-2xl bg-white p-4 shadow-sm">
               <Image
