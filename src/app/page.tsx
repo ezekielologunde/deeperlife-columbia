@@ -247,6 +247,8 @@ export default function Home() {
                   {CHURCH.address.line1}
                   <br />
                   {CHURCH.address.line2}
+                  <br />
+                  {CHURCH.address.line3}
                 </dd>
               </div>
               <div>

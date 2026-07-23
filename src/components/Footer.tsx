@@ -20,6 +20,8 @@ export default function Footer() {
             {CHURCH.address.line1}
             <br />
             {CHURCH.address.line2}
+            <br />
+            {CHURCH.address.line3}
           </p>
         </div>
 

@@ -4,8 +4,9 @@ export const CHURCH = {
   tagline:
     "A Bible-believing, Christ-centered church serving Columbia, Maryland and the surrounding Howard County community.",
   address: {
-    line1: "6031 Tamar Dr.",
-    line2: "Columbia, MD 21045",
+    line1: "Jefferson Center",
+    line2: "6031 Tamar Dr.",
+    line3: "Columbia, MD 21045",
   },
   phone: "+14105550123",
   phoneDisplay: "(410) 555-0123",
