@@ -19,11 +19,6 @@ export const CHURCH = {
   pastorPhoto: "/images/pastor-john-ahmed.jpg",
   services: [
     {
-      name: "Sunday Pre-Meeting Prayer",
-      time: "9:00 AM",
-      mode: "In Person",
-    },
-    {
       name: "Sunday Worship Service",
       time: "9:30 AM",
       mode: "In Person",
