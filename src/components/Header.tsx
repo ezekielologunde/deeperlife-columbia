@@ -9,6 +9,7 @@ const NAV_LINKS = [
   { href: "/#services", label: "Service Times" },
   { href: "/#join-online", label: "Join Online" },
   { href: "/#ministries", label: "Ministries" },
+  { href: "/#events", label: "Events" },
   { href: "/#give", label: "Give" },
   { href: "/#contact", label: "Contact" },
 ];

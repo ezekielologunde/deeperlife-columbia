@@ -1,17 +1,18 @@
-// Phone, email, and pastor's name are still placeholders — replace before launch.
+// Phone and email are still placeholders — replace before launch.
 export const CHURCH = {
   name: "Deeper Life Bible Church Columbia",
   tagline:
     "A Bible-believing, Christ-centered church serving Columbia, Maryland and the surrounding Howard County community.",
   address: {
-    line1: "Jefferson Center",
+    line1: "Jeffers Hill Center",
     line2: "6031 Tamar Dr.",
     line3: "Columbia, MD 21045",
   },
   phone: "+14105550123",
   phoneDisplay: "(410) 555-0123",
   email: "info@deeperlifecolumbia.org",
-  pastor: "Pastor's name to be confirmed",
+  pastor: "Pastor John Ahmed",
+  pastorPhoto: "/images/pastor-john-ahmed.jpg",
   services: [
     {
       name: "Sunday Pre-Meeting Prayer",
@@ -41,6 +42,18 @@ export const CHURCH = {
   },
   giving: {
     zelleId: "deepercolumbia@gmail.com",
+  },
+  upcomingEvent: {
+    title: "Global Prayer for World Harvest",
+    subtitle: "24 Hours of Nonstop Prayer and Intercession — Online Global Gathering",
+    date: "Thursday, August 6",
+    time: "12:00 AM – 12:00 AM (ET)",
+    verse:
+      "“Ask of me, and I shall give thee the nations for thine inheritance, and the uttermost parts of the earth for thy possession.” — Psalm 2:8",
+    host: "Hosted with ASLPN (African Strategic Leadership Prayer Network) & World Prays",
+    flyer: "/images/event-global-prayer-world-harvest.jpg",
+    video: "/videos/global-prayer-world-harvest.mp4",
+    link: "https://www.aslpn.org",
   },
   social: {
     facebook: "https://facebook.com",

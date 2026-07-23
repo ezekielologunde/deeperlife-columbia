@@ -1,3 +1,4 @@
+import Image from "next/image";
 import { CHURCH } from "@/lib/church";
 
 const MINISTRIES = [
@@ -153,9 +154,20 @@ export default function Home() {
               for years, you&apos;ll find a warm community here in
               Columbia, Maryland ready to welcome you home.
             </p>
-            <p className="mt-4 text-sm font-medium text-slate-500">
-              Led by {CHURCH.pastor}
-            </p>
+
+            <div className="mt-8 flex items-center gap-4 rounded-2xl bg-white p-4 shadow-sm">
+              <Image
+                src={CHURCH.pastorPhoto}
+                alt={CHURCH.pastor}
+                width={72}
+                height={72}
+                className="h-[72px] w-[72px] rounded-full object-cover"
+              />
+              <div>
+                <p className="font-bold text-indigo-950">{CHURCH.pastor}</p>
+                <p className="text-sm text-slate-500">Senior Pastor</p>
+              </div>
+            </div>
           </div>
           <div className="rounded-2xl bg-indigo-900 p-10 text-white shadow-lg">
             <h3 className="text-xl font-bold">What We Believe</h3>
@@ -166,6 +178,69 @@ export default function Home() {
               <li>• The power of prayer and the Holy Spirit.</li>
               <li>• The Great Commission — making disciples of all nations.</li>
             </ul>
+          </div>
+        </div>
+      </section>
+
+      {/* Upcoming Program */}
+      <section id="events" className="bg-white">
+        <div className="mx-auto max-w-6xl px-6 py-20">
+          <h2 className="text-center text-3xl font-bold tracking-tight text-indigo-950">
+            Upcoming Program
+          </h2>
+          <p className="mx-auto mt-3 max-w-xl text-center text-slate-600">
+            Join us for this special citywide and global gathering.
+          </p>
+
+          <div className="mt-12 grid gap-10 lg:grid-cols-2 lg:items-center">
+            <div className="overflow-hidden rounded-2xl border border-slate-200 shadow-sm">
+              <Image
+                src={CHURCH.upcomingEvent.flyer}
+                alt={CHURCH.upcomingEvent.title}
+                width={900}
+                height={1200}
+                className="h-auto w-full"
+              />
+            </div>
+
+            <div>
+              <p className="text-sm font-semibold uppercase tracking-wide text-indigo-700">
+                {CHURCH.upcomingEvent.date} · {CHURCH.upcomingEvent.time}
+              </p>
+              <h3 className="mt-2 text-2xl font-bold text-indigo-950">
+                {CHURCH.upcomingEvent.title}
+              </h3>
+              <p className="mt-2 text-slate-700">
+                {CHURCH.upcomingEvent.subtitle}
+              </p>
+              <p className="mt-4 text-sm italic leading-6 text-slate-600">
+                {CHURCH.upcomingEvent.verse}
+              </p>
+              <p className="mt-4 text-sm text-slate-500">
+                {CHURCH.upcomingEvent.host}
+              </p>
+
+              <div className="mt-6 flex flex-wrap gap-4">
+                <a
+                  href={CHURCH.upcomingEvent.link}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="rounded-full bg-indigo-900 px-6 py-3 text-sm font-semibold text-white transition-colors hover:bg-indigo-800"
+                >
+                  Learn More
+                </a>
+              </div>
+
+              <div className="mt-8 overflow-hidden rounded-2xl border border-slate-200 shadow-sm">
+                {/* eslint-disable-next-line jsx-a11y/media-has-caption */}
+                <video
+                  src={CHURCH.upcomingEvent.video}
+                  controls
+                  playsInline
+                  className="w-full"
+                />
+              </div>
+            </div>
           </div>
         </div>
       </section>
