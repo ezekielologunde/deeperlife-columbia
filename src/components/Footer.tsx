@@ -1,12 +1,13 @@
 import { CHURCH } from "@/lib/church";
+import Logo from "@/components/Logo";
 
 export default function Footer() {
   return (
     <footer className="border-t border-slate-200 bg-indigo-950 text-indigo-100">
       <div className="mx-auto grid max-w-6xl gap-10 px-6 py-14 sm:grid-cols-2 lg:grid-cols-4">
         <div>
-          <p className="text-lg font-bold text-white">{CHURCH.name}</p>
-          <p className="mt-3 text-sm leading-6 text-indigo-200">
+          <Logo variant="light" />
+          <p className="mt-4 text-sm leading-6 text-indigo-200">
             {CHURCH.tagline}
           </p>
         </div>

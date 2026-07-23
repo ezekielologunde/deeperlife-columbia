@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { useState } from "react";
+import Logo from "@/components/Logo";
 
 const NAV_LINKS = [
   { href: "/#about", label: "About" },
@@ -17,13 +18,8 @@ export default function Header() {
   return (
     <header className="sticky top-0 z-50 border-b border-slate-200 bg-white/95 backdrop-blur">
       <div className="mx-auto flex max-w-6xl items-center justify-between px-6 py-4">
-        <Link href="/" className="flex items-center gap-2">
-          <span className="text-lg font-bold tracking-tight text-indigo-900">
-            Deeper Life Bible Church
-          </span>
-          <span className="hidden text-sm text-slate-500 sm:inline">
-            Columbia
-          </span>
+        <Link href="/" aria-label="Deeper Life Bible Church Columbia home">
+          <Logo variant="dark" />
         </Link>
 
         <nav className="hidden items-center gap-8 md:flex">
