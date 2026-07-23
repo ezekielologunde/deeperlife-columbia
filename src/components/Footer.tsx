@@ -10,6 +10,14 @@ export default function Footer() {
           <p className="mt-4 text-sm leading-6 text-indigo-200">
             {CHURCH.tagline}
           </p>
+          <a
+            href={CHURCH.regionalSite.url}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="mt-3 inline-block text-sm font-medium text-amber-300 hover:text-amber-200"
+          >
+            {CHURCH.regionalSite.label} →
+          </a>
         </div>
 
         <div>

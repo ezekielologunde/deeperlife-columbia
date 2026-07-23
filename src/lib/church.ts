@@ -58,6 +58,10 @@ export const CHURCH = {
   social: {
     facebook: "https://facebook.com",
     instagram: "https://instagram.com",
-    youtube: "https://youtube.com",
+    youtube: "https://www.youtube.com/@DeeperChristianLifeMinistryCol",
+  },
+  regionalSite: {
+    label: "Deeper Life Bible Church North America",
+    url: "https://deeperlifedc.org/",
   },
 };
