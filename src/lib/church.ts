@@ -54,6 +54,20 @@ export const CHURCH = {
     video: "/videos/global-prayer-world-harvest.mp4",
     link: "https://www.aslpn.org",
   },
+  pastEvents: [
+    {
+      title: "Annual Regional Convention: Explosive Manifestation",
+      date: "July 9 – 12, 2026",
+      venue: "DLBC Convention Center, Kinston, NC, USA",
+      verse:
+        "“For the earnest expectation of the creature waiteth for the manifestation of the sons of God.” — Romans 8:19",
+      description:
+        "A special regional gathering focused on inspiring, equipping, and empowering God's people to walk in their divine calling through powerful worship, anointed teaching, heartfelt prayer, and life-changing fellowship.",
+      phone: "202-509-7771; 202-829-8145",
+      email: "admin@deeperlifedc.org",
+      link: "https://dlbcyaconferences.regfox.com/dlbc-convention-2026",
+    },
+  ],
   social: {
     facebook: "https://www.facebook.com/profile.php?id=61583635292454",
     instagram: "https://www.instagram.com/deeperlifecolumbiamd/",

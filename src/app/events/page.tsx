@@ -75,6 +75,57 @@ export default function EventsPage() {
           </div>
         </div>
       </section>
+
+      {CHURCH.pastEvents.length > 0 && (
+        <section className="bg-indigo-50">
+          <div className="mx-auto max-w-6xl px-6 py-20">
+            <Reveal>
+              <h2 className="text-center text-3xl font-bold tracking-tight text-indigo-950">
+                Past Events
+              </h2>
+            </Reveal>
+
+            <div className="mt-10 space-y-6">
+              {CHURCH.pastEvents.map((e) => (
+                <Reveal key={e.title}>
+                  <div className="rounded-2xl border border-slate-200 bg-white p-8 shadow-sm">
+                    <p className="text-sm font-semibold uppercase tracking-wide text-indigo-700">
+                      {e.date}
+                    </p>
+                    <h3 className="mt-2 text-xl font-bold text-indigo-950">
+                      {e.title}
+                    </h3>
+                    <p className="mt-1 text-sm font-medium text-slate-500">
+                      {e.venue}
+                    </p>
+                    <p className="mt-4 text-slate-700">{e.description}</p>
+                    <p className="mt-4 text-sm italic leading-6 text-slate-600">
+                      {e.verse}
+                    </p>
+                    <div className="mt-5 flex flex-wrap items-center gap-x-6 gap-y-2 text-sm text-slate-500">
+                      <span>{e.phone}</span>
+                      <a
+                        href={`mailto:${e.email}`}
+                        className="hover:text-indigo-700"
+                      >
+                        {e.email}
+                      </a>
+                      <a
+                        href={e.link}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="font-semibold text-indigo-700 hover:text-indigo-900"
+                      >
+                        Event Details →
+                      </a>
+                    </div>
+                  </div>
+                </Reveal>
+              ))}
+            </div>
+          </div>
+        </section>
+      )}
     </>
   );
 }
