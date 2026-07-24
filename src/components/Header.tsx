@@ -6,6 +6,7 @@ import Logo from "@/components/Logo";
 
 const NAV_LINKS = [
   { href: "/about", label: "About" },
+  { href: "/beliefs", label: "Beliefs" },
   { href: "/services", label: "Service Times" },
   { href: "/join-online", label: "Join Online" },
   { href: "/ministries", label: "Ministries" },

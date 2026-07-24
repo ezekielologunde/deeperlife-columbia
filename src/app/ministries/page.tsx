@@ -40,6 +40,16 @@ export default function MinistriesPage() {
                     <p className="mt-2 text-sm leading-6 text-slate-600">
                       {m.desc}
                     </p>
+                    {m.meetingTime && (
+                      <p className="mt-3 text-xs font-semibold uppercase tracking-wide text-indigo-500">
+                        {m.meetingTime}
+                      </p>
+                    )}
+                    {m.ctaText && (
+                      <p className="mt-2 text-sm font-semibold text-indigo-700">
+                        {m.ctaText}
+                      </p>
+                    )}
                   </div>
                 </div>
               </StaggerItem>

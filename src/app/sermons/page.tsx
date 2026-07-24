@@ -14,13 +14,27 @@ export default function SermonsPage() {
     <>
       <PageHero
         title="Recent Sermons"
-        subtitle="Sermon recordings will be posted here soon. Follow us on social media for the latest messages."
+        subtitle="Watch our latest messages, or catch up on our full sermon archive below."
       />
 
       <section className="bg-white">
         <div className="mx-auto max-w-6xl px-6 py-20 text-center">
           <Reveal>
-            <div className="mx-auto max-w-2xl overflow-hidden rounded-2xl border border-slate-200 shadow-sm">
+            <div className="mx-auto aspect-video max-w-4xl overflow-hidden rounded-2xl border border-slate-200 shadow-sm">
+              <iframe
+                title="Deeper Life Bible Church Columbia sermon archive"
+                src={`https://www.youtube.com/embed/videoseries?list=${CHURCH.youtubeUploadsPlaylistId}`}
+                className="h-full w-full"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                allowFullScreen
+              />
+            </div>
+            <p className="mx-auto mt-4 max-w-xl text-sm text-slate-500">
+              New messages appear here automatically as soon as they&apos;re
+              uploaded to our YouTube channel.
+            </p>
+
+            <div className="mx-auto mt-10 max-w-2xl overflow-hidden rounded-2xl border border-slate-200 shadow-sm">
               <Image
                 src="/images/gallery/preaching.webp"
                 alt="A message being preached at Deeper Life Bible Church Columbia"

@@ -1,20 +1,53 @@
 "use client";
 
 import Image from "next/image";
-import { motion } from "framer-motion";
+import { AnimatePresence, motion } from "framer-motion";
+import { useEffect, useState } from "react";
 import { CHURCH } from "@/lib/church";
 
-export default function Hero() {
-  return (
-    <section className="relative overflow-hidden bg-gradient-to-b from-indigo-950 via-indigo-900 to-indigo-950 text-white">
-      <motion.div
-        aria-hidden
-        className="pointer-events-none absolute -top-32 left-1/2 h-96 w-96 -translate-x-1/2 rounded-full bg-amber-400/10 blur-3xl"
-        animate={{ scale: [1, 1.15, 1], opacity: [0.6, 0.9, 0.6] }}
-        transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
-      />
+const SLIDES = [
+  "/images/gallery/congregation-wide.jpg",
+  "/images/gallery/choir-worship.jpg",
+  "/images/gallery/fellowship.jpg",
+  "/images/gallery/prayer.jpg",
+  "/images/gallery/welcome.jpg",
+];
 
-      <div className="relative mx-auto max-w-6xl px-6 py-28 text-center sm:py-36">
+export default function Hero() {
+  const [index, setIndex] = useState(0);
+
+  useEffect(() => {
+    const id = setInterval(() => {
+      setIndex((i) => (i + 1) % SLIDES.length);
+    }, 5000);
+    return () => clearInterval(id);
+  }, []);
+
+  return (
+    <section className="relative flex min-h-[90vh] items-center overflow-hidden text-white lg:min-h-screen">
+      <div className="absolute inset-0">
+        <AnimatePresence initial={false}>
+          <motion.div
+            key={index}
+            className="absolute inset-0"
+            initial={{ opacity: 0, scale: 1.05 }}
+            animate={{ opacity: 1, scale: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 1.2, ease: "easeInOut" }}
+          >
+            <Image
+              src={SLIDES[index]}
+              alt=""
+              fill
+              priority={index === 0}
+              className="object-cover"
+            />
+          </motion.div>
+        </AnimatePresence>
+        <div className="absolute inset-0 bg-gradient-to-b from-indigo-900/75 via-indigo-800/55 to-indigo-950/80" />
+      </div>
+
+      <div className="relative mx-auto w-full max-w-6xl px-6 py-28 text-center sm:py-36">
         <motion.p
           initial={{ opacity: 0, y: 16 }}
           animate={{ opacity: 1, y: 0 }}
@@ -59,22 +92,41 @@ export default function Hero() {
           </a>
         </motion.div>
 
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.7, delay: 0.4 }}
-          className="mx-auto mt-16 max-w-4xl overflow-hidden rounded-2xl border border-white/10 shadow-2xl shadow-indigo-950/50"
-        >
-          <Image
-            src="/images/gallery/congregation-wide.jpg"
-            alt="Congregation gathered for worship at Deeper Life Bible Church Columbia"
-            width={1200}
-            height={700}
-            priority
-            className="h-auto w-full"
-          />
-        </motion.div>
+        <div className="mt-14 flex justify-center gap-2">
+          {SLIDES.map((slide, i) => (
+            <button
+              key={slide}
+              type="button"
+              onClick={() => setIndex(i)}
+              aria-label={`Show slide ${i + 1}`}
+              className={`h-2 rounded-full transition-all ${
+                i === index ? "w-8 bg-white" : "w-2 bg-white/40 hover:bg-white/60"
+              }`}
+            />
+          ))}
+        </div>
       </div>
+
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1, y: [0, 8, 0] }}
+        transition={{
+          opacity: { duration: 0.6, delay: 0.6 },
+          y: { duration: 1.8, repeat: Infinity, ease: "easeInOut" },
+        }}
+        className="absolute bottom-8 left-1/2 -translate-x-1/2 text-white/70"
+        aria-hidden
+      >
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+          <path
+            d="M6 9l6 6 6-6"
+            stroke="currentColor"
+            strokeWidth="2"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          />
+        </svg>
+      </motion.div>
     </section>
   );
 }

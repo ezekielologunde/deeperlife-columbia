@@ -27,17 +27,6 @@ export default function Footer() {
             >
               {CHURCH.regionalSite.label} →
             </a>
-            {CHURCH.nearbyChurches.map((c) => (
-              <a
-                key={c.url}
-                href={c.url}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-sm font-medium text-amber-300 hover:text-amber-200"
-              >
-                {c.label} →
-              </a>
-            ))}
           </div>
         </div>
 

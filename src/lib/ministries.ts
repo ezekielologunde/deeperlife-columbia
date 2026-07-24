@@ -1,4 +1,12 @@
-export const MINISTRIES = [
+type Ministry = {
+  title: string;
+  desc: string;
+  image?: string;
+  meetingTime?: string;
+  ctaText?: string;
+};
+
+export const MINISTRIES: Ministry[] = [
   {
     title: "Children's Ministry",
     desc: "A safe, fun environment where kids learn God's Word through age-appropriate lessons, songs, and activities.",

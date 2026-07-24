@@ -78,7 +78,24 @@ export default function AboutPage() {
                   • The Great Commission — making disciples of all nations.
                 </li>
               </ul>
+              <a
+                href="/beliefs"
+                className="mt-6 inline-block text-sm font-semibold text-amber-300 hover:text-amber-200"
+              >
+                Read our full statement of faith →
+              </a>
             </div>
+          </Reveal>
+        </div>
+
+        <div className="mx-auto max-w-6xl px-6 pb-20">
+          <Reveal>
+            <h3 className="text-center text-2xl font-bold tracking-tight text-indigo-950">
+              Our Roots
+            </h3>
+            <p className="mx-auto mt-5 max-w-3xl text-center leading-7 text-slate-700">
+              {CHURCH.history}
+            </p>
           </Reveal>
         </div>
 
