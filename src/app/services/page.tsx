@@ -12,28 +12,27 @@ export default function ServicesPage() {
   return (
     <>
       <PageHero
-        eyebrow="Every Week"
         title="Join Us for Worship"
         subtitle="Everyone is welcome — come as you are."
       />
 
-      <section className="bg-indigo-950 pb-24">
-        <div className="mx-auto max-w-6xl px-6">
-          <StaggerGrid className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+      <section className="bg-white">
+        <div className="mx-auto max-w-6xl px-6 py-20">
+          <StaggerGrid className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
             {CHURCH.services.map((s) => (
               <StaggerItem key={s.name}>
-                <div className="h-full rounded-2xl border border-white/10 bg-white/5 p-6 text-center transition-all duration-300 hover:-translate-y-1 hover:bg-white/10">
-                  <p className="text-sm font-semibold uppercase tracking-wide text-amber-300">
+                <div className="h-full rounded-2xl border border-slate-200 p-6 text-center shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-lg">
+                  <p className="text-sm font-semibold uppercase tracking-wide text-indigo-700">
                     {s.name}
                   </p>
-                  <p className="mt-3 text-lg font-bold text-white">
+                  <p className="mt-3 text-lg font-bold text-indigo-950">
                     {s.time}
                   </p>
                   <span
                     className={`mt-3 inline-block rounded-full px-3 py-1 text-xs font-semibold ${
                       s.mode === "In Person"
-                        ? "bg-emerald-400/15 text-emerald-300"
-                        : "bg-indigo-400/15 text-indigo-200"
+                        ? "bg-emerald-100 text-emerald-800"
+                        : "bg-indigo-100 text-indigo-800"
                     }`}
                   >
                     {s.mode}
@@ -43,11 +42,11 @@ export default function ServicesPage() {
             ))}
           </StaggerGrid>
 
-          <div className="mt-10 text-center text-sm text-indigo-300">
+          <div className="mt-10 text-center text-sm text-slate-500">
             Zoom-only meetings? Find the link on our{" "}
             <a
               href="/join-online"
-              className="font-semibold text-amber-300 hover:text-amber-200"
+              className="font-semibold text-indigo-700 hover:text-indigo-900"
             >
               Join Online
             </a>{" "}

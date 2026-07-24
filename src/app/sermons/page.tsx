@@ -12,20 +12,19 @@ export default function SermonsPage() {
   return (
     <>
       <PageHero
-        eyebrow="Watch & Follow"
         title="Recent Sermons"
         subtitle="Sermon recordings will be posted here soon. Follow us on social media for the latest messages."
       />
 
-      <section className="bg-indigo-950 pb-24">
-        <div className="mx-auto max-w-6xl px-6 text-center">
+      <section className="bg-white">
+        <div className="mx-auto max-w-6xl px-6 py-20 text-center">
           <Reveal>
             <div className="flex flex-wrap justify-center gap-4">
               <a
                 href={CHURCH.social.youtube}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="rounded-full bg-amber-400 px-6 py-3 text-sm font-semibold text-indigo-950 transition-all hover:scale-105 hover:bg-amber-300"
+                className="rounded-full bg-indigo-900 px-6 py-3 text-sm font-semibold text-white transition-all hover:scale-105 hover:bg-indigo-800"
               >
                 Watch on YouTube
               </a>
@@ -33,7 +32,7 @@ export default function SermonsPage() {
                 href={CHURCH.social.facebook}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="rounded-full border border-white/20 px-6 py-3 text-sm font-semibold text-white transition-all hover:scale-105 hover:bg-white/10"
+                className="rounded-full border border-slate-300 px-6 py-3 text-sm font-semibold text-indigo-950 transition-all hover:scale-105 hover:bg-slate-50"
               >
                 Follow on Facebook
               </a>

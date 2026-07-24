@@ -12,19 +12,18 @@ export default function ContactPage() {
   return (
     <>
       <PageHero
-        eyebrow="We'd Love to Meet You"
         title="Plan Your Visit"
-        subtitle="Reach out with any questions or just stop by this Sunday."
+        subtitle="We'd love to meet you. Reach out with any questions or just stop by this Sunday."
       />
 
-      <section className="bg-indigo-950 pb-24">
-        <div className="mx-auto grid max-w-6xl gap-12 px-6 lg:grid-cols-2">
+      <section className="bg-white">
+        <div className="mx-auto grid max-w-6xl gap-12 px-6 py-20 lg:grid-cols-2">
           <Reveal direction="left">
-            <div className="rounded-2xl border border-white/10 bg-white/5 p-8">
+            <div>
               <dl className="space-y-5 text-sm">
                 <div>
-                  <dt className="font-semibold text-amber-300">Address</dt>
-                  <dd className="mt-1 text-indigo-100">
+                  <dt className="font-semibold text-indigo-950">Address</dt>
+                  <dd className="mt-1 text-slate-600">
                     {CHURCH.address.line1}
                     <br />
                     {CHURCH.address.line2}
@@ -33,14 +32,14 @@ export default function ContactPage() {
                   </dd>
                 </div>
                 <div>
-                  <dt className="font-semibold text-amber-300">Phone</dt>
-                  <dd className="mt-1 text-indigo-100">
+                  <dt className="font-semibold text-indigo-950">Phone</dt>
+                  <dd className="mt-1 text-slate-600">
                     <a href={`tel:${CHURCH.phone}`}>{CHURCH.phoneDisplay}</a>
                   </dd>
                 </div>
                 <div>
-                  <dt className="font-semibold text-amber-300">Email</dt>
-                  <dd className="mt-1 text-indigo-100">
+                  <dt className="font-semibold text-indigo-950">Email</dt>
+                  <dd className="mt-1 text-slate-600">
                     <a href={`mailto:${CHURCH.email}`}>{CHURCH.email}</a>
                   </dd>
                 </div>
@@ -49,7 +48,7 @@ export default function ContactPage() {
           </Reveal>
 
           <Reveal direction="right" delay={0.15}>
-            <div className="overflow-hidden rounded-2xl border border-white/10">
+            <div className="overflow-hidden rounded-2xl border border-slate-200 shadow-sm">
               <iframe
                 title="Church location map"
                 src="https://www.google.com/maps?q=6031+Tamar+Dr,+Columbia,+MD+21045&output=embed"
