@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Image from "next/image";
 import { CHURCH } from "@/lib/church";
 import Reveal from "@/components/Reveal";
 import PageHero from "@/components/PageHero";
@@ -17,8 +18,8 @@ export default function JoinOnlinePage() {
       />
 
       <section className="bg-indigo-50">
-        <div className="mx-auto max-w-6xl px-6 py-20">
-          <Reveal>
+        <div className="mx-auto grid max-w-6xl gap-10 px-6 py-20 lg:grid-cols-2 lg:items-center">
+          <Reveal direction="left">
             <div className="rounded-2xl border border-indigo-100 bg-white p-8 shadow-sm sm:p-10">
               <h2 className="text-2xl font-bold tracking-tight text-indigo-950">
                 Zoom Meeting Details
@@ -66,6 +67,18 @@ export default function JoinOnlinePage() {
                     ))}
                 </ul>
               </div>
+            </div>
+          </Reveal>
+
+          <Reveal direction="right" delay={0.15}>
+            <div className="overflow-hidden rounded-2xl border border-slate-200 shadow-sm">
+              <Image
+                src="/images/gallery/prayer.jpg"
+                alt="Members of Deeper Life Bible Church Columbia in prayer"
+                width={800}
+                height={1000}
+                className="h-auto w-full"
+              />
             </div>
           </Reveal>
         </div>

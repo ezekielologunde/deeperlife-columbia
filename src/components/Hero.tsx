@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import { motion } from "framer-motion";
 import { CHURCH } from "@/lib/church";
 
@@ -56,6 +57,22 @@ export default function Hero() {
           >
             Service Times
           </a>
+        </motion.div>
+
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.7, delay: 0.4 }}
+          className="mx-auto mt-16 max-w-4xl overflow-hidden rounded-2xl border border-white/10 shadow-2xl shadow-indigo-950/50"
+        >
+          <Image
+            src="/images/gallery/congregation-wide.jpg"
+            alt="Congregation gathered for worship at Deeper Life Bible Church Columbia"
+            width={1200}
+            height={700}
+            priority
+            className="h-auto w-full"
+          />
         </motion.div>
       </div>
     </section>

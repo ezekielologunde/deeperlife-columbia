@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Image from "next/image";
 import { CHURCH } from "@/lib/church";
 import Reveal from "@/components/Reveal";
 import PageHero from "@/components/PageHero";
@@ -19,7 +20,17 @@ export default function SermonsPage() {
       <section className="bg-white">
         <div className="mx-auto max-w-6xl px-6 py-20 text-center">
           <Reveal>
-            <div className="flex flex-wrap justify-center gap-4">
+            <div className="mx-auto max-w-2xl overflow-hidden rounded-2xl border border-slate-200 shadow-sm">
+              <Image
+                src="/images/gallery/preaching.webp"
+                alt="A message being preached at Deeper Life Bible Church Columbia"
+                width={1024}
+                height={683}
+                className="h-auto w-full"
+              />
+            </div>
+
+            <div className="mt-10 flex flex-wrap justify-center gap-4">
               <a
                 href={CHURCH.social.youtube}
                 target="_blank"

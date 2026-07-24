@@ -10,6 +10,7 @@ export const MINISTRIES = [
   {
     title: "Women's Fellowship",
     desc: "Encouragement, prayer, and community for women at every stage of life.",
+    image: "/images/gallery/womens-fellowship.jpg",
   },
   {
     title: "Men's Fellowship",
@@ -18,6 +19,7 @@ export const MINISTRIES = [
   {
     title: "Choir & Worship",
     desc: "Leading the congregation into God's presence through music and praise.",
+    image: "/images/gallery/choir-worship.jpg",
   },
   {
     title: "Outreach & Missions",

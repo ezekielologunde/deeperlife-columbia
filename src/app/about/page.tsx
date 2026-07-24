@@ -70,6 +70,20 @@ export default function AboutPage() {
             </div>
           </Reveal>
         </div>
+
+        <Reveal>
+          <div className="mx-auto max-w-6xl px-6 pb-20">
+            <div className="overflow-hidden rounded-2xl border border-slate-200 shadow-sm">
+              <Image
+                src="/images/gallery/fellowship.jpg"
+                alt="Fellowship at Deeper Life Bible Church Columbia"
+                width={1600}
+                height={900}
+                className="h-auto w-full"
+              />
+            </div>
+          </div>
+        </Reveal>
       </section>
     </>
   );
