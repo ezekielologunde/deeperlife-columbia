@@ -14,8 +14,9 @@ export const CHURCH = {
   phone: "+14102021094",
   phoneDisplay: "(410) 202-1094",
   email: "deepercolumbia@gmail.com",
-  pastor: "Pastor John Ahmed",
+  pastor: "Pastor Ahmed J. Adeyemi",
   pastorPhoto: "/images/pastor-john-ahmed.jpg",
+  pastorAndWifePhoto: "/images/pastor-and-wife.jpg",
   services: [
     {
       name: "Sunday Worship Service",

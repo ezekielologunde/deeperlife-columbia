@@ -40,7 +40,7 @@ export default function AboutPage() {
 
               <div className="mt-8 flex items-center gap-6 rounded-2xl bg-white p-5 shadow-sm">
                 <Image
-                  src={CHURCH.pastorPhoto}
+                  src={CHURCH.pastorAndWifePhoto}
                   alt={CHURCH.pastor}
                   width={180}
                   height={220}
