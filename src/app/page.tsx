@@ -104,7 +104,7 @@ export default function Home() {
             <p className="text-sm font-semibold uppercase tracking-[0.2em] text-amber-200">
               Part of a Global Family
             </p>
-            <h2 className="mx-auto mt-3 max-w-3xl text-3xl font-bold tracking-tight sm:text-4xl">
+            <h2 className="mx-auto mt-3 max-w-3xl text-2xl font-bold tracking-tight sm:text-3xl">
               One Ministry, Reaching the Whole World
             </h2>
             <p className="mx-auto mt-4 max-w-2xl text-indigo-100">
@@ -114,7 +114,7 @@ export default function Home() {
           <StaggerGrid className="mx-auto mt-12 grid max-w-4xl gap-6 sm:grid-cols-3">
             <StaggerItem>
               <div className="rounded-2xl bg-white/10 p-6 backdrop-blur">
-                <p className="text-4xl font-extrabold text-amber-300">1973</p>
+                <p className="text-3xl font-extrabold text-amber-300">1973</p>
                 <p className="mt-2 text-sm text-indigo-100">
                   Founded in Lagos, Nigeria — starting with just 15 members
                 </p>
@@ -122,7 +122,7 @@ export default function Home() {
             </StaggerItem>
             <StaggerItem>
               <div className="rounded-2xl bg-white/10 p-6 backdrop-blur">
-                <p className="text-4xl font-extrabold text-amber-300">90+</p>
+                <p className="text-3xl font-extrabold text-amber-300">90+</p>
                 <p className="mt-2 text-sm text-indigo-100">
                   Branches across the United States, including here in
                   Columbia
@@ -131,7 +131,7 @@ export default function Home() {
             </StaggerItem>
             <StaggerItem>
               <div className="rounded-2xl bg-white/10 p-6 backdrop-blur">
-                <p className="text-4xl font-extrabold text-amber-300">4</p>
+                <p className="text-3xl font-extrabold text-amber-300">4</p>
                 <p className="mt-2 text-sm text-indigo-100">
                   Continents reached — Africa, Europe, Asia, and the Americas
                 </p>
