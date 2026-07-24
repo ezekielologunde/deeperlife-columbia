@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Image from "next/image";
 import { CHURCH } from "@/lib/church";
 import Reveal from "@/components/Reveal";
 import PageHero from "@/components/PageHero";
@@ -20,6 +21,15 @@ export default function ContactPage() {
         <div className="mx-auto grid max-w-6xl gap-12 px-6 py-20 lg:grid-cols-2">
           <Reveal direction="left">
             <div>
+              <div className="mb-8 overflow-hidden rounded-2xl border border-slate-200 shadow-sm">
+                <Image
+                  src="/images/gallery/welcome.jpg"
+                  alt="A warm welcome awaits you at Deeper Life Bible Church Columbia"
+                  width={800}
+                  height={533}
+                  className="h-auto w-full"
+                />
+              </div>
               <dl className="space-y-5 text-sm">
                 <div>
                   <dt className="font-semibold text-indigo-950">Address</dt>

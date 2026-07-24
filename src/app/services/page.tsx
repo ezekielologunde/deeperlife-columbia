@@ -1,5 +1,7 @@
 import type { Metadata } from "next";
+import Image from "next/image";
 import { CHURCH } from "@/lib/church";
+import Reveal from "@/components/Reveal";
 import { StaggerGrid, StaggerItem } from "@/components/StaggerGrid";
 import PageHero from "@/components/PageHero";
 
@@ -52,6 +54,18 @@ export default function ServicesPage() {
             </a>{" "}
             page.
           </div>
+
+          <Reveal>
+            <div className="mx-auto mt-16 max-w-3xl overflow-hidden rounded-2xl border border-slate-200 shadow-sm">
+              <Image
+                src="/images/gallery/bible-study.webp"
+                alt="Members with their Bibles during worship at Deeper Life Bible Church Columbia"
+                width={680}
+                height={1020}
+                className="h-auto w-full"
+              />
+            </div>
+          </Reveal>
         </div>
       </section>
     </>
