@@ -55,7 +55,7 @@ export const CHURCH = {
   },
   social: {
     facebook: "https://www.facebook.com/profile.php?id=61583635292454",
-    instagram: "https://instagram.com",
+    instagram: "https://www.instagram.com/deeperlifecolumbiamd/",
     youtube: "https://www.youtube.com/@DeeperChristianLifeMinistryCol",
   },
   regionalSite: {

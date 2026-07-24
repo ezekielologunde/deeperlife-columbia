@@ -68,6 +68,15 @@ export default function Footer() {
             </li>
             <li>
               <a
+                href={CHURCH.social.instagram}
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                Instagram
+              </a>
+            </li>
+            <li>
+              <a
                 href={CHURCH.app.url}
                 target="_blank"
                 rel="noopener noreferrer"

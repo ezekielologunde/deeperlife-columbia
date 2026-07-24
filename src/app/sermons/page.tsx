@@ -48,6 +48,14 @@ export default function SermonsPage() {
                 Follow on Facebook
               </a>
               <a
+                href={CHURCH.social.instagram}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="rounded-full border border-slate-300 px-6 py-3 text-sm font-semibold text-indigo-950 transition-all hover:scale-105 hover:bg-slate-50"
+              >
+                Follow on Instagram
+              </a>
+              <a
                 href={CHURCH.app.url}
                 target="_blank"
                 rel="noopener noreferrer"
