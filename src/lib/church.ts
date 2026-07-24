@@ -17,6 +17,20 @@ export const CHURCH = {
   pastor: "Pastor Ahmed J. Adeyemi",
   pastorPhoto: "/images/pastor-john-ahmed.jpg",
   pastorAndWifePhoto: "/images/pastor-and-wife.jpg",
+  leadership: [
+    {
+      name: "Pastor W. F. Kumuyi",
+      title: "General Superintendent",
+    },
+    {
+      name: "Pastor Michael Dada",
+      title: "Regional Overseer",
+    },
+    {
+      name: "Pastor Ahmed J. Adeyemi",
+      title: "Senior Pastor, Deeper Life Bible Church Columbia",
+    },
+  ],
   services: [
     {
       name: "Sunday Worship Service",

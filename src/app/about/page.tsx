@@ -3,6 +3,17 @@ import Image from "next/image";
 import { CHURCH } from "@/lib/church";
 import Reveal from "@/components/Reveal";
 import PageHero from "@/components/PageHero";
+import { StaggerGrid, StaggerItem } from "@/components/StaggerGrid";
+
+function initials(name: string) {
+  return name
+    .replace(/^Pastor\s+/i, "")
+    .split(" ")
+    .map((part) => part[0])
+    .join("")
+    .slice(0, 2)
+    .toUpperCase();
+}
 
 export const metadata: Metadata = {
   title: "About Us | Deeper Life Bible Church Columbia",
@@ -69,6 +80,27 @@ export default function AboutPage() {
               </ul>
             </div>
           </Reveal>
+        </div>
+
+        <div className="mx-auto max-w-6xl px-6 pb-20">
+          <Reveal>
+            <h3 className="text-center text-2xl font-bold tracking-tight text-indigo-950">
+              Our Leadership
+            </h3>
+          </Reveal>
+          <StaggerGrid className="mt-10 grid gap-6 sm:grid-cols-3">
+            {CHURCH.leadership.map((l) => (
+              <StaggerItem key={l.name}>
+                <div className="flex h-full flex-col items-center rounded-2xl bg-white p-6 text-center shadow-sm">
+                  <span className="flex h-16 w-16 items-center justify-center rounded-full bg-indigo-900 text-lg font-bold text-white">
+                    {initials(l.name)}
+                  </span>
+                  <p className="mt-4 font-bold text-indigo-950">{l.name}</p>
+                  <p className="mt-1 text-sm text-slate-500">{l.title}</p>
+                </div>
+              </StaggerItem>
+            ))}
+          </StaggerGrid>
         </div>
 
         <Reveal>
