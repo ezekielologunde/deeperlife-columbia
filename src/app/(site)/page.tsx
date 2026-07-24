@@ -4,6 +4,7 @@ import Reveal from "@/components/Reveal";
 import { StaggerGrid, StaggerItem } from "@/components/StaggerGrid";
 import Hero from "@/components/Hero";
 import SnapScrollToggle from "@/components/SnapScrollToggle";
+import CountUp from "@/components/CountUp";
 
 export default async function Home() {
   const CHURCH = await getChurchData();
@@ -114,16 +115,23 @@ export default async function Home() {
           </Reveal>
           <StaggerGrid className="mx-auto mt-12 grid max-w-4xl gap-6 sm:grid-cols-3">
             <StaggerItem>
-              <div className="rounded-2xl bg-white/10 p-6 backdrop-blur">
-                <p className="text-3xl font-extrabold text-amber-300">1973</p>
+              <div className="rounded-2xl bg-white/10 p-6 backdrop-blur transition-transform duration-300 hover:-translate-y-1">
+                <CountUp
+                  value={1973}
+                  className="text-3xl font-extrabold text-amber-300"
+                />
                 <p className="mt-2 text-sm text-indigo-100">
                   Founded in Lagos, Nigeria — starting with just 15 members
                 </p>
               </div>
             </StaggerItem>
             <StaggerItem>
-              <div className="rounded-2xl bg-white/10 p-6 backdrop-blur">
-                <p className="text-3xl font-extrabold text-amber-300">90+</p>
+              <div className="rounded-2xl bg-white/10 p-6 backdrop-blur transition-transform duration-300 hover:-translate-y-1">
+                <CountUp
+                  value={90}
+                  suffix="+"
+                  className="text-3xl font-extrabold text-amber-300"
+                />
                 <p className="mt-2 text-sm text-indigo-100">
                   Branches across the United States, including here in
                   Columbia
@@ -131,8 +139,11 @@ export default async function Home() {
               </div>
             </StaggerItem>
             <StaggerItem>
-              <div className="rounded-2xl bg-white/10 p-6 backdrop-blur">
-                <p className="text-3xl font-extrabold text-amber-300">4</p>
+              <div className="rounded-2xl bg-white/10 p-6 backdrop-blur transition-transform duration-300 hover:-translate-y-1">
+                <CountUp
+                  value={4}
+                  className="text-3xl font-extrabold text-amber-300"
+                />
                 <p className="mt-2 text-sm text-indigo-100">
                   Continents reached — Africa, Europe, Asia, and the Americas
                 </p>
@@ -192,14 +203,14 @@ export default async function Home() {
           <StaggerGrid className="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
             {MINISTRIES.slice(0, 3).map((m) => (
               <StaggerItem key={m.title}>
-                <div className="h-full overflow-hidden rounded-2xl border border-slate-200 transition-all duration-300 hover:-translate-y-1 hover:shadow-lg">
+                <div className="group h-full overflow-hidden rounded-2xl border border-slate-200 transition-all duration-300 hover:-translate-y-1 hover:shadow-lg">
                   {m.image && (
-                    <div className="relative h-36 w-full">
+                    <div className="relative h-36 w-full overflow-hidden">
                       <Image
                         src={m.image}
                         alt={m.title}
                         fill
-                        className="object-cover"
+                        className="object-cover transition-transform duration-500 group-hover:scale-110"
                       />
                     </div>
                   )}

@@ -5,7 +5,7 @@ import { StaggerGrid, StaggerItem } from "@/components/StaggerGrid";
 import PageHero from "@/components/PageHero";
 
 export const metadata: Metadata = {
-  title: "Ministries | Deeper Life Bible Church Columbia",
+  title: "Ministries",
   description: "There's a place for everyone to grow and serve.",
 };
 
@@ -24,14 +24,14 @@ export default async function MinistriesPage() {
           <StaggerGrid className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
             {MINISTRIES.map((m) => (
               <StaggerItem key={m.title}>
-                <div className="h-full overflow-hidden rounded-2xl border border-slate-200 transition-all duration-300 hover:-translate-y-1 hover:shadow-lg">
+                <div className="group h-full overflow-hidden rounded-2xl border border-slate-200 transition-all duration-300 hover:-translate-y-1 hover:shadow-lg">
                   {m.image && (
-                    <div className="relative h-40 w-full">
+                    <div className="relative h-40 w-full overflow-hidden">
                       <Image
                         src={m.image}
                         alt={m.title}
                         fill
-                        className="object-cover"
+                        className="object-cover transition-transform duration-500 group-hover:scale-110"
                       />
                     </div>
                   )}

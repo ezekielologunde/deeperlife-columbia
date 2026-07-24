@@ -2,6 +2,7 @@
 
 import { revalidatePath } from "next/cache";
 import { createClient } from "@/lib/supabase/server";
+import { redirectWithToast } from "@/lib/admin/toast-redirect";
 
 function refresh() {
   revalidatePath("/", "layout");
@@ -22,6 +23,7 @@ export async function createLeader(formData: FormData) {
   const { error } = await supabase.from("leadership").insert(fields(formData));
   if (error) throw new Error(error.message);
   refresh();
+  redirectWithToast("/admin/leadership", "Leader added");
 }
 
 export async function updateLeader(formData: FormData) {
@@ -33,6 +35,7 @@ export async function updateLeader(formData: FormData) {
     .eq("id", id);
   if (error) throw new Error(error.message);
   refresh();
+  redirectWithToast("/admin/leadership", "Leader updated");
 }
 
 export async function deleteLeader(formData: FormData) {
@@ -41,4 +44,5 @@ export async function deleteLeader(formData: FormData) {
   const { error } = await supabase.from("leadership").delete().eq("id", id);
   if (error) throw new Error(error.message);
   refresh();
+  redirectWithToast("/admin/leadership", "Leader deleted");
 }

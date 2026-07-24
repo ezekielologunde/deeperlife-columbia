@@ -1,8 +1,8 @@
 "use server";
 
 import { revalidatePath } from "next/cache";
-import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
+import { redirectWithToast } from "@/lib/admin/toast-redirect";
 
 function refresh(slug?: string) {
   revalidatePath("/", "layout");
@@ -40,7 +40,7 @@ export async function createPost(formData: FormData) {
   const { error } = await supabase.from("posts").insert(data);
   if (error) throw new Error(error.message);
   refresh(data.slug);
-  redirect("/admin/posts");
+  redirectWithToast("/admin/posts", "Post created");
 }
 
 export async function updatePost(formData: FormData) {
@@ -50,7 +50,7 @@ export async function updatePost(formData: FormData) {
   const { error } = await supabase.from("posts").update(data).eq("id", id);
   if (error) throw new Error(error.message);
   refresh(data.slug);
-  redirect("/admin/posts");
+  redirectWithToast("/admin/posts", "Post updated");
 }
 
 export async function deletePost(formData: FormData) {
@@ -60,4 +60,5 @@ export async function deletePost(formData: FormData) {
   const { error } = await supabase.from("posts").delete().eq("id", id);
   if (error) throw new Error(error.message);
   refresh(slug);
+  redirectWithToast("/admin/posts", "Post deleted");
 }

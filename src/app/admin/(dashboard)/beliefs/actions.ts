@@ -2,6 +2,7 @@
 
 import { revalidatePath } from "next/cache";
 import { createClient } from "@/lib/supabase/server";
+import { redirectWithToast } from "@/lib/admin/toast-redirect";
 
 function refresh() {
   revalidatePath("/", "layout");
@@ -23,6 +24,7 @@ export async function createBelief(formData: FormData) {
     .insert(fields(formData));
   if (error) throw new Error(error.message);
   refresh();
+  redirectWithToast("/admin/beliefs", "Belief added");
 }
 
 export async function updateBelief(formData: FormData) {
@@ -34,6 +36,7 @@ export async function updateBelief(formData: FormData) {
     .eq("id", id);
   if (error) throw new Error(error.message);
   refresh();
+  redirectWithToast("/admin/beliefs", "Belief updated");
 }
 
 export async function deleteBelief(formData: FormData) {
@@ -45,4 +48,5 @@ export async function deleteBelief(formData: FormData) {
     .eq("id", id);
   if (error) throw new Error(error.message);
   refresh();
+  redirectWithToast("/admin/beliefs", "Belief deleted");
 }

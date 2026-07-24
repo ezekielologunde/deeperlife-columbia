@@ -2,6 +2,7 @@
 
 import { revalidatePath } from "next/cache";
 import { createClient } from "@/lib/supabase/server";
+import { redirectWithToast } from "@/lib/admin/toast-redirect";
 
 function refresh() {
   revalidatePath("/", "layout");
@@ -24,6 +25,7 @@ export async function createMinistry(formData: FormData) {
   const { error } = await supabase.from("ministries").insert(fields(formData));
   if (error) throw new Error(error.message);
   refresh();
+  redirectWithToast("/admin/ministries", "Ministry added");
 }
 
 export async function updateMinistry(formData: FormData) {
@@ -35,6 +37,7 @@ export async function updateMinistry(formData: FormData) {
     .eq("id", id);
   if (error) throw new Error(error.message);
   refresh();
+  redirectWithToast("/admin/ministries", "Ministry updated");
 }
 
 export async function deleteMinistry(formData: FormData) {
@@ -43,4 +46,5 @@ export async function deleteMinistry(formData: FormData) {
   const { error } = await supabase.from("ministries").delete().eq("id", id);
   if (error) throw new Error(error.message);
   refresh();
+  redirectWithToast("/admin/ministries", "Ministry deleted");
 }

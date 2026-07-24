@@ -5,7 +5,7 @@ import Reveal from "@/components/Reveal";
 import PageHero from "@/components/PageHero";
 
 export const metadata: Metadata = {
-  title: "Join Online | Deeper Life Bible Church Columbia",
+  title: "Join Online",
   description: "Join our midweek meetings on Zoom.",
 };
 

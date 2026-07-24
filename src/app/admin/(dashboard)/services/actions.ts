@@ -2,6 +2,7 @@
 
 import { revalidatePath } from "next/cache";
 import { createClient } from "@/lib/supabase/server";
+import { redirectWithToast } from "@/lib/admin/toast-redirect";
 
 function refresh() {
   revalidatePath("/", "layout");
@@ -18,6 +19,7 @@ export async function createService(formData: FormData) {
   });
   if (error) throw new Error(error.message);
   refresh();
+  redirectWithToast("/admin/services", "Service added");
 }
 
 export async function updateService(formData: FormData) {
@@ -34,6 +36,7 @@ export async function updateService(formData: FormData) {
     .eq("id", id);
   if (error) throw new Error(error.message);
   refresh();
+  redirectWithToast("/admin/services", "Service updated");
 }
 
 export async function deleteService(formData: FormData) {
@@ -42,4 +45,5 @@ export async function deleteService(formData: FormData) {
   const { error } = await supabase.from("services").delete().eq("id", id);
   if (error) throw new Error(error.message);
   refresh();
+  redirectWithToast("/admin/services", "Service deleted");
 }

@@ -2,6 +2,7 @@
 
 import { revalidatePath } from "next/cache";
 import { createClient } from "@/lib/supabase/server";
+import { redirectWithToast } from "@/lib/admin/toast-redirect";
 
 function str(formData: FormData, key: string) {
   return String(formData.get(key) ?? "").trim();
@@ -73,4 +74,5 @@ export async function updateChurchInfo(formData: FormData) {
 
   revalidatePath("/", "layout");
   revalidatePath("/admin/church-info");
+  redirectWithToast("/admin/church-info", "Church info saved");
 }

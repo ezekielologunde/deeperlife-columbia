@@ -7,7 +7,7 @@ import { StaggerGrid, StaggerItem } from "@/components/StaggerGrid";
 import PageHero from "@/components/PageHero";
 
 export const metadata: Metadata = {
-  title: "Posts | Deeper Life Bible Church Columbia",
+  title: "Posts",
   description: "News, announcements, and messages from the church.",
 };
 
@@ -34,15 +34,15 @@ export default async function PostsPage() {
                 <StaggerItem key={post.id}>
                   <Link
                     href={`/posts/${post.slug}`}
-                    className="block h-full overflow-hidden rounded-2xl border border-slate-200 transition-all duration-300 hover:-translate-y-1 hover:shadow-lg"
+                    className="group block h-full overflow-hidden rounded-2xl border border-slate-200 transition-all duration-300 hover:-translate-y-1 hover:shadow-lg"
                   >
                     {post.cover_image && (
-                      <div className="relative h-40 w-full">
+                      <div className="relative h-40 w-full overflow-hidden">
                         <Image
                           src={post.cover_image}
                           alt={post.title}
                           fill
-                          className="object-cover"
+                          className="object-cover transition-transform duration-500 group-hover:scale-110"
                         />
                       </div>
                     )}

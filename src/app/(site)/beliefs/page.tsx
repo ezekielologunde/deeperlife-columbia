@@ -4,7 +4,7 @@ import { StaggerGrid, StaggerItem } from "@/components/StaggerGrid";
 import PageHero from "@/components/PageHero";
 
 export const metadata: Metadata = {
-  title: "Statement of Faith | Deeper Life Bible Church Columbia",
+  title: "Statement of Faith",
   description: "What we believe, as a Bible-based holiness church.",
 };
 

@@ -1,5 +1,7 @@
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
+import ScrollProgressBar from "@/components/ScrollProgressBar";
+import PageTransition from "@/components/PageTransition";
 import { getChurchData } from "@/lib/data";
 
 const SITE_URL = "https://deeperlifecolumbia.org";
@@ -50,8 +52,11 @@ export default async function SiteLayout({
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
+      <ScrollProgressBar />
       <Header />
-      <main className="flex-1">{children}</main>
+      <main className="flex-1">
+        <PageTransition>{children}</PageTransition>
+      </main>
       <Footer />
     </div>
   );

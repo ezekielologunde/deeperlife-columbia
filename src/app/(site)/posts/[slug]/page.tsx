@@ -25,7 +25,7 @@ export async function generateMetadata({
   const post = await getPost(slug);
   if (!post) return { title: "Post Not Found" };
   return {
-    title: `${post.title} | Deeper Life Bible Church Columbia`,
+    title: post.title,
     description: post.excerpt ?? undefined,
   };
 }

@@ -6,7 +6,7 @@ import { StaggerGrid, StaggerItem } from "@/components/StaggerGrid";
 import PageHero from "@/components/PageHero";
 
 export const metadata: Metadata = {
-  title: "Service Times | Deeper Life Bible Church Columbia",
+  title: "Service Times",
   description: "Join us for worship — everyone is welcome, come as you are.",
 };
 

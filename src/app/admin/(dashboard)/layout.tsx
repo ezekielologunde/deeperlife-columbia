@@ -1,6 +1,8 @@
 import Link from "next/link";
+import { Suspense } from "react";
 import { createClient } from "@/lib/supabase/server";
 import { logout } from "./actions";
+import AdminToast from "@/components/admin/AdminToast";
 
 const NAV = [
   { href: "/admin", label: "Dashboard" },
@@ -83,6 +85,10 @@ export default async function DashboardLayout({
         </nav>
         <main className="p-6 lg:p-10">{children}</main>
       </div>
+
+      <Suspense fallback={null}>
+        <AdminToast />
+      </Suspense>
     </div>
   );
 }

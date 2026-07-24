@@ -4,7 +4,7 @@ import Reveal from "@/components/Reveal";
 import PageHero from "@/components/PageHero";
 
 export const metadata: Metadata = {
-  title: "Give | Deeper Life Bible Church Columbia",
+  title: "Give",
   description: "Give your tithes and offerings online via Zelle.",
 };
 

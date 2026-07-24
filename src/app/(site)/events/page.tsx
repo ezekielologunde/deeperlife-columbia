@@ -5,7 +5,7 @@ import Reveal from "@/components/Reveal";
 import PageHero from "@/components/PageHero";
 
 export const metadata: Metadata = {
-  title: "Upcoming Program | Deeper Life Bible Church Columbia",
+  title: "Upcoming Program",
   description: "Upcoming programs and events.",
 };
 

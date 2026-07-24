@@ -2,6 +2,7 @@
 
 import { revalidatePath } from "next/cache";
 import { createClient } from "@/lib/supabase/server";
+import { redirectWithToast } from "@/lib/admin/toast-redirect";
 
 function refresh() {
   revalidatePath("/", "layout");
@@ -37,6 +38,7 @@ export async function createEvent(formData: FormData) {
   const { error } = await supabase.from("events").insert(fields(formData));
   if (error) throw new Error(error.message);
   refresh();
+  redirectWithToast("/admin/events", "Event added");
 }
 
 export async function updateEvent(formData: FormData) {
@@ -48,6 +50,7 @@ export async function updateEvent(formData: FormData) {
     .eq("id", id);
   if (error) throw new Error(error.message);
   refresh();
+  redirectWithToast("/admin/events", "Event updated");
 }
 
 export async function deleteEvent(formData: FormData) {
@@ -56,4 +59,5 @@ export async function deleteEvent(formData: FormData) {
   const { error } = await supabase.from("events").delete().eq("id", id);
   if (error) throw new Error(error.message);
   refresh();
+  redirectWithToast("/admin/events", "Event deleted");
 }
