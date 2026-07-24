@@ -3,7 +3,6 @@
 import Image from "next/image";
 import { AnimatePresence, motion } from "framer-motion";
 import { useEffect, useState } from "react";
-import { CHURCH } from "@/lib/church";
 
 const SLIDES = [
   "/images/gallery/congregation-wide.jpg",
@@ -13,7 +12,13 @@ const SLIDES = [
   "/images/gallery/welcome.jpg",
 ];
 
-export default function Hero() {
+export default function Hero({
+  name,
+  tagline,
+}: {
+  name: string;
+  tagline: string;
+}) {
   const [index, setIndex] = useState(0);
 
   useEffect(() => {
@@ -62,7 +67,7 @@ export default function Hero() {
           transition={{ duration: 0.6, delay: 0.1 }}
           className="mt-4 text-3xl font-extrabold leading-tight tracking-tight sm:text-5xl"
         >
-          {CHURCH.name}
+          {name}
         </motion.h1>
         <motion.p
           initial={{ opacity: 0, y: 20 }}
@@ -70,7 +75,7 @@ export default function Hero() {
           transition={{ duration: 0.6, delay: 0.2 }}
           className="mx-auto mt-6 max-w-2xl text-lg leading-8 text-indigo-100"
         >
-          {CHURCH.tagline}
+          {tagline}
         </motion.p>
         <motion.div
           initial={{ opacity: 0, y: 20 }}

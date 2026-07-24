@@ -1,7 +1,9 @@
-import { CHURCH } from "@/lib/church";
+import { getChurchData } from "@/lib/data";
 import Logo from "@/components/Logo";
 
-export default function Footer() {
+export default async function Footer() {
+  const CHURCH = await getChurchData();
+
   return (
     <footer className="border-t border-slate-200 bg-indigo-950 text-indigo-100">
       <div className="mx-auto grid max-w-6xl gap-10 px-6 py-14 sm:grid-cols-2 lg:grid-cols-4">
