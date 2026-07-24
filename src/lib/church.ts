@@ -66,4 +66,8 @@ export const CHURCH = {
     label: "DCLM Radio App",
     url: "https://play.google.com/store/apps/details?id=org.dclm.live",
   },
+  webcast: {
+    label: "DCLM Webcast",
+    url: "https://webcast.dclm.org/",
+  },
 };

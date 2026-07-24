@@ -75,6 +75,15 @@ export default function Footer() {
                 {CHURCH.app.label}
               </a>
             </li>
+            <li>
+              <a
+                href={CHURCH.webcast.url}
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                {CHURCH.webcast.label}
+              </a>
+            </li>
           </ul>
         </div>
       </div>
