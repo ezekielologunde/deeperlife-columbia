@@ -13,15 +13,16 @@ export default function EventsPage() {
   return (
     <>
       <PageHero
+        eyebrow="Coming Up"
         title="Upcoming Program"
         subtitle="Join us for this special citywide and global gathering."
       />
 
-      <section className="bg-white">
-        <div className="mx-auto max-w-6xl px-6 py-20">
+      <section className="bg-indigo-950 pb-24">
+        <div className="mx-auto max-w-6xl px-6">
           <div className="grid gap-10 lg:grid-cols-2 lg:items-center">
             <Reveal direction="left">
-              <div className="overflow-hidden rounded-2xl border border-slate-200 shadow-sm">
+              <div className="overflow-hidden rounded-2xl border border-white/10">
                 <Image
                   src={CHURCH.upcomingEvent.flyer}
                   alt={CHURCH.upcomingEvent.title}
@@ -34,19 +35,19 @@ export default function EventsPage() {
 
             <Reveal direction="right" delay={0.15}>
               <div>
-                <p className="text-sm font-semibold uppercase tracking-wide text-indigo-700">
+                <p className="text-sm font-semibold uppercase tracking-wide text-amber-300">
                   {CHURCH.upcomingEvent.date} · {CHURCH.upcomingEvent.time}
                 </p>
-                <h2 className="mt-2 text-2xl font-bold text-indigo-950">
+                <h2 className="mt-2 text-2xl font-bold text-white">
                   {CHURCH.upcomingEvent.title}
                 </h2>
-                <p className="mt-2 text-slate-700">
+                <p className="mt-2 text-indigo-100">
                   {CHURCH.upcomingEvent.subtitle}
                 </p>
-                <p className="mt-4 text-sm italic leading-6 text-slate-600">
+                <p className="mt-4 text-sm italic leading-6 text-indigo-300">
                   {CHURCH.upcomingEvent.verse}
                 </p>
-                <p className="mt-4 text-sm text-slate-500">
+                <p className="mt-4 text-sm text-indigo-300">
                   {CHURCH.upcomingEvent.host}
                 </p>
 
@@ -55,13 +56,13 @@ export default function EventsPage() {
                     href={CHURCH.upcomingEvent.link}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="rounded-full bg-indigo-900 px-6 py-3 text-sm font-semibold text-white transition-all hover:scale-105 hover:bg-indigo-800"
+                    className="rounded-full bg-amber-400 px-6 py-3 text-sm font-semibold text-indigo-950 transition-all hover:scale-105 hover:bg-amber-300"
                   >
                     Learn More
                   </a>
                 </div>
 
-                <div className="mt-8 overflow-hidden rounded-2xl border border-slate-200 shadow-sm">
+                <div className="mt-8 overflow-hidden rounded-2xl border border-white/10">
                   {/* eslint-disable-next-line jsx-a11y/media-has-caption */}
                   <video
                     src={CHURCH.upcomingEvent.video}

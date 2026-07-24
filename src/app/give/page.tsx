@@ -11,18 +11,18 @@ export const metadata: Metadata = {
 export default function GivePage() {
   return (
     <>
-      <PageHero title="Tithes & Offerings" />
+      <PageHero eyebrow="Tithes & Offerings" title="Give" />
 
-      <section className="bg-white">
-        <div className="mx-auto max-w-3xl px-6 py-20 text-center">
+      <section className="bg-indigo-950 pb-24">
+        <div className="mx-auto max-w-3xl px-6 text-center">
           <Reveal>
-            <p className="mx-auto max-w-xl text-slate-600">
+            <p className="mx-auto max-w-xl text-indigo-200">
               &ldquo;Bring ye all the tithes into the storehouse&rdquo; —
               Malachi 3:10. Thank you for sowing into the work of God through
               this ministry.
             </p>
-            <div className="mx-auto mt-8 max-w-sm rounded-2xl border border-slate-200 bg-indigo-950 p-8 text-white shadow-lg">
-              <p className="text-xs font-semibold uppercase tracking-wide text-indigo-300">
+            <div className="mx-auto mt-8 max-w-sm rounded-2xl border border-amber-400/20 bg-gradient-to-br from-amber-500/15 to-indigo-900/60 p-8">
+              <p className="text-xs font-semibold uppercase tracking-wide text-amber-300">
                 Give via Zelle
               </p>
               <p className="mt-2 text-xl font-bold text-white">
