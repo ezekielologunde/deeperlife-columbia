@@ -59,8 +59,12 @@ export const CHURCH = {
     instagram: "https://www.instagram.com/deeperlifecolumbiamd/",
     youtube: "https://www.youtube.com/@DeeperChristianLifeMinistryCol",
   },
+  internationalSite: {
+    label: "DCLM International",
+    url: "https://dclm.org/",
+  },
   regionalSite: {
-    label: "Deeper Life Bible Church North America",
+    label: "Deeper Life Bible Church Washington DC",
     url: "https://deeperlifedc.org/",
   },
   app: {
