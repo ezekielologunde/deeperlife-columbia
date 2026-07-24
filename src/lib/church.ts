@@ -67,6 +67,12 @@ export const CHURCH = {
     label: "Deeper Life Bible Church Washington DC",
     url: "https://deeperlifedc.org/",
   },
+  nearbyChurches: [
+    {
+      label: "Deeper Life Bible Church Delaware",
+      url: "https://www.deeperlifedelaware.org/",
+    },
+  ],
   app: {
     label: "DCLM Radio App",
     url: "https://play.google.com/store/apps/details?id=org.dclm.live",
