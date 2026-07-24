@@ -62,4 +62,8 @@ export const CHURCH = {
     label: "Deeper Life Bible Church North America",
     url: "https://deeperlifedc.org/",
   },
+  app: {
+    label: "DCLM Radio App",
+    url: "https://play.google.com/store/apps/details?id=org.dclm.live",
+  },
 };

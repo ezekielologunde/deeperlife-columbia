@@ -66,6 +66,15 @@ export default function Footer() {
                 Facebook
               </a>
             </li>
+            <li>
+              <a
+                href={CHURCH.app.url}
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                {CHURCH.app.label}
+              </a>
+            </li>
           </ul>
         </div>
       </div>

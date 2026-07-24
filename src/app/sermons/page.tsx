@@ -47,7 +47,19 @@ export default function SermonsPage() {
               >
                 Follow on Facebook
               </a>
+              <a
+                href={CHURCH.app.url}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="rounded-full border border-slate-300 px-6 py-3 text-sm font-semibold text-indigo-950 transition-all hover:scale-105 hover:bg-slate-50"
+              >
+                Get the {CHURCH.app.label}
+              </a>
             </div>
+            <p className="mt-4 text-xs text-slate-500">
+              Listen to Deeper Christian Life Ministry radio anytime on the
+              official DCLM app.
+            </p>
           </Reveal>
         </div>
       </section>
