@@ -16,6 +16,7 @@ const NAV: NavItem[] = [
     children: [
       { href: "/about", label: "Our Story" },
       { href: "/beliefs", label: "Statement of Faith" },
+      { href: "/what-to-expect", label: "What to Expect" },
     ],
   },
   {
@@ -26,7 +27,13 @@ const NAV: NavItem[] = [
       { href: "/events", label: "Events" },
     ],
   },
-  { label: "Ministries", href: "/ministries" },
+  {
+    label: "Ministries",
+    children: [
+      { href: "/ministries", label: "All Ministries" },
+      { href: "/serve", label: "Serve With Us" },
+    ],
+  },
   {
     label: "Media",
     children: [

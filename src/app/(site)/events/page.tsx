@@ -3,6 +3,7 @@ import Image from "next/image";
 import { getChurchData } from "@/lib/data";
 import Reveal from "@/components/Reveal";
 import PageHero from "@/components/PageHero";
+import RsvpForm from "@/components/RsvpForm";
 
 export const metadata: Metadata = {
   title: "Upcoming Program",
@@ -22,7 +23,7 @@ export default async function EventsPage() {
       <section className="bg-white">
         <div className="mx-auto max-w-6xl divide-y divide-slate-100 px-6">
           {CHURCH.upcomingEvents.map((event) => (
-            <div key={event.title} className="py-20">
+            <div key={event.id} className="py-20">
               <div className="grid gap-10 lg:grid-cols-2 lg:items-center">
                 <Reveal direction="left">
                   <div className="overflow-hidden rounded-2xl border border-slate-200 shadow-sm">
@@ -69,6 +70,18 @@ export default async function EventsPage() {
                         playsInline
                         className="w-full"
                       />
+                    </div>
+
+                    <div className="mt-8 rounded-2xl border border-slate-200 bg-slate-50 p-6">
+                      <h3 className="font-bold text-indigo-950">
+                        Save Your Spot
+                      </h3>
+                      <p className="mt-1 text-sm text-slate-600">
+                        Let us know you&apos;re coming.
+                      </p>
+                      <div className="mt-4">
+                        <RsvpForm eventId={event.id} eventTitle={event.title} />
+                      </div>
                     </div>
                   </div>
                 </Reveal>

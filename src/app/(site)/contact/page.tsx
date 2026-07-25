@@ -3,6 +3,7 @@ import Image from "next/image";
 import { getChurchData } from "@/lib/data";
 import Reveal from "@/components/Reveal";
 import PageHero from "@/components/PageHero";
+import ContactForm from "@/components/ContactForm";
 
 export const metadata: Metadata = {
   title: "Plan Your Visit",
@@ -67,6 +68,23 @@ export default async function ContactPage() {
                 className="h-full min-h-[320px] w-full"
                 loading="lazy"
               />
+            </div>
+          </Reveal>
+        </div>
+      </section>
+
+      <section className="bg-indigo-50">
+        <div className="mx-auto max-w-2xl px-6 py-20">
+          <Reveal>
+            <h2 className="text-center text-3xl font-bold tracking-tight text-indigo-950">
+              Send Us a Message
+            </h2>
+            <p className="mx-auto mt-3 max-w-xl text-center text-slate-600">
+              Have a question, or need prayer? Fill out the form below and
+              we&apos;ll get back to you.
+            </p>
+            <div className="mt-10 rounded-2xl border border-slate-200 bg-white p-6 shadow-sm sm:p-8">
+              <ContactForm />
             </div>
           </Reveal>
         </div>

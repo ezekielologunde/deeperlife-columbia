@@ -1,5 +1,6 @@
 import { getChurchData } from "@/lib/data";
 import Logo from "@/components/Logo";
+import NewsletterForm from "@/components/NewsletterForm";
 
 export default async function Footer() {
   const CHURCH = await getChurchData();
@@ -106,6 +107,18 @@ export default async function Footer() {
               </a>
             </li>
           </ul>
+        </div>
+      </div>
+
+      <div className="border-t border-indigo-900/60 px-6 py-8">
+        <div className="mx-auto flex max-w-6xl flex-col items-start justify-between gap-4 sm:flex-row sm:items-center">
+          <div>
+            <p className="text-sm font-semibold text-white">Stay Connected</p>
+            <p className="text-sm text-indigo-300">
+              Get occasional updates on programs and events.
+            </p>
+          </div>
+          <NewsletterForm />
         </div>
       </div>
 

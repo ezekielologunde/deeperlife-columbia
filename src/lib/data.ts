@@ -1,6 +1,7 @@
 import { createClient } from "@/lib/supabase/server";
 
 type EventRow = {
+  id: string;
   title: string;
   subtitle: string | null;
   event_date: string | null;
@@ -34,6 +35,7 @@ export async function getChurchData() {
   const upcomingEvents = events
     .filter((e) => !e.is_past)
     .map((e) => ({
+      id: e.id,
       title: e.title,
       subtitle: e.subtitle ?? "",
       date: e.event_date ?? "",

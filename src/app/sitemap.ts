@@ -15,6 +15,8 @@ const ROUTES: { path: string; priority: number; changeFrequency: "daily" | "week
   { path: "/posts", priority: 0.7, changeFrequency: "weekly" },
   { path: "/give", priority: 0.6, changeFrequency: "monthly" },
   { path: "/contact", priority: 0.8, changeFrequency: "monthly" },
+  { path: "/what-to-expect", priority: 0.7, changeFrequency: "monthly" },
+  { path: "/serve", priority: 0.6, changeFrequency: "monthly" },
 ];
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {

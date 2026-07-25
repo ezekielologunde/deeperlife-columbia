@@ -13,6 +13,10 @@ const NAV = [
   { href: "/admin/beliefs", label: "Statement of Faith" },
   { href: "/admin/events", label: "Events" },
   { href: "/admin/posts", label: "Posts" },
+  { href: "/admin/messages", label: "Messages" },
+  { href: "/admin/subscribers", label: "Subscribers" },
+  { href: "/admin/rsvps", label: "RSVPs" },
+  { href: "/admin/account", label: "Account" },
 ];
 
 export default async function DashboardLayout({
