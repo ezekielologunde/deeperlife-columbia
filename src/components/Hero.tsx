@@ -97,17 +97,21 @@ export default function Hero({
           </a>
         </motion.div>
 
-        <div className="mt-14 flex justify-center gap-2">
+        <div className="mt-14 flex justify-center gap-1">
           {SLIDES.map((slide, i) => (
             <button
               key={slide}
               type="button"
               onClick={() => setIndex(i)}
               aria-label={`Show slide ${i + 1}`}
-              className={`h-2 rounded-full transition-all ${
-                i === index ? "w-8 bg-white" : "w-2 bg-white/40 hover:bg-white/60"
-              }`}
-            />
+              className="flex h-11 w-11 items-center justify-center"
+            >
+              <span
+                className={`h-2 rounded-full transition-all ${
+                  i === index ? "w-8 bg-white" : "w-2 bg-white/40 hover:bg-white/60"
+                }`}
+              />
+            </button>
           ))}
         </div>
       </div>
