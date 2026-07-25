@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import { AnimatePresence, motion } from "framer-motion";
+import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import { useEffect, useState } from "react";
 
 const SLIDES = [
@@ -20,16 +20,25 @@ export default function Hero({
   tagline: string;
 }) {
   const [index, setIndex] = useState(0);
+  const prefersReducedMotion = useReducedMotion();
+  const [playing, setPlaying] = useState(!prefersReducedMotion);
 
   useEffect(() => {
+    if (!playing) return;
     const id = setInterval(() => {
       setIndex((i) => (i + 1) % SLIDES.length);
     }, 5000);
     return () => clearInterval(id);
-  }, []);
+  }, [playing]);
 
   return (
-    <section className="relative flex min-h-[90vh] items-center overflow-hidden text-white lg:min-h-screen">
+    <section
+      className="relative flex min-h-[90vh] items-center overflow-hidden text-white lg:min-h-screen"
+      onMouseEnter={() => setPlaying(false)}
+      onMouseLeave={() => setPlaying(!prefersReducedMotion)}
+      onFocus={() => setPlaying(false)}
+      onBlur={() => setPlaying(!prefersReducedMotion)}
+    >
       <div className="absolute inset-0">
         <AnimatePresence initial={false}>
           <motion.div
@@ -97,13 +106,14 @@ export default function Hero({
           </a>
         </motion.div>
 
-        <div className="mt-14 flex justify-center gap-1">
+        <div className="mt-14 flex items-center justify-center gap-1">
           {SLIDES.map((slide, i) => (
             <button
               key={slide}
               type="button"
               onClick={() => setIndex(i)}
               aria-label={`Show slide ${i + 1}`}
+              aria-current={i === index}
               className="flex h-11 w-11 items-center justify-center"
             >
               <span
@@ -113,15 +123,37 @@ export default function Hero({
               />
             </button>
           ))}
+          <button
+            type="button"
+            onClick={() => setPlaying((p) => !p)}
+            aria-label={playing ? "Pause slideshow" : "Play slideshow"}
+            className="ml-1 flex h-11 w-11 items-center justify-center text-white/70 transition-colors hover:text-white"
+          >
+            {playing ? (
+              <svg width="14" height="14" viewBox="0 0 14 14" fill="currentColor" aria-hidden>
+                <rect x="2" y="1" width="4" height="12" rx="1" />
+                <rect x="8" y="1" width="4" height="12" rx="1" />
+              </svg>
+            ) : (
+              <svg width="14" height="14" viewBox="0 0 14 14" fill="currentColor" aria-hidden>
+                <path d="M2.5 1.2c0-.9 1-1.5 1.8-1L12 6.2c.8.5.8 1.6 0 2.1l-7.7 5.5c-.8.5-1.8 0-1.8-1V1.2z" />
+              </svg>
+            )}
+          </button>
         </div>
       </div>
 
       <motion.div
         initial={{ opacity: 0 }}
-        animate={{ opacity: 1, y: [0, 8, 0] }}
+        animate={{
+          opacity: 1,
+          y: prefersReducedMotion ? 0 : [0, 8, 0],
+        }}
         transition={{
           opacity: { duration: 0.6, delay: 0.6 },
-          y: { duration: 1.8, repeat: Infinity, ease: "easeInOut" },
+          y: prefersReducedMotion
+            ? { duration: 0 }
+            : { duration: 1.8, repeat: Infinity, ease: "easeInOut" },
         }}
         className="absolute bottom-8 left-1/2 -translate-x-1/2 text-white/70"
         aria-hidden

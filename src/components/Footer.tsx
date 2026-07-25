@@ -65,16 +65,27 @@ export default async function Footer() {
           </p>
           <ul className="mt-3 space-y-1 text-sm leading-6 text-indigo-200">
             <li>
-              <a href={`tel:${CHURCH.phone}`}>{CHURCH.phoneDisplay}</a>
+              <a
+                href={`tel:${CHURCH.phone}`}
+                className="underline decoration-indigo-500/60 underline-offset-2 transition-colors hover:text-amber-300 hover:decoration-amber-300"
+              >
+                {CHURCH.phoneDisplay}
+              </a>
             </li>
             <li>
-              <a href={`mailto:${CHURCH.email}`}>{CHURCH.email}</a>
+              <a
+                href={`mailto:${CHURCH.email}`}
+                className="underline decoration-indigo-500/60 underline-offset-2 transition-colors hover:text-amber-300 hover:decoration-amber-300"
+              >
+                {CHURCH.email}
+              </a>
             </li>
             <li>
               <a
                 href={CHURCH.social.facebook}
                 target="_blank"
                 rel="noopener noreferrer"
+                className="underline decoration-indigo-500/60 underline-offset-2 transition-colors hover:text-amber-300 hover:decoration-amber-300"
               >
                 Facebook
               </a>
@@ -84,6 +95,7 @@ export default async function Footer() {
                 href={CHURCH.social.instagram}
                 target="_blank"
                 rel="noopener noreferrer"
+                className="underline decoration-indigo-500/60 underline-offset-2 transition-colors hover:text-amber-300 hover:decoration-amber-300"
               >
                 Instagram
               </a>
@@ -93,6 +105,7 @@ export default async function Footer() {
                 href={CHURCH.app.url}
                 target="_blank"
                 rel="noopener noreferrer"
+                className="underline decoration-indigo-500/60 underline-offset-2 transition-colors hover:text-amber-300 hover:decoration-amber-300"
               >
                 {CHURCH.app.label}
               </a>
@@ -102,6 +115,7 @@ export default async function Footer() {
                 href={CHURCH.webcast.url}
                 target="_blank"
                 rel="noopener noreferrer"
+                className="underline decoration-indigo-500/60 underline-offset-2 transition-colors hover:text-amber-300 hover:decoration-amber-300"
               >
                 {CHURCH.webcast.label}
               </a>

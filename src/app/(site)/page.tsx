@@ -96,7 +96,7 @@ export default async function Home() {
       </section>
 
       {/* Global Reach */}
-      <section className="bg-gradient-to-br from-indigo-600 via-indigo-500 to-violet-500 text-white">
+      <section className="bg-gradient-to-br from-indigo-950 via-indigo-900 to-indigo-950 text-white">
         <div className="mx-auto max-w-6xl px-6 py-24 text-center sm:py-28">
           <Reveal>
             <p className="text-sm font-semibold uppercase tracking-[0.2em] text-amber-200">

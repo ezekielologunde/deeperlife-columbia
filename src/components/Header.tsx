@@ -71,6 +71,8 @@ function NavDropdown({
       <button
         type="button"
         onClick={() => setOpenMenu(isOpen ? null : item.label)}
+        aria-haspopup="true"
+        aria-expanded={isOpen}
         className={`flex items-center gap-1 rounded-full px-4 py-1.5 text-sm font-medium transition-colors ${
           active || isOpen
             ? "bg-white text-indigo-900 shadow-sm"
@@ -140,8 +142,18 @@ export default function Header() {
         setOpenMenu(null);
       }
     }
+    function handleKey(e: KeyboardEvent) {
+      if (e.key === "Escape") {
+        setOpenMenu(null);
+        setOpen(false);
+      }
+    }
     document.addEventListener("mousedown", handleClick);
-    return () => document.removeEventListener("mousedown", handleClick);
+    document.addEventListener("keydown", handleKey);
+    return () => {
+      document.removeEventListener("mousedown", handleClick);
+      document.removeEventListener("keydown", handleKey);
+    };
   }, []);
 
   useEffect(() => {
@@ -203,8 +215,9 @@ export default function Header() {
         <button
           type="button"
           onClick={() => setOpen((v) => !v)}
-          className="flex h-10 w-10 items-center justify-center rounded-md border border-slate-200 lg:hidden"
           aria-label="Toggle menu"
+          aria-expanded={open}
+          className="flex h-11 w-11 items-center justify-center rounded-md border border-slate-200 lg:hidden"
         >
           <span className="sr-only">Menu</span>
           <div className="relative h-4 w-5">

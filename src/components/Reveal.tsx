@@ -1,6 +1,6 @@
 "use client";
 
-import { motion } from "framer-motion";
+import { motion, useReducedMotion } from "framer-motion";
 import type { ReactNode } from "react";
 
 type RevealProps = {
@@ -22,7 +22,8 @@ export default function Reveal({
   direction = "up",
   delay = 0,
 }: RevealProps) {
-  const offset = OFFSETS[direction];
+  const prefersReducedMotion = useReducedMotion();
+  const offset = prefersReducedMotion ? { x: 0, y: 0 } : OFFSETS[direction];
 
   return (
     <motion.div
@@ -30,7 +31,11 @@ export default function Reveal({
       initial={{ opacity: 0, x: offset.x, y: offset.y }}
       whileInView={{ opacity: 1, x: 0, y: 0 }}
       viewport={{ once: true, margin: "-80px" }}
-      transition={{ duration: 0.6, delay, ease: [0.22, 1, 0.36, 1] }}
+      transition={{
+        duration: prefersReducedMotion ? 0.2 : 0.6,
+        delay: prefersReducedMotion ? 0 : delay,
+        ease: [0.22, 1, 0.36, 1],
+      }}
     >
       {children}
     </motion.div>
