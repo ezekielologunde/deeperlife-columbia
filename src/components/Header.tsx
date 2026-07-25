@@ -39,6 +39,8 @@ const NAV: NavItem[] = [
     children: [
       { href: "/sermons", label: "Sermons" },
       { href: "/posts", label: "Posts" },
+      { href: "/testimonies", label: "Testimonies" },
+      { href: "/gallery", label: "Gallery" },
     ],
   },
   { label: "Give", href: "/give" },

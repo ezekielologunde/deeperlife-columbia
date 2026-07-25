@@ -60,6 +60,12 @@ export default async function MinistriesAdminPage() {
             rows={3}
             className="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm"
           />
+          <textarea
+            name="details"
+            placeholder="Full details (optional, shown on the ministry's own page)"
+            rows={4}
+            className="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm"
+          />
           <ImageUploadField label="Image" name="image" />
           <div className="grid gap-4 sm:grid-cols-2">
             <input

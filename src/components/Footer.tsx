@@ -30,6 +30,14 @@ export default async function Footer() {
             >
               {CHURCH.regionalSite.label} →
             </a>
+            <a
+              href="https://dailymanna.dclm.org/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-sm font-medium text-amber-300 hover:text-amber-200"
+            >
+              DCLM Daily Manna Devotional →
+            </a>
           </div>
         </div>
 

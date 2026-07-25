@@ -43,6 +43,16 @@ export default async function EditMinistryPage({
             className="mt-1 w-full rounded-lg border border-slate-300 px-3 py-2 text-sm"
           />
         </label>
+        <label className="block text-sm font-medium text-slate-700">
+          Full Details (shown on the ministry&apos;s own page)
+          <textarea
+            name="details"
+            defaultValue={ministry.details ?? ""}
+            rows={5}
+            placeholder="Leave blank to reuse the short description above."
+            className="mt-1 w-full rounded-lg border border-slate-300 px-3 py-2 text-sm"
+          />
+        </label>
         <ImageUploadField label="Image" name="image" defaultValue={ministry.image ?? ""} />
         <label className="block text-sm font-medium text-slate-700">
           Meeting Time

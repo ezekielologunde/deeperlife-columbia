@@ -17,14 +17,16 @@ const ROUTES: { path: string; priority: number; changeFrequency: "daily" | "week
   { path: "/contact", priority: 0.8, changeFrequency: "monthly" },
   { path: "/what-to-expect", priority: 0.7, changeFrequency: "monthly" },
   { path: "/serve", priority: 0.6, changeFrequency: "monthly" },
+  { path: "/testimonies", priority: 0.6, changeFrequency: "weekly" },
+  { path: "/gallery", priority: 0.5, changeFrequency: "monthly" },
 ];
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const supabase = await createClient();
-  const { data: posts } = await supabase
-    .from("posts")
-    .select("slug, updated_at")
-    .eq("published", true);
+  const [{ data: posts }, { data: ministries }] = await Promise.all([
+    supabase.from("posts").select("slug, updated_at").eq("published", true),
+    supabase.from("ministries").select("slug"),
+  ]);
 
   const staticRoutes = ROUTES.map((route) => ({
     url: `${BASE_URL}${route.path}`,
@@ -40,5 +42,12 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     priority: 0.5,
   }));
 
-  return [...staticRoutes, ...postRoutes];
+  const ministryRoutes = (ministries ?? []).map((m) => ({
+    url: `${BASE_URL}/ministries/${m.slug}`,
+    lastModified: new Date(),
+    changeFrequency: "monthly" as const,
+    priority: 0.5,
+  }));
+
+  return [...staticRoutes, ...postRoutes, ...ministryRoutes];
 }

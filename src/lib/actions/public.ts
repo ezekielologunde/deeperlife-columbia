@@ -57,6 +57,30 @@ export async function submitSubscriber(
   return { success: true };
 }
 
+export async function submitTestimony(
+  _prevState: FormState,
+  formData: FormData,
+): Promise<FormState> {
+  const name = String(formData.get("name") ?? "").trim();
+  const content = String(formData.get("content") ?? "").trim();
+
+  if (!name || !content) {
+    return { success: false, error: "Please share your name and testimony." };
+  }
+
+  const supabase = await createClient();
+  const { error } = await supabase.from("testimonies").insert({
+    name,
+    content,
+  });
+
+  if (error) {
+    return { success: false, error: "Something went wrong. Please try again." };
+  }
+
+  return { success: true };
+}
+
 export async function submitRsvp(
   _prevState: FormState,
   formData: FormData,

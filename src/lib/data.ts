@@ -130,10 +130,47 @@ export async function getMinistriesData() {
     .order("sort_order");
 
   return (data ?? []).map((m) => ({
+    slug: m.slug as string,
     title: m.title as string,
     desc: m.description as string,
+    details: (m.details as string | null) ?? undefined,
     image: (m.image as string | null) ?? undefined,
     meetingTime: (m.meeting_time as string | null) ?? undefined,
     ctaText: (m.cta_text as string | null) ?? undefined,
+  }));
+}
+
+export async function getMinistryBySlug(slug: string) {
+  const ministries = await getMinistriesData();
+  return ministries.find((m) => m.slug === slug) ?? null;
+}
+
+export async function getTestimonies() {
+  const supabase = await createClient();
+  const { data } = await supabase
+    .from("testimonies")
+    .select("*")
+    .eq("published", true)
+    .order("sort_order")
+    .order("created_at", { ascending: false });
+
+  return (data ?? []).map((t) => ({
+    id: t.id as string,
+    name: t.name as string,
+    content: t.content as string,
+  }));
+}
+
+export async function getGalleryImages() {
+  const supabase = await createClient();
+  const { data } = await supabase
+    .from("gallery_images")
+    .select("*")
+    .order("sort_order");
+
+  return (data ?? []).map((g) => ({
+    id: g.id as string,
+    url: g.url as string,
+    caption: (g.caption as string | null) ?? undefined,
   }));
 }

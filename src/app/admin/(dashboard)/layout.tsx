@@ -13,6 +13,8 @@ const NAV = [
   { href: "/admin/beliefs", label: "Statement of Faith" },
   { href: "/admin/events", label: "Events" },
   { href: "/admin/posts", label: "Posts" },
+  { href: "/admin/testimonies", label: "Testimonies" },
+  { href: "/admin/gallery", label: "Gallery" },
   { href: "/admin/messages", label: "Messages" },
   { href: "/admin/subscribers", label: "Subscribers" },
   { href: "/admin/rsvps", label: "RSVPs" },
