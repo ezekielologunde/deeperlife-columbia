@@ -17,6 +17,7 @@ const NAV: NavItem[] = [
       { href: "/about", label: "Our Story" },
       { href: "/beliefs", label: "Statement of Faith" },
       { href: "/what-to-expect", label: "What to Expect" },
+      { href: "/salvation", label: "Steps to Salvation" },
     ],
   },
   {

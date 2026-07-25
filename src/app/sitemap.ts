@@ -17,6 +17,7 @@ const ROUTES: { path: string; priority: number; changeFrequency: "daily" | "week
   { path: "/contact", priority: 0.8, changeFrequency: "monthly" },
   { path: "/what-to-expect", priority: 0.7, changeFrequency: "monthly" },
   { path: "/serve", priority: 0.6, changeFrequency: "monthly" },
+  { path: "/salvation", priority: 0.7, changeFrequency: "monthly" },
   { path: "/testimonies", priority: 0.6, changeFrequency: "weekly" },
   { path: "/gallery", priority: 0.5, changeFrequency: "monthly" },
 ];
