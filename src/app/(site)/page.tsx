@@ -274,7 +274,11 @@ export default async function Home() {
                 <a href={`mailto:${CHURCH.email}`}>{CHURCH.email}</a>
               </p>
               <a
-                href="/contact"
+                href={`https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(
+                  `${CHURCH.address.line1}, ${CHURCH.address.line2} ${CHURCH.address.line3}`,
+                )}`}
+                target="_blank"
+                rel="noopener noreferrer"
                 className="mt-8 inline-block rounded-full bg-indigo-900 px-7 py-3 text-base font-semibold text-white transition-all hover:scale-105 hover:bg-indigo-800"
               >
                 Get Directions

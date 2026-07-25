@@ -87,7 +87,7 @@ export default function Hero({
             href="/contact"
             className="rounded-full bg-white px-8 py-3 text-sm font-semibold text-indigo-900 transition-all hover:scale-105 hover:bg-indigo-100"
           >
-            Plan Your Visit
+            Plan a Visit
           </a>
           <a
             href="/services"

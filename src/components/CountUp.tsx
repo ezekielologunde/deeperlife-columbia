@@ -33,7 +33,7 @@ export default function CountUp({
   }, [springValue]);
 
   return (
-    <span ref={ref} className={className}>
+    <span ref={ref} className={className} style={{ fontVariantNumeric: "tabular-nums" }}>
       {display}
       {suffix}
     </span>
