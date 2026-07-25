@@ -6,8 +6,9 @@ import { StaggerGrid, StaggerItem } from "@/components/StaggerGrid";
 import PageHero from "@/components/PageHero";
 
 export const metadata: Metadata = {
-  title: "Service Times",
-  description: "Join us for worship — everyone is welcome, come as you are.",
+  title: "Service Times | Bible Church in Columbia, MD",
+  description:
+    "Sunday worship, Bible study, and prayer meeting times at our Bible church in Columbia, Maryland. Everyone is welcome — come as you are.",
 };
 
 export default async function ServicesPage() {

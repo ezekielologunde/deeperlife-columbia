@@ -7,7 +7,8 @@ import PageHero from "@/components/PageHero";
 
 export const metadata: Metadata = {
   title: "Ministries",
-  description: "There's a place for everyone to grow and serve.",
+  description:
+    "Children's, Youth, Women's, Men's, Choir, and Outreach ministries at Deeper Life Bible Church, a Bible church in Columbia, Maryland. There's a place for everyone to grow and serve.",
 };
 
 export default async function MinistriesPage() {

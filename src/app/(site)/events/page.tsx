@@ -6,8 +6,9 @@ import PageHero from "@/components/PageHero";
 import RsvpForm from "@/components/RsvpForm";
 
 export const metadata: Metadata = {
-  title: "Upcoming Program",
-  description: "Upcoming programs and events.",
+  title: "Events",
+  description:
+    "Upcoming programs, conventions, and events at Deeper Life Bible Church, a Bible church in Columbia, Maryland.",
 };
 
 export default async function EventsPage() {

@@ -6,8 +6,9 @@ import PageHero from "@/components/PageHero";
 import ContactForm from "@/components/ContactForm";
 
 export const metadata: Metadata = {
-  title: "Plan Your Visit",
-  description: "Address, phone, email, and directions.",
+  title: "Contact Us | Bible Church in Columbia, MD",
+  description:
+    "Address, phone, email, and directions to Deeper Life Bible Church, a Bible church in Columbia, Maryland (Howard County) at 6031 Tamar Dr.",
 };
 
 export default async function ContactPage() {

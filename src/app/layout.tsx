@@ -14,21 +14,32 @@ const geistMono = Geist_Mono({
 
 const SITE_URL = "https://deeperlifecolumbia.org";
 
+const SITE_DESCRIPTION =
+  "A Bible church in Columbia, Maryland welcoming all nations for Christ-centered worship, undiluted Bible teaching, and the Gospel of Jesus Christ. Part of Deeper Christian Life Ministry (DCLM), a Nigerian-founded, multinational holiness church with roots in Lagos, Nigeria and branches across Africa, Europe, Asia, and the Americas.";
+
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
   title: {
-    default: "Deeper Life Bible Church Columbia | Columbia, MD",
+    default:
+      "Deeper Life Bible Church Columbia, MD | Bible Church for All Nations",
     template: "%s | Deeper Life Bible Church Columbia",
   },
-  description:
-    "The citadel for Christ-centered living in Columbia, Maryland — a family-oriented church for true worship, undiluted teaching, and the Gospel of Jesus Christ.",
+  description: SITE_DESCRIPTION,
   keywords: [
     "Deeper Life Bible Church",
     "Deeper Life Columbia",
     "Deeper Christian Life Ministry",
     "DCLM",
-    "church in Columbia Maryland",
-    "Bible church Howard County",
+    "Bible church in Columbia Maryland",
+    "Bible church Howard County MD",
+    "church near Columbia MD",
+    "African church Columbia Maryland",
+    "African church Howard County",
+    "Nigerian church Maryland",
+    "Nigerian church near me",
+    "Nigerian community church Columbia MD",
+    "holiness church Maryland",
+    "DCLM Maryland",
     "Pastor Ahmed J. Adeyemi",
   ],
   alternates: {
@@ -38,16 +49,14 @@ export const metadata: Metadata = {
     type: "website",
     url: SITE_URL,
     siteName: "Deeper Life Bible Church Columbia",
-    title: "Deeper Life Bible Church Columbia | Columbia, MD",
-    description:
-      "The citadel for Christ-centered living in Columbia, Maryland — a family-oriented church for true worship, undiluted teaching, and the Gospel of Jesus Christ.",
+    title: "Deeper Life Bible Church Columbia, MD | Bible Church for All Nations",
+    description: SITE_DESCRIPTION,
     images: ["/images/gallery/congregation-wide.jpg"],
   },
   twitter: {
     card: "summary_large_image",
-    title: "Deeper Life Bible Church Columbia | Columbia, MD",
-    description:
-      "The citadel for Christ-centered living in Columbia, Maryland — a family-oriented church for true worship, undiluted teaching, and the Gospel of Jesus Christ.",
+    title: "Deeper Life Bible Church Columbia, MD | Bible Church for All Nations",
+    description: SITE_DESCRIPTION,
     images: ["/images/gallery/congregation-wide.jpg"],
   },
 };

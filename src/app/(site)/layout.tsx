@@ -18,6 +18,8 @@ export default async function SiteLayout({
     "@context": "https://schema.org",
     "@type": "Church",
     name: CHURCH.name,
+    alternateName: "DCLM Columbia",
+    description: CHURCH.description[0] ?? undefined,
     url: SITE_URL,
     logo: `${SITE_URL}/images/logo.jpg`,
     image: `${SITE_URL}/images/gallery/congregation-wide.jpg`,
@@ -31,11 +33,17 @@ export default async function SiteLayout({
       postalCode: "21045",
       addressCountry: "US",
     },
+    areaServed: [
+      { "@type": "City", name: "Columbia, Maryland" },
+      { "@type": "AdministrativeArea", name: "Howard County, Maryland" },
+      { "@type": "State", name: "Maryland" },
+    ],
+    knowsLanguage: ["en"],
     sameAs: [
       CHURCH.social.facebook,
       CHURCH.social.instagram,
       CHURCH.social.youtube,
-    ],
+    ].filter(Boolean),
     founder: {
       "@type": "Person",
       name: "Pastor Dr. William F. Kumuyi",
@@ -43,8 +51,21 @@ export default async function SiteLayout({
     memberOf: {
       "@type": "Organization",
       name: "Deeper Christian Life Ministry",
+      alternateName: "DCLM",
+      description:
+        "A Nigerian-founded, multinational holiness Christian denomination headquartered in Lagos, Nigeria, with branches across Africa, Europe, Asia, and the Americas.",
       url: "https://dclm.org/",
     },
+    event: CHURCH.upcomingEvents.slice(0, 3).map((e) => ({
+      "@type": "Event",
+      name: e.title,
+      startDate: e.date || undefined,
+      location: {
+        "@type": "Place",
+        name: CHURCH.name,
+        address: `${CHURCH.address.line1}, ${CHURCH.address.line2} ${CHURCH.address.line3}`,
+      },
+    })),
   };
 
   return (

@@ -18,7 +18,7 @@ function initials(name: string) {
 export async function generateMetadata(): Promise<Metadata> {
   const CHURCH = await getChurchData();
   return {
-    title: "About Us",
+    title: "About Us | Bible Church in Columbia, MD",
     description: CHURCH.description[0],
   };
 }

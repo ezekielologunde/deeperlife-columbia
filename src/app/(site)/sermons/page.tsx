@@ -6,7 +6,8 @@ import PageHero from "@/components/PageHero";
 
 export const metadata: Metadata = {
   title: "Sermons",
-  description: "Watch and follow our latest messages.",
+  description:
+    "Watch and follow the latest Bible-based messages from Deeper Life Bible Church, a Bible church in Columbia, Maryland.",
 };
 
 export default async function SermonsPage() {
