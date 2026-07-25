@@ -113,17 +113,17 @@ export default async function AboutPage() {
           <StaggerGrid className="mt-10 grid gap-6 sm:grid-cols-3">
             {CHURCH.leadership.map((l) => (
               <StaggerItem key={l.name}>
-                <div className="flex h-full flex-col items-center rounded-2xl bg-white p-6 text-center shadow-sm">
+                <div className="flex h-full flex-col items-center rounded-2xl bg-white p-6 text-center shadow-sm transition-transform duration-300 hover:-translate-y-1 hover:shadow-lg">
                   {l.photoUrl ? (
                     <Image
                       src={l.photoUrl}
                       alt={l.name}
-                      width={64}
-                      height={64}
-                      className="h-16 w-16 rounded-full object-cover"
+                      width={112}
+                      height={112}
+                      className="h-28 w-28 rounded-full object-cover object-top ring-4 ring-indigo-50"
                     />
                   ) : (
-                    <span className="flex h-16 w-16 items-center justify-center rounded-full bg-indigo-900 text-lg font-bold text-white">
+                    <span className="flex h-28 w-28 items-center justify-center rounded-full bg-indigo-900 text-2xl font-bold text-white ring-4 ring-indigo-50">
                       {initials(l.name)}
                     </span>
                   )}
