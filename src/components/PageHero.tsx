@@ -14,7 +14,7 @@ export default function PageHero({ title, subtitle }: PageHeroProps) {
             {title}
           </h1>
           {subtitle && (
-            <p className="mx-auto mt-4 max-w-2xl text-indigo-200">
+            <p className="mx-auto mt-4 max-w-2xl text-lg text-indigo-200">
               {subtitle}
             </p>
           )}
