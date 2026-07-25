@@ -2,32 +2,145 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { AnimatePresence, motion, useMotionValueEvent, useScroll } from "framer-motion";
 import Logo from "@/components/Logo";
 
-const NAV_LINKS = [
-  { href: "/about", label: "About" },
-  { href: "/beliefs", label: "Beliefs" },
-  { href: "/services", label: "Service Times" },
-  { href: "/join-online", label: "Join Online" },
-  { href: "/ministries", label: "Ministries" },
-  { href: "/events", label: "Events" },
-  { href: "/sermons", label: "Sermons" },
-  { href: "/posts", label: "Posts" },
-  { href: "/give", label: "Give" },
-  { href: "/contact", label: "Contact" },
+type NavItem =
+  | { label: string; href: string; children?: undefined }
+  | { label: string; href?: undefined; children: { href: string; label: string }[] };
+
+const NAV: NavItem[] = [
+  {
+    label: "About",
+    children: [
+      { href: "/about", label: "Our Story" },
+      { href: "/beliefs", label: "Statement of Faith" },
+    ],
+  },
+  {
+    label: "Worship",
+    children: [
+      { href: "/services", label: "Service Times" },
+      { href: "/join-online", label: "Join Online" },
+      { href: "/events", label: "Events" },
+    ],
+  },
+  { label: "Ministries", href: "/ministries" },
+  {
+    label: "Media",
+    children: [
+      { href: "/sermons", label: "Sermons" },
+      { href: "/posts", label: "Posts" },
+    ],
+  },
+  { label: "Give", href: "/give" },
 ];
+
+const ALL_LINKS = NAV.flatMap((item) =>
+  item.children ? item.children : [{ href: item.href, label: item.label }],
+);
+
+function isGroupActive(item: NavItem, pathname: string) {
+  if (item.children) return item.children.some((c) => pathname === c.href);
+  return pathname === item.href;
+}
+
+function NavDropdown({
+  item,
+  active,
+  openMenu,
+  setOpenMenu,
+}: {
+  item: Extract<NavItem, { children: unknown }>;
+  active: boolean;
+  openMenu: string | null;
+  setOpenMenu: (v: string | null) => void;
+}) {
+  const isOpen = openMenu === item.label;
+
+  return (
+    <div className="relative">
+      <button
+        type="button"
+        onClick={() => setOpenMenu(isOpen ? null : item.label)}
+        className={`flex items-center gap-1 rounded-full px-4 py-1.5 text-sm font-medium transition-colors ${
+          active || isOpen
+            ? "bg-white text-indigo-900 shadow-sm"
+            : "text-slate-600 hover:text-indigo-900"
+        }`}
+      >
+        {item.label}
+        <motion.svg
+          animate={{ rotate: isOpen ? 180 : 0 }}
+          transition={{ duration: 0.2 }}
+          width="12"
+          height="12"
+          viewBox="0 0 12 12"
+          fill="none"
+        >
+          <path
+            d="M3 4.5l3 3 3-3"
+            stroke="currentColor"
+            strokeWidth="1.5"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          />
+        </motion.svg>
+      </button>
+
+      <AnimatePresence>
+        {isOpen && (
+          <motion.div
+            initial={{ opacity: 0, y: 8, scale: 0.97 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            exit={{ opacity: 0, y: 4, scale: 0.97 }}
+            transition={{ duration: 0.16 }}
+            className="absolute left-1/2 top-full z-10 mt-2 w-48 -translate-x-1/2 overflow-hidden rounded-2xl border border-slate-100 bg-white p-1.5 shadow-lg"
+          >
+            {item.children.map((child) => (
+              <Link
+                key={child.href}
+                href={child.href}
+                onClick={() => setOpenMenu(null)}
+                className="block rounded-xl px-3 py-2 text-sm font-medium text-slate-700 transition-colors hover:bg-indigo-50 hover:text-indigo-900"
+              >
+                {child.label}
+              </Link>
+            ))}
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </div>
+  );
+}
 
 export default function Header() {
   const [open, setOpen] = useState(false);
+  const [openMenu, setOpenMenu] = useState<string | null>(null);
   const [scrolled, setScrolled] = useState(false);
   const pathname = usePathname();
   const { scrollY } = useScroll();
+  const navRef = useRef<HTMLDivElement>(null);
 
   useMotionValueEvent(scrollY, "change", (latest) => {
     setScrolled(latest > 12);
   });
+
+  useEffect(() => {
+    function handleClick(e: MouseEvent) {
+      if (navRef.current && !navRef.current.contains(e.target as Node)) {
+        setOpenMenu(null);
+      }
+    }
+    document.addEventListener("mousedown", handleClick);
+    return () => document.removeEventListener("mousedown", handleClick);
+  }, []);
+
+  useEffect(() => {
+    setOpenMenu(null);
+    setOpen(false);
+  }, [pathname]);
 
   return (
     <header
@@ -44,33 +157,41 @@ export default function Header() {
           <Logo variant="dark" />
         </Link>
 
-        <nav className="hidden items-center gap-6 lg:flex">
-          {NAV_LINKS.map((link) => {
-            const active = pathname === link.href;
-            return (
+        <nav
+          ref={navRef}
+          className="hidden items-center gap-1 rounded-full bg-slate-100/80 p-1.5 lg:flex"
+        >
+          {NAV.map((item) =>
+            item.children ? (
+              <NavDropdown
+                key={item.label}
+                item={item}
+                active={isGroupActive(item, pathname)}
+                openMenu={openMenu}
+                setOpenMenu={setOpenMenu}
+              />
+            ) : (
               <Link
-                key={link.href}
-                href={link.href}
-                className="relative text-sm font-medium text-slate-700 transition-colors hover:text-indigo-900"
+                key={item.href}
+                href={item.href}
+                className={`rounded-full px-4 py-1.5 text-sm font-medium transition-colors ${
+                  pathname === item.href
+                    ? "bg-white text-indigo-900 shadow-sm"
+                    : "text-slate-600 hover:text-indigo-900"
+                }`}
               >
-                {link.label}
-                {active && (
-                  <motion.span
-                    layoutId="nav-underline"
-                    className="absolute -bottom-1 left-0 right-0 h-0.5 rounded-full bg-indigo-900"
-                    transition={{ type: "spring", stiffness: 400, damping: 30 }}
-                  />
-                )}
+                {item.label}
               </Link>
-            );
-          })}
-          <Link
-            href="/contact"
-            className="rounded-full bg-indigo-900 px-5 py-2 text-sm font-semibold text-white transition-all hover:scale-105 hover:bg-indigo-800"
-          >
-            Plan a Visit
-          </Link>
+            ),
+          )}
         </nav>
+
+        <Link
+          href="/contact"
+          className="hidden rounded-full bg-indigo-900 px-5 py-2 text-sm font-semibold text-white transition-all hover:scale-105 hover:bg-indigo-800 lg:inline-block"
+        >
+          Plan a Visit
+        </Link>
 
         <button
           type="button"
@@ -110,15 +231,15 @@ export default function Header() {
             transition={{ duration: 0.25, ease: "easeInOut" }}
             className="overflow-hidden border-t border-slate-200 bg-white lg:hidden"
           >
-            <div className="flex flex-col gap-4 px-6 py-4">
-              {NAV_LINKS.map((link) => (
+            <div className="flex flex-col gap-1 px-6 py-4">
+              {ALL_LINKS.map((link) => (
                 <Link
                   key={link.href}
                   href={link.href}
                   onClick={() => setOpen(false)}
-                  className={`text-sm font-medium ${
+                  className={`rounded-lg px-3 py-2 text-sm font-medium ${
                     pathname === link.href
-                      ? "font-semibold text-indigo-900"
+                      ? "bg-indigo-50 font-semibold text-indigo-900"
                       : "text-slate-700"
                   }`}
                 >
@@ -128,7 +249,7 @@ export default function Header() {
               <Link
                 href="/contact"
                 onClick={() => setOpen(false)}
-                className="rounded-full bg-indigo-900 px-5 py-2 text-center text-sm font-semibold text-white"
+                className="mt-2 rounded-full bg-indigo-900 px-5 py-2 text-center text-sm font-semibold text-white"
               >
                 Plan a Visit
               </Link>
