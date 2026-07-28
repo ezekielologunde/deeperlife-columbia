@@ -3,6 +3,7 @@
 import { useActionState } from "react";
 import { motion } from "framer-motion";
 import { submitMessage, type FormState } from "@/lib/actions/public";
+import HoneypotField from "@/components/HoneypotField";
 
 const initialState: FormState = { success: false };
 
@@ -26,6 +27,7 @@ export default function ContactForm() {
 
   return (
     <form action={formAction} className="space-y-4">
+      <HoneypotField />
       <div className="grid gap-4 sm:grid-cols-2">
         <label className="block text-sm font-medium text-slate-700">
           Name

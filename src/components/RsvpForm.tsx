@@ -2,6 +2,7 @@
 
 import { useActionState } from "react";
 import { submitRsvp, type FormState } from "@/lib/actions/public";
+import HoneypotField from "@/components/HoneypotField";
 
 const initialState: FormState = { success: false };
 
@@ -27,6 +28,7 @@ export default function RsvpForm({
 
   return (
     <form action={formAction} className="space-y-3">
+      <HoneypotField />
       <input type="hidden" name="event_id" value={eventId ?? ""} />
       <input type="hidden" name="event_title" value={eventTitle} />
       <div className="grid gap-3 sm:grid-cols-2">

@@ -12,7 +12,7 @@ export async function generateMetadata({
 }): Promise<Metadata> {
   const { slug } = await params;
   const ministry = await getMinistryBySlug(slug);
-  if (!ministry) return {};
+  if (!ministry) notFound();
   return {
     title: ministry.title,
     description: ministry.desc,

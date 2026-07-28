@@ -3,6 +3,7 @@
 import { useActionState } from "react";
 import { motion } from "framer-motion";
 import { submitTestimony, type FormState } from "@/lib/actions/public";
+import HoneypotField from "@/components/HoneypotField";
 
 const initialState: FormState = { success: false };
 
@@ -26,6 +27,7 @@ export default function TestimonyForm() {
 
   return (
     <form action={formAction} className="space-y-4">
+      <HoneypotField />
       <label className="block text-sm font-medium text-slate-700">
         Your Name
         <input

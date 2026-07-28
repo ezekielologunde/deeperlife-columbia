@@ -4,10 +4,18 @@ import { createClient } from "@/lib/supabase/server";
 
 export type FormState = { success: boolean; error?: string };
 
+// Honeypot: a field named "website" that's hidden from real visitors via
+// CSS. Bots that auto-fill every input trip it; humans never see it.
+function isBot(formData: FormData) {
+  return String(formData.get("website") ?? "").trim().length > 0;
+}
+
 export async function submitMessage(
   _prevState: FormState,
   formData: FormData,
 ): Promise<FormState> {
+  if (isBot(formData)) return { success: true };
+
   const name = String(formData.get("name") ?? "").trim();
   const email = String(formData.get("email") ?? "").trim();
   const phone = String(formData.get("phone") ?? "").trim();
@@ -38,6 +46,8 @@ export async function submitSubscriber(
   _prevState: FormState,
   formData: FormData,
 ): Promise<FormState> {
+  if (isBot(formData)) return { success: true };
+
   const email = String(formData.get("email") ?? "").trim();
 
   if (!email || !email.includes("@")) {
@@ -61,6 +71,8 @@ export async function submitTestimony(
   _prevState: FormState,
   formData: FormData,
 ): Promise<FormState> {
+  if (isBot(formData)) return { success: true };
+
   const name = String(formData.get("name") ?? "").trim();
   const content = String(formData.get("content") ?? "").trim();
 
@@ -85,6 +97,8 @@ export async function submitRsvp(
   _prevState: FormState,
   formData: FormData,
 ): Promise<FormState> {
+  if (isBot(formData)) return { success: true };
+
   const name = String(formData.get("name") ?? "").trim();
   const email = String(formData.get("email") ?? "").trim();
   const phone = String(formData.get("phone") ?? "").trim();
