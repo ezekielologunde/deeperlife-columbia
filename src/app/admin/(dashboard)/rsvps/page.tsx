@@ -1,5 +1,6 @@
 import { createClient } from "@/lib/supabase/server";
 import { deleteRsvp } from "./actions";
+import DeleteButton from "@/components/admin/DeleteButton";
 
 export default async function RsvpsAdminPage() {
   const supabase = await createClient();
@@ -54,12 +55,12 @@ export default async function RsvpsAdminPage() {
                     </div>
                     <form action={deleteRsvp}>
                       <input type="hidden" name="id" value={r.id} />
-                      <button
-                        type="submit"
-                        className="text-sm font-semibold text-red-600"
+                      <DeleteButton
+                        confirmText={`Remove ${r.name}'s RSVP for "${eventTitle}"?`}
+                        className="text-sm font-semibold text-red-600 hover:text-red-800"
                       >
                         Remove
-                      </button>
+                      </DeleteButton>
                     </form>
                   </div>
                 ))}

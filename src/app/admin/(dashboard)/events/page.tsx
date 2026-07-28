@@ -2,6 +2,7 @@ import Link from "next/link";
 import { createClient } from "@/lib/supabase/server";
 import { createEvent, deleteEvent } from "./actions";
 import ImageUploadField from "@/components/admin/ImageUploadField";
+import DeleteButton from "@/components/admin/DeleteButton";
 
 export default async function EventsAdminPage() {
   const supabase = await createClient();
@@ -43,9 +44,7 @@ export default async function EventsAdminPage() {
               </Link>
               <form action={deleteEvent}>
                 <input type="hidden" name="id" value={e.id} />
-                <button type="submit" className="font-semibold text-red-600">
-                  Delete
-                </button>
+                <DeleteButton confirmText={`Delete the event "${e.title}"? This cannot be undone.`} />
               </form>
             </div>
           </div>

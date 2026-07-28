@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { createClient } from "@/lib/supabase/server";
 import { createBelief, deleteBelief } from "./actions";
+import DeleteButton from "@/components/admin/DeleteButton";
 
 export default async function BeliefsAdminPage() {
   const supabase = await createClient();
@@ -36,9 +37,7 @@ export default async function BeliefsAdminPage() {
               </Link>
               <form action={deleteBelief}>
                 <input type="hidden" name="id" value={b.id} />
-                <button type="submit" className="font-semibold text-red-600">
-                  Delete
-                </button>
+                <DeleteButton confirmText={`Delete "${b.title}" from the Statement of Faith? This cannot be undone.`} />
               </form>
             </div>
           </div>

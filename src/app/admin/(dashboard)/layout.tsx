@@ -31,6 +31,22 @@ export default async function DashboardLayout({
     data: { user },
   } = await supabase.auth.getUser();
 
+  const [unreadMessages, pendingTestimonies] = await Promise.all([
+    supabase
+      .from("messages")
+      .select("id", { count: "exact", head: true })
+      .eq("is_read", false),
+    supabase
+      .from("testimonies")
+      .select("id", { count: "exact", head: true })
+      .eq("published", false),
+  ]);
+
+  const badges: Record<string, number | null> = {
+    "/admin/messages": unreadMessages.count,
+    "/admin/testimonies": pendingTestimonies.count,
+  };
+
   return (
     <div className="flex min-h-screen bg-slate-50">
       <aside className="hidden w-64 shrink-0 border-r border-slate-200 bg-white lg:block">
@@ -45,9 +61,14 @@ export default async function DashboardLayout({
             <Link
               key={item.href}
               href={item.href}
-              className="rounded-lg px-3 py-2 text-sm font-medium text-slate-700 transition-colors hover:bg-indigo-50 hover:text-indigo-900"
+              className="flex items-center justify-between rounded-lg px-3 py-2 text-sm font-medium text-slate-700 transition-colors hover:bg-indigo-50 hover:text-indigo-900"
             >
               {item.label}
+              {(badges[item.href] ?? 0) > 0 && (
+                <span className="flex h-5 min-w-5 items-center justify-center rounded-full bg-amber-500 px-1 text-xs font-bold text-white">
+                  {badges[item.href]}
+                </span>
+              )}
             </Link>
           ))}
         </nav>
@@ -83,9 +104,14 @@ export default async function DashboardLayout({
             <Link
               key={item.href}
               href={item.href}
-              className="shrink-0 text-sm font-medium text-slate-700"
+              className="flex shrink-0 items-center gap-1.5 text-sm font-medium text-slate-700"
             >
               {item.label}
+              {(badges[item.href] ?? 0) > 0 && (
+                <span className="flex h-5 min-w-5 items-center justify-center rounded-full bg-amber-500 px-1 text-xs font-bold text-white">
+                  {badges[item.href]}
+                </span>
+              )}
             </Link>
           ))}
         </nav>

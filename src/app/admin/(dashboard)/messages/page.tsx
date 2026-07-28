@@ -1,5 +1,6 @@
 import { createClient } from "@/lib/supabase/server";
 import { markRead, deleteMessage } from "./actions";
+import DeleteButton from "@/components/admin/DeleteButton";
 
 const CATEGORY_LABEL: Record<string, string> = {
   general: "General",
@@ -63,9 +64,7 @@ export default async function MessagesAdminPage() {
               )}
               <form action={deleteMessage}>
                 <input type="hidden" name="id" value={m.id} />
-                <button type="submit" className="font-semibold text-red-600">
-                  Delete
-                </button>
+                <DeleteButton confirmText={`Delete the message from ${m.name}? This cannot be undone.`} />
               </form>
             </div>
           </div>

@@ -2,6 +2,7 @@ import Link from "next/link";
 import { createClient } from "@/lib/supabase/server";
 import { createMinistry, deleteMinistry } from "./actions";
 import ImageUploadField from "@/components/admin/ImageUploadField";
+import DeleteButton from "@/components/admin/DeleteButton";
 
 export default async function MinistriesAdminPage() {
   const supabase = await createClient();
@@ -35,9 +36,7 @@ export default async function MinistriesAdminPage() {
               </Link>
               <form action={deleteMinistry}>
                 <input type="hidden" name="id" value={m.id} />
-                <button type="submit" className="font-semibold text-red-600">
-                  Delete
-                </button>
+                <DeleteButton confirmText={`Delete the "${m.title}" ministry? Its page will stop working and this cannot be undone.`} />
               </form>
             </div>
           </div>

@@ -2,6 +2,7 @@ import Image from "next/image";
 import { createClient } from "@/lib/supabase/server";
 import { addGalleryImage, deleteGalleryImage } from "./actions";
 import ImageUploadField from "@/components/admin/ImageUploadField";
+import DeleteButton from "@/components/admin/DeleteButton";
 
 export default async function GalleryAdminPage() {
   const supabase = await createClient();
@@ -22,12 +23,10 @@ export default async function GalleryAdminPage() {
             </div>
             <form action={deleteGalleryImage} className="absolute right-2 top-2">
               <input type="hidden" name="id" value={img.id} />
-              <button
-                type="submit"
+              <DeleteButton
+                confirmText="Remove this photo from the gallery? This cannot be undone."
                 className="rounded-full bg-white/90 px-2 py-1 text-xs font-semibold text-red-600 opacity-0 shadow transition-opacity group-hover:opacity-100"
-              >
-                Delete
-              </button>
+              />
             </form>
           </div>
         ))}

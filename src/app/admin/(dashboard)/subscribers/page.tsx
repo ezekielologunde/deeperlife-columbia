@@ -1,5 +1,6 @@
 import { createClient } from "@/lib/supabase/server";
 import { deleteSubscriber } from "./actions";
+import DeleteButton from "@/components/admin/DeleteButton";
 
 export default async function SubscribersAdminPage() {
   const supabase = await createClient();
@@ -46,9 +47,12 @@ export default async function SubscribersAdminPage() {
             </div>
             <form action={deleteSubscriber}>
               <input type="hidden" name="id" value={s.id} />
-              <button type="submit" className="text-sm font-semibold text-red-600">
+              <DeleteButton
+                confirmText={`Remove ${s.email} from the newsletter list?`}
+                className="text-sm font-semibold text-red-600 hover:text-red-800"
+              >
                 Remove
-              </button>
+              </DeleteButton>
             </form>
           </div>
         ))}

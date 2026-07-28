@@ -1,5 +1,6 @@
 import { createClient } from "@/lib/supabase/server";
 import { togglePublish, deleteTestimony } from "./actions";
+import DeleteButton from "@/components/admin/DeleteButton";
 
 export default async function TestimoniesAdminPage() {
   const supabase = await createClient();
@@ -45,9 +46,7 @@ export default async function TestimoniesAdminPage() {
                 </form>
                 <form action={deleteTestimony}>
                   <input type="hidden" name="id" value={t.id} />
-                  <button type="submit" className="font-semibold text-red-600">
-                    Delete
-                  </button>
+                  <DeleteButton confirmText={`Delete the testimony from ${t.name}? This cannot be undone.`} />
                 </form>
               </div>
             </div>
