@@ -1,5 +1,11 @@
 import Image from "next/image";
-import { getChurchData, getMinistriesData } from "@/lib/data";
+import Link from "next/link";
+import {
+  getChurchData,
+  getMinistriesData,
+  getTodayDevotional,
+  getGalleryImages,
+} from "@/lib/data";
 import Reveal from "@/components/Reveal";
 import { StaggerGrid, StaggerItem } from "@/components/StaggerGrid";
 import Hero from "@/components/Hero";
@@ -10,6 +16,8 @@ export default async function Home() {
   const CHURCH = await getChurchData();
   const MINISTRIES = await getMinistriesData();
   const nextEvent = CHURCH.upcomingEvents[0];
+  const devotionalResult = await getTodayDevotional("Adult");
+  const galleryImages = (await getGalleryImages()).slice(0, 6);
 
   return (
     <div>
@@ -97,6 +105,31 @@ export default async function Home() {
           </div>
         </div>
       </section>
+
+      {/* Today's Devotional */}
+      {devotionalResult && (
+        <section className="bg-indigo-950 text-white">
+          <div className="mx-auto max-w-3xl px-6 py-20 text-center sm:py-24">
+            <Reveal>
+              <p className="text-sm font-semibold uppercase tracking-[0.2em] text-amber-200">
+                Today&apos;s Word
+              </p>
+              <h2 className="mt-3 text-2xl font-bold tracking-tight sm:text-3xl">
+                {devotionalResult.devotional.title}
+              </h2>
+              <p className="mx-auto mt-4 max-w-xl italic leading-7 text-indigo-100">
+                {devotionalResult.devotional.keyVerse.split("\n")[0]}
+              </p>
+              <Link
+                href="/devotional"
+                className="mt-7 inline-block rounded-full bg-white px-7 py-3 text-sm font-semibold text-indigo-900 transition-all hover:scale-105 hover:bg-indigo-100"
+              >
+                Read Today&apos;s Devotional →
+              </Link>
+            </Reveal>
+          </div>
+        </section>
+      )}
 
       {/* Global Reach */}
       <section className="bg-gradient-to-br from-indigo-950 via-indigo-900 to-indigo-950 text-white">
@@ -241,6 +274,49 @@ export default async function Home() {
           </div>
         </div>
       </section>
+
+      {/* Gallery */}
+      {galleryImages.length > 0 && (
+        <section className="bg-indigo-50">
+          <div className="mx-auto max-w-6xl px-6 py-24 sm:py-28">
+            <Reveal>
+              <h2 className="text-center text-3xl font-bold tracking-tight text-indigo-950 sm:text-4xl">
+                Life at Deeper Life
+              </h2>
+              <p className="mx-auto mt-4 max-w-xl text-center text-lg text-slate-600">
+                Moments from worship, fellowship, and life together as a
+                church family.
+              </p>
+            </Reveal>
+            <StaggerGrid className="mt-12 grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-6">
+              {galleryImages.map((img) => (
+                <StaggerItem key={img.id}>
+                  <div className="group overflow-hidden rounded-xl">
+                    <div className="relative aspect-square w-full overflow-hidden bg-slate-100">
+                      <Lightbox src={img.url} alt={img.caption ?? "Church gallery photo"}>
+                        <Image
+                          src={img.url}
+                          alt={img.caption ?? "Church gallery photo"}
+                          fill
+                          className="object-cover transition-transform duration-500 group-hover:scale-110"
+                        />
+                      </Lightbox>
+                    </div>
+                  </div>
+                </StaggerItem>
+              ))}
+            </StaggerGrid>
+            <div className="mt-10 text-center">
+              <Link
+                href="/gallery"
+                className="text-sm font-semibold text-indigo-700 hover:text-indigo-900"
+              >
+                See full gallery →
+              </Link>
+            </div>
+          </div>
+        </section>
+      )}
 
       {/* Give */}
       <section className="bg-gradient-to-br from-amber-50 to-white">
