@@ -70,6 +70,24 @@ export default async function MinistriesPage() {
           </StaggerGrid>
         </div>
       </section>
+
+      <section className="bg-indigo-50">
+        <div className="mx-auto max-w-2xl px-6 py-16 text-center">
+          <h2 className="text-2xl font-bold tracking-tight text-indigo-950">
+            Don&apos;t see where you fit?
+          </h2>
+          <p className="mt-3 text-slate-600">
+            There&apos;s always a place to serve, even outside these teams.
+            Let us know your gifts and we&apos;ll help you find your place.
+          </p>
+          <Link
+            href="/serve"
+            className="mt-6 inline-block rounded-full bg-indigo-900 px-7 py-3 text-sm font-semibold text-white transition-all hover:scale-105 hover:bg-indigo-800"
+          >
+            Serve With Us →
+          </Link>
+        </div>
+      </section>
     </>
   );
 }

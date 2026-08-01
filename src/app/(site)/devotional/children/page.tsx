@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { getTodayDevotional } from "@/lib/data";
 import PageHero from "@/components/PageHero";
 import DevotionalView from "@/components/DevotionalView";
+import DevotionalAudienceSwitch from "@/components/DevotionalAudienceSwitch";
 
 export const metadata: Metadata = {
   title: "Children's Devotional",
@@ -21,6 +22,7 @@ export default async function ChildrenDevotionalPage() {
 
       <section className="bg-white">
         <div className="mx-auto max-w-3xl px-6 py-20">
+          <DevotionalAudienceSwitch active="Children" />
           {result ? (
             <DevotionalView
               devotional={result.devotional}

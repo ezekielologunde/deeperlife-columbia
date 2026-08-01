@@ -26,22 +26,13 @@ const NAV: NavItem[] = [
       { href: "/services", label: "Service Times" },
       { href: "/join-online", label: "Join Online" },
       { href: "/events", label: "Events" },
-      { href: "/webcast", label: "DCLM Webcast" },
     ],
   },
-  {
-    label: "Ministries",
-    children: [
-      { href: "/ministries", label: "All Ministries" },
-      { href: "/serve", label: "Serve With Us" },
-    ],
-  },
+  { label: "Ministries", href: "/ministries" },
   {
     label: "Media",
     children: [
       { href: "/devotional", label: "Daily Devotional" },
-      { href: "/devotional/youth", label: "Youth Devotional" },
-      { href: "/devotional/children", label: "Children's Devotional" },
       { href: "/sermons", label: "Sermons" },
       { href: "/posts", label: "Posts" },
       { href: "/testimonies", label: "Testimonies" },

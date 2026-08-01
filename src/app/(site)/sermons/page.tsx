@@ -47,6 +47,22 @@ export default async function SermonsPage() {
               />
             </div>
 
+            <div className="mx-auto mt-10 max-w-2xl rounded-2xl border border-indigo-100 bg-indigo-50 p-8">
+              <h2 className="text-lg font-bold text-indigo-950">
+                Want to watch DCLM global programs?
+              </h2>
+              <p className="mt-2 text-sm text-slate-600">
+                Global crusades, conventions, and services from Deeper
+                Christian Life Ministry headquarters.
+              </p>
+              <a
+                href="/webcast"
+                className="mt-4 inline-block rounded-full bg-indigo-900 px-6 py-2.5 text-sm font-semibold text-white transition-all hover:scale-105 hover:bg-indigo-800"
+              >
+                Watch the DCLM Webcast →
+              </a>
+            </div>
+
             <div className="mt-10 flex flex-wrap justify-center gap-4">
               <a
                 href={CHURCH.social.youtube}
