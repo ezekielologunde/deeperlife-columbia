@@ -10,6 +10,27 @@ function isBot(formData: FormData) {
   return String(formData.get("website") ?? "").trim().length > 0;
 }
 
+// Best-effort push notification via ntfy.sh — never throws, so a failed
+// notification can't block or mask the actual form submission.
+async function notify(title: string, body: string) {
+  const topic = process.env.NTFY_TOPIC;
+  if (!topic) return;
+  try {
+    await fetch(`https://ntfy.sh/${topic}`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "text/plain",
+        Title: title,
+        Priority: "default",
+        Tags: "bell",
+      },
+      body,
+    });
+  } catch {
+    // Best-effort only.
+  }
+}
+
 export async function submitMessage(
   _prevState: FormState,
   formData: FormData,
@@ -38,6 +59,11 @@ export async function submitMessage(
   if (error) {
     return { success: false, error: "Something went wrong. Please try again." };
   }
+
+  await notify(
+    "New message received",
+    `${name} (${category}): ${body.slice(0, 200)}`,
+  );
 
   return { success: true };
 }
@@ -123,6 +149,11 @@ export async function submitRsvp(
   if (error) {
     return { success: false, error: "Something went wrong. Please try again." };
   }
+
+  await notify(
+    "New event RSVP",
+    `${name} — ${eventTitle} (${guests} guest${guests === 1 ? "" : "s"})`,
+  );
 
   return { success: true };
 }
