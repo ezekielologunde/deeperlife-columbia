@@ -4,17 +4,25 @@ import { revalidatePath } from "next/cache";
 import { createClient } from "@/lib/supabase/server";
 import { redirectWithToast } from "@/lib/admin/toast-redirect";
 
-function refresh(date?: string) {
+const CATEGORY_PATH: Record<string, string> = {
+  Adult: "/devotional",
+  Youth: "/devotional/youth",
+  Children: "/devotional/children",
+};
+
+function refresh(date?: string, category?: string) {
   revalidatePath("/", "layout");
   revalidatePath("/admin/devotional");
-  revalidatePath("/devotional");
-  revalidatePath("/devotional/archive");
-  if (date) revalidatePath(`/devotional/${date}`);
+  const base = CATEGORY_PATH[category ?? "Adult"] ?? "/devotional";
+  revalidatePath(base);
+  revalidatePath(`${base}/archive`);
+  if (date) revalidatePath(`${base}/${date}`);
 }
 
 function fields(formData: FormData) {
   return {
     date: String(formData.get("date") ?? ""),
+    category: String(formData.get("category") ?? "Adult"),
     title: String(formData.get("title") ?? ""),
     key_verse: String(formData.get("key_verse") ?? ""),
     bible_reading: String(formData.get("bible_reading") ?? "") || null,
@@ -30,7 +38,7 @@ export async function createDevotional(formData: FormData) {
   const data = fields(formData);
   const { error } = await supabase.from("devotionals").insert(data);
   if (error) throw new Error(error.message);
-  refresh(data.date);
+  refresh(data.date, data.category);
   redirectWithToast("/admin/devotional", "Devotional added");
 }
 
@@ -43,7 +51,7 @@ export async function updateDevotional(formData: FormData) {
     .update(data)
     .eq("id", id);
   if (error) throw new Error(error.message);
-  refresh(data.date);
+  refresh(data.date, data.category);
   redirectWithToast("/admin/devotional", "Devotional updated");
 }
 
@@ -51,8 +59,9 @@ export async function deleteDevotional(formData: FormData) {
   const supabase = await createClient();
   const id = String(formData.get("id") ?? "");
   const date = String(formData.get("date") ?? "");
+  const category = String(formData.get("category") ?? "Adult");
   const { error } = await supabase.from("devotionals").delete().eq("id", id);
   if (error) throw new Error(error.message);
-  refresh(date);
+  refresh(date, category);
   redirectWithToast("/admin/devotional", "Devotional deleted");
 }

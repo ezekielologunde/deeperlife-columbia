@@ -4,19 +4,19 @@ import PageHero from "@/components/PageHero";
 import DevotionalView from "@/components/DevotionalView";
 
 export const metadata: Metadata = {
-  title: "Daily Devotional",
+  title: "Youth Devotional",
   description:
-    "Today's DCLM Daily Manna devotional — Bible-based teaching for daily Christian living.",
+    "Today's DCLM Higher Everyday devotional — Bible-based teaching for young people.",
 };
 
-export default async function DevotionalPage() {
-  const result = await getTodayDevotional("Adult");
+export default async function YouthDevotionalPage() {
+  const result = await getTodayDevotional("Youth");
 
   return (
     <>
       <PageHero
-        title="Daily Devotional"
-        subtitle="DCLM Daily Manna — a daily portion of God's Word for your walk with Christ."
+        title="Youth Devotional"
+        subtitle="Higher Everyday — a daily word for young people growing in Christ."
       />
 
       <section className="bg-white">
@@ -25,7 +25,7 @@ export default async function DevotionalPage() {
             <DevotionalView
               devotional={result.devotional}
               isToday={result.isToday}
-              archiveHref="/devotional/archive"
+              archiveHref="/devotional/youth/archive"
             />
           ) : (
             <p className="text-center text-slate-500">

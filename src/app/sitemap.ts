@@ -22,6 +22,10 @@ const ROUTES: { path: string; priority: number; changeFrequency: "daily" | "week
   { path: "/gallery", priority: 0.5, changeFrequency: "monthly" },
   { path: "/devotional", priority: 0.8, changeFrequency: "daily" },
   { path: "/devotional/archive", priority: 0.5, changeFrequency: "daily" },
+  { path: "/devotional/youth", priority: 0.6, changeFrequency: "daily" },
+  { path: "/devotional/youth/archive", priority: 0.4, changeFrequency: "daily" },
+  { path: "/devotional/children", priority: 0.6, changeFrequency: "daily" },
+  { path: "/devotional/children/archive", priority: 0.4, changeFrequency: "daily" },
 ];
 
 const NINETY_DAYS_AGO = () => {
@@ -38,7 +42,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       supabase.from("ministries").select("slug"),
       supabase
         .from("devotionals")
-        .select("date")
+        .select("date, category")
         .gte("date", NINETY_DAYS_AGO()),
     ]);
 
@@ -63,12 +67,20 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     priority: 0.5,
   }));
 
-  const devotionalRoutes = (devotionals ?? []).map((d) => ({
-    url: `${BASE_URL}/devotional/${d.date}`,
-    lastModified: new Date(),
-    changeFrequency: "monthly" as const,
-    priority: 0.4,
-  }));
+  const devotionalCategoryPath: Record<string, string> = {
+    Adult: "/devotional",
+    Youth: "/devotional/youth",
+    Children: "/devotional/children",
+  };
+
+  const devotionalRoutes = (devotionals ?? [])
+    .filter((d) => devotionalCategoryPath[d.category as string])
+    .map((d) => ({
+      url: `${BASE_URL}${devotionalCategoryPath[d.category as string]}/${d.date}`,
+      lastModified: new Date(),
+      changeFrequency: "monthly" as const,
+      priority: 0.4,
+    }));
 
   return [
     ...staticRoutes,

@@ -175,9 +175,12 @@ export async function getGalleryImages() {
   }));
 }
 
+export type DevotionalCategory = "Adult" | "Youth" | "Children";
+
 function mapDevotional(d: Record<string, unknown>) {
   return {
     date: d.date as string,
+    category: d.category as DevotionalCategory,
     title: d.title as string,
     keyVerse: d.key_verse as string,
     bibleReading: (d.bible_reading as string | null) ?? undefined,
@@ -191,7 +194,7 @@ function mapDevotional(d: Record<string, unknown>) {
 
 export type Devotional = ReturnType<typeof mapDevotional>;
 
-export async function getTodayDevotional() {
+export async function getTodayDevotional(category: DevotionalCategory = "Adult") {
   const supabase = await createClient();
   const today = new Date().toLocaleDateString("en-CA", {
     timeZone: "America/New_York",
@@ -201,6 +204,7 @@ export async function getTodayDevotional() {
     .from("devotionals")
     .select("*")
     .eq("date", today)
+    .eq("category", category)
     .maybeSingle();
 
   if (exact) return { devotional: mapDevotional(exact), isToday: true };
@@ -208,6 +212,7 @@ export async function getTodayDevotional() {
   const { data: latest } = await supabase
     .from("devotionals")
     .select("*")
+    .eq("category", category)
     .lte("date", today)
     .order("date", { ascending: false })
     .limit(1)
@@ -216,22 +221,29 @@ export async function getTodayDevotional() {
   return latest ? { devotional: mapDevotional(latest), isToday: false } : null;
 }
 
-export async function getDevotionalByDate(date: string) {
+export async function getDevotionalByDate(
+  date: string,
+  category: DevotionalCategory = "Adult",
+) {
   const supabase = await createClient();
   const { data } = await supabase
     .from("devotionals")
     .select("*")
     .eq("date", date)
+    .eq("category", category)
     .maybeSingle();
 
   return data ? mapDevotional(data) : null;
 }
 
-export async function getDevotionalArchive() {
+export async function getDevotionalArchive(
+  category: DevotionalCategory = "Adult",
+) {
   const supabase = await createClient();
   const { data } = await supabase
     .from("devotionals")
     .select("date, title, key_verse")
+    .eq("category", category)
     .order("date", { ascending: false });
 
   return (data ?? []).map((d) => ({

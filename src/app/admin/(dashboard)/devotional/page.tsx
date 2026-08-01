@@ -3,6 +3,12 @@ import { createClient } from "@/lib/supabase/server";
 import { createDevotional, deleteDevotional } from "./actions";
 import DeleteButton from "@/components/admin/DeleteButton";
 
+const CATEGORY_BADGE: Record<string, string> = {
+  Adult: "bg-indigo-100 text-indigo-800",
+  Youth: "bg-emerald-100 text-emerald-800",
+  Children: "bg-pink-100 text-pink-800",
+};
+
 export default async function DevotionalAdminPage() {
   const supabase = await createClient();
   const { data: devotionals } = await supabase
@@ -14,8 +20,9 @@ export default async function DevotionalAdminPage() {
     <div className="max-w-3xl">
       <h1 className="text-2xl font-bold text-indigo-950">Daily Devotional</h1>
       <p className="mt-1 text-sm text-slate-500">
-        Synced automatically each morning from DCLM Daily Manna. If a day is
-        missing (the auto-sync failed), add it here manually.
+        Adult, Youth, and Children&apos;s devotionals sync automatically each
+        morning from DCLM Daily Manna. If a day is missing (the auto-sync
+        failed), add it here manually.
       </p>
 
       <div className="mt-6 space-y-3">
@@ -25,15 +32,24 @@ export default async function DevotionalAdminPage() {
             className="flex items-center justify-between rounded-xl border border-slate-200 bg-white p-4"
           >
             <div>
-              <span
-                className={`mb-1 inline-block rounded-full px-2 py-0.5 text-xs font-semibold ${
-                  d.source === "dclm_api"
-                    ? "bg-indigo-100 text-indigo-800"
-                    : "bg-amber-100 text-amber-800"
-                }`}
-              >
-                {d.source === "dclm_api" ? "Auto-synced" : "Manual"}
-              </span>
+              <div className="mb-1 flex gap-2">
+                <span
+                  className={`inline-block rounded-full px-2 py-0.5 text-xs font-semibold ${
+                    CATEGORY_BADGE[d.category] ?? "bg-slate-100 text-slate-700"
+                  }`}
+                >
+                  {d.category}
+                </span>
+                <span
+                  className={`inline-block rounded-full px-2 py-0.5 text-xs font-semibold ${
+                    d.source === "dclm_api"
+                      ? "bg-slate-100 text-slate-700"
+                      : "bg-amber-100 text-amber-800"
+                  }`}
+                >
+                  {d.source === "dclm_api" ? "Auto-synced" : "Manual"}
+                </span>
+              </div>
               <p className="font-semibold text-indigo-950">
                 {d.date} — {d.title}
               </p>
@@ -51,8 +67,9 @@ export default async function DevotionalAdminPage() {
               <form action={deleteDevotional}>
                 <input type="hidden" name="id" value={d.id} />
                 <input type="hidden" name="date" value={d.date} />
+                <input type="hidden" name="category" value={d.category} />
                 <DeleteButton
-                  confirmText={`Delete the devotional for ${d.date}? This cannot be undone.`}
+                  confirmText={`Delete the ${d.category} devotional for ${d.date}? This cannot be undone.`}
                 />
               </form>
             </div>
@@ -77,14 +94,26 @@ export default async function DevotionalAdminPage() {
               />
             </label>
             <label className="block text-sm font-medium text-slate-700">
-              Title
-              <input
-                name="title"
-                required
+              Audience
+              <select
+                name="category"
+                defaultValue="Adult"
                 className="mt-1 w-full rounded-lg border border-slate-300 px-3 py-2 text-sm"
-              />
+              >
+                <option value="Adult">Adult (Daily Manna)</option>
+                <option value="Youth">Youth (Higher Everyday)</option>
+                <option value="Children">Children (Sincere Milk)</option>
+              </select>
             </label>
           </div>
+          <label className="block text-sm font-medium text-slate-700">
+            Title
+            <input
+              name="title"
+              required
+              className="mt-1 w-full rounded-lg border border-slate-300 px-3 py-2 text-sm"
+            />
+          </label>
           <label className="block text-sm font-medium text-slate-700">
             Key Verse
             <textarea

@@ -23,16 +23,30 @@ export default async function EditDevotionalPage({
       <h1 className="text-2xl font-bold text-indigo-950">Edit Devotional</h1>
       <form action={updateDevotional} className="mt-6 space-y-4">
         <input type="hidden" name="id" value={devotional.id} />
-        <label className="block text-sm font-medium text-slate-700">
-          Date
-          <input
-            type="date"
-            name="date"
-            defaultValue={devotional.date}
-            required
-            className="mt-1 w-full rounded-lg border border-slate-300 px-3 py-2 text-sm"
-          />
-        </label>
+        <div className="grid gap-4 sm:grid-cols-2">
+          <label className="block text-sm font-medium text-slate-700">
+            Date
+            <input
+              type="date"
+              name="date"
+              defaultValue={devotional.date}
+              required
+              className="mt-1 w-full rounded-lg border border-slate-300 px-3 py-2 text-sm"
+            />
+          </label>
+          <label className="block text-sm font-medium text-slate-700">
+            Audience
+            <select
+              name="category"
+              defaultValue={devotional.category}
+              className="mt-1 w-full rounded-lg border border-slate-300 px-3 py-2 text-sm"
+            >
+              <option value="Adult">Adult (Daily Manna)</option>
+              <option value="Youth">Youth (Higher Everyday)</option>
+              <option value="Children">Children (Sincere Milk)</option>
+            </select>
+          </label>
+        </div>
         <label className="block text-sm font-medium text-slate-700">
           Title
           <input

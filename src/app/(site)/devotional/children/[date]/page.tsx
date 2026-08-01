@@ -19,7 +19,7 @@ export async function generateMetadata({
   params: Promise<{ date: string }>;
 }): Promise<Metadata> {
   const { date } = await params;
-  const devotional = await getDevotionalByDate(date, "Adult");
+  const devotional = await getDevotionalByDate(date, "Children");
   if (!devotional) notFound();
   return {
     title: `${devotional.title} — ${formatDate(devotional.date)}`,
@@ -27,13 +27,13 @@ export async function generateMetadata({
   };
 }
 
-export default async function DevotionalByDatePage({
+export default async function ChildrenDevotionalByDatePage({
   params,
 }: {
   params: Promise<{ date: string }>;
 }) {
   const { date } = await params;
-  const devotional = await getDevotionalByDate(date, "Adult");
+  const devotional = await getDevotionalByDate(date, "Children");
 
   if (!devotional) notFound();
 
@@ -43,7 +43,10 @@ export default async function DevotionalByDatePage({
 
       <section className="bg-white">
         <div className="mx-auto max-w-3xl px-6 py-20">
-          <DevotionalView devotional={devotional} archiveHref="/devotional/archive" />
+          <DevotionalView
+            devotional={devotional}
+            archiveHref="/devotional/children/archive"
+          />
         </div>
       </section>
     </>
