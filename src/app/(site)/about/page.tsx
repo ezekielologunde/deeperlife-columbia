@@ -4,6 +4,7 @@ import { getChurchData } from "@/lib/data";
 import Reveal from "@/components/Reveal";
 import PageHero from "@/components/PageHero";
 import { StaggerGrid, StaggerItem } from "@/components/StaggerGrid";
+import Lightbox from "@/components/Lightbox";
 
 function initials(name: string) {
   return name
@@ -55,13 +56,17 @@ export default async function AboutPage() {
               </a>
 
               <div className="mt-8 flex items-center gap-6 rounded-2xl bg-white p-5 shadow-sm">
-                <Image
-                  src={CHURCH.pastorAndWifePhoto}
-                  alt={CHURCH.pastor}
-                  width={180}
-                  height={220}
-                  className="h-[220px] w-[180px] shrink-0 rounded-2xl object-cover object-top"
-                />
+                <div className="h-[220px] w-[180px] shrink-0 overflow-hidden rounded-2xl">
+                  <Lightbox src={CHURCH.pastorAndWifePhoto} alt={CHURCH.pastor}>
+                    <Image
+                      src={CHURCH.pastorAndWifePhoto}
+                      alt={CHURCH.pastor}
+                      width={180}
+                      height={220}
+                      className="h-[220px] w-[180px] object-cover object-top"
+                    />
+                  </Lightbox>
+                </div>
                 <div>
                   <p className="text-lg font-bold text-indigo-950">
                     {CHURCH.pastor}
@@ -115,13 +120,17 @@ export default async function AboutPage() {
               <StaggerItem key={l.name}>
                 <div className="flex h-full flex-col items-center rounded-2xl bg-white p-6 text-center shadow-sm transition-transform duration-300 hover:-translate-y-1 hover:shadow-lg">
                   {l.photoUrl ? (
-                    <Image
-                      src={l.photoUrl}
-                      alt={l.name}
-                      width={112}
-                      height={112}
-                      className="h-28 w-28 rounded-full object-cover object-top ring-4 ring-indigo-50"
-                    />
+                    <div className="h-28 w-28 overflow-hidden rounded-full ring-4 ring-indigo-50">
+                      <Lightbox src={l.photoUrl} alt={l.name}>
+                        <Image
+                          src={l.photoUrl}
+                          alt={l.name}
+                          width={112}
+                          height={112}
+                          className="h-28 w-28 object-cover object-top"
+                        />
+                      </Lightbox>
+                    </div>
                   ) : (
                     <span className="flex h-28 w-28 items-center justify-center rounded-full bg-indigo-900 text-2xl font-bold text-white ring-4 ring-indigo-50">
                       {initials(l.name)}
@@ -138,13 +147,18 @@ export default async function AboutPage() {
         <Reveal>
           <div className="mx-auto max-w-6xl px-6 pb-20">
             <div className="overflow-hidden rounded-2xl border border-slate-200 shadow-sm">
-              <Image
+              <Lightbox
                 src="/images/gallery/fellowship.jpg"
                 alt="Fellowship at Deeper Life Bible Church Columbia"
-                width={1600}
-                height={900}
-                className="h-auto w-full"
-              />
+              >
+                <Image
+                  src="/images/gallery/fellowship.jpg"
+                  alt="Fellowship at Deeper Life Bible Church Columbia"
+                  width={1600}
+                  height={900}
+                  className="h-auto w-full"
+                />
+              </Lightbox>
             </div>
           </div>
         </Reveal>

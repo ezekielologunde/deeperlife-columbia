@@ -4,6 +4,7 @@ import { getChurchData } from "@/lib/data";
 import Reveal from "@/components/Reveal";
 import PageHero from "@/components/PageHero";
 import RsvpForm from "@/components/RsvpForm";
+import Lightbox from "@/components/Lightbox";
 
 export const metadata: Metadata = {
   title: "Events",
@@ -28,13 +29,15 @@ export default async function EventsPage() {
               <div className="grid gap-10 lg:grid-cols-2 lg:items-center">
                 <Reveal direction="left">
                   <div className="overflow-hidden rounded-2xl border border-slate-200 shadow-sm">
-                    <Image
-                      src={event.flyer}
-                      alt={event.title}
-                      width={900}
-                      height={1200}
-                      className="h-auto w-full"
-                    />
+                    <Lightbox src={event.flyer} alt={event.title}>
+                      <Image
+                        src={event.flyer}
+                        alt={event.title}
+                        width={900}
+                        height={1200}
+                        className="h-auto w-full"
+                      />
+                    </Lightbox>
                   </div>
                 </Reveal>
 

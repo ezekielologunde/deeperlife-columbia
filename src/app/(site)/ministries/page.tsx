@@ -30,16 +30,22 @@ export default async function MinistriesPage() {
                   href={`/ministries/${m.slug}`}
                   className="group block h-full overflow-hidden rounded-2xl border border-slate-200 transition-all duration-300 hover:-translate-y-1 hover:shadow-lg"
                 >
-                  {m.image && (
-                    <div className="relative h-40 w-full overflow-hidden">
+                  <div className="relative h-40 w-full overflow-hidden">
+                    {m.image ? (
                       <Image
                         src={m.image}
                         alt={m.title}
                         fill
                         className="object-cover transition-transform duration-500 group-hover:scale-110"
                       />
-                    </div>
-                  )}
+                    ) : (
+                      <div className="flex h-full w-full items-center justify-center bg-gradient-to-br from-indigo-100 to-amber-50">
+                        <span className="text-4xl font-bold text-indigo-200">
+                          {m.title[0]}
+                        </span>
+                      </div>
+                    )}
+                  </div>
                   <div className="p-6">
                     <h3 className="text-lg font-bold text-indigo-950">
                       {m.title}

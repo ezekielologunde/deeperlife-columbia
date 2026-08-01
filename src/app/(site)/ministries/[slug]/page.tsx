@@ -4,6 +4,7 @@ import Image from "next/image";
 import { getMinistryBySlug } from "@/lib/data";
 import PageHero from "@/components/PageHero";
 import Reveal from "@/components/Reveal";
+import Lightbox from "@/components/Lightbox";
 
 export async function generateMetadata({
   params,
@@ -58,13 +59,15 @@ export default async function MinistryDetailPage({
           {ministry.image && (
             <Reveal direction="right" delay={0.15}>
               <div className="overflow-hidden rounded-2xl border border-slate-200 shadow-lg">
-                <Image
-                  src={ministry.image}
-                  alt={ministry.title}
-                  width={900}
-                  height={700}
-                  className="h-auto w-full object-cover"
-                />
+                <Lightbox src={ministry.image} alt={ministry.title}>
+                  <Image
+                    src={ministry.image}
+                    alt={ministry.title}
+                    width={900}
+                    height={700}
+                    className="h-auto w-full object-cover"
+                  />
+                </Lightbox>
               </div>
             </Reveal>
           )}

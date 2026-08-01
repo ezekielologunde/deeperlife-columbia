@@ -3,6 +3,7 @@ import Image from "next/image";
 import { getGalleryImages } from "@/lib/data";
 import { StaggerGrid, StaggerItem } from "@/components/StaggerGrid";
 import PageHero from "@/components/PageHero";
+import Lightbox from "@/components/Lightbox";
 
 export const metadata: Metadata = {
   title: "Gallery",
@@ -25,21 +26,18 @@ export default async function GalleryPage() {
             <StaggerGrid className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4">
               {images.map((img) => (
                 <StaggerItem key={img.id}>
-                  <a
-                    href={img.url}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="group block overflow-hidden rounded-xl"
-                  >
+                  <div className="group overflow-hidden rounded-xl">
                     <div className="relative aspect-square w-full overflow-hidden bg-slate-100">
-                      <Image
-                        src={img.url}
-                        alt={img.caption ?? "Church gallery photo"}
-                        fill
-                        className="object-cover transition-transform duration-500 group-hover:scale-110"
-                      />
+                      <Lightbox src={img.url} alt={img.caption ?? "Church gallery photo"}>
+                        <Image
+                          src={img.url}
+                          alt={img.caption ?? "Church gallery photo"}
+                          fill
+                          className="object-cover transition-transform duration-500 group-hover:scale-110"
+                        />
+                      </Lightbox>
                     </div>
-                  </a>
+                  </div>
                 </StaggerItem>
               ))}
             </StaggerGrid>

@@ -26,6 +26,7 @@ const NAV: NavItem[] = [
       { href: "/services", label: "Service Times" },
       { href: "/join-online", label: "Join Online" },
       { href: "/events", label: "Events" },
+      { href: "/webcast", label: "DCLM Webcast" },
     ],
   },
   {

@@ -4,6 +4,7 @@ import Reveal from "@/components/Reveal";
 import { StaggerGrid, StaggerItem } from "@/components/StaggerGrid";
 import Hero from "@/components/Hero";
 import CountUp from "@/components/CountUp";
+import Lightbox from "@/components/Lightbox";
 
 export default async function Home() {
   const CHURCH = await getChurchData();
@@ -38,13 +39,15 @@ export default async function Home() {
           </Reveal>
           <Reveal direction="right" delay={0.15}>
             <div className="overflow-hidden rounded-2xl border border-slate-200 shadow-lg">
-              <Image
-                src={CHURCH.pastorAndWifePhoto}
-                alt={CHURCH.pastor}
-                width={900}
-                height={700}
-                className="h-auto w-full object-cover"
-              />
+              <Lightbox src={CHURCH.pastorAndWifePhoto} alt={CHURCH.pastor}>
+                <Image
+                  src={CHURCH.pastorAndWifePhoto}
+                  alt={CHURCH.pastor}
+                  width={900}
+                  height={700}
+                  className="h-auto w-full object-cover"
+                />
+              </Lightbox>
             </div>
           </Reveal>
         </div>
@@ -155,13 +158,15 @@ export default async function Home() {
           <div className="mx-auto grid max-w-6xl gap-10 px-6 py-24 sm:py-28 lg:grid-cols-2 lg:items-center">
             <Reveal direction="left">
               <div className="overflow-hidden rounded-2xl border border-slate-200 shadow-xl">
-                <Image
-                  src={nextEvent.flyer}
-                  alt={nextEvent.title}
-                  width={900}
-                  height={1200}
-                  className="h-auto w-full"
-                />
+                <Lightbox src={nextEvent.flyer} alt={nextEvent.title}>
+                  <Image
+                    src={nextEvent.flyer}
+                    alt={nextEvent.title}
+                    width={900}
+                    height={1200}
+                    className="h-auto w-full"
+                  />
+                </Lightbox>
               </div>
             </Reveal>
             <Reveal direction="right" delay={0.15}>
@@ -200,16 +205,22 @@ export default async function Home() {
             {MINISTRIES.slice(0, 3).map((m) => (
               <StaggerItem key={m.title}>
                 <div className="group h-full overflow-hidden rounded-2xl border border-slate-200 transition-all duration-300 hover:-translate-y-1 hover:shadow-lg">
-                  {m.image && (
-                    <div className="relative h-40 w-full overflow-hidden">
+                  <div className="relative h-40 w-full overflow-hidden">
+                    {m.image ? (
                       <Image
                         src={m.image}
                         alt={m.title}
                         fill
                         className="object-cover transition-transform duration-500 group-hover:scale-110"
                       />
-                    </div>
-                  )}
+                    ) : (
+                      <div className="flex h-full w-full items-center justify-center bg-gradient-to-br from-indigo-100 to-amber-50">
+                        <span className="text-4xl font-bold text-indigo-200">
+                          {m.title[0]}
+                        </span>
+                      </div>
+                    )}
+                  </div>
                   <div className="p-7">
                     <h3 className="text-xl font-bold text-indigo-950">
                       {m.title}

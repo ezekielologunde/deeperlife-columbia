@@ -26,6 +26,7 @@ const ROUTES: { path: string; priority: number; changeFrequency: "daily" | "week
   { path: "/devotional/youth/archive", priority: 0.4, changeFrequency: "daily" },
   { path: "/devotional/children", priority: 0.6, changeFrequency: "daily" },
   { path: "/devotional/children/archive", priority: 0.4, changeFrequency: "daily" },
+  { path: "/webcast", priority: 0.7, changeFrequency: "daily" },
 ];
 
 const NINETY_DAYS_AGO = () => {
