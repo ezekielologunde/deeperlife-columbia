@@ -20,14 +20,27 @@ const ROUTES: { path: string; priority: number; changeFrequency: "daily" | "week
   { path: "/salvation", priority: 0.7, changeFrequency: "monthly" },
   { path: "/testimonies", priority: 0.6, changeFrequency: "weekly" },
   { path: "/gallery", priority: 0.5, changeFrequency: "monthly" },
+  { path: "/devotional", priority: 0.8, changeFrequency: "daily" },
+  { path: "/devotional/archive", priority: 0.5, changeFrequency: "daily" },
 ];
+
+const NINETY_DAYS_AGO = () => {
+  const d = new Date();
+  d.setDate(d.getDate() - 90);
+  return d.toLocaleDateString("en-CA", { timeZone: "America/New_York" });
+};
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const supabase = await createClient();
-  const [{ data: posts }, { data: ministries }] = await Promise.all([
-    supabase.from("posts").select("slug, updated_at").eq("published", true),
-    supabase.from("ministries").select("slug"),
-  ]);
+  const [{ data: posts }, { data: ministries }, { data: devotionals }] =
+    await Promise.all([
+      supabase.from("posts").select("slug, updated_at").eq("published", true),
+      supabase.from("ministries").select("slug"),
+      supabase
+        .from("devotionals")
+        .select("date")
+        .gte("date", NINETY_DAYS_AGO()),
+    ]);
 
   const staticRoutes = ROUTES.map((route) => ({
     url: `${BASE_URL}${route.path}`,
@@ -50,5 +63,17 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     priority: 0.5,
   }));
 
-  return [...staticRoutes, ...postRoutes, ...ministryRoutes];
+  const devotionalRoutes = (devotionals ?? []).map((d) => ({
+    url: `${BASE_URL}/devotional/${d.date}`,
+    lastModified: new Date(),
+    changeFrequency: "monthly" as const,
+    priority: 0.4,
+  }));
+
+  return [
+    ...staticRoutes,
+    ...postRoutes,
+    ...ministryRoutes,
+    ...devotionalRoutes,
+  ];
 }

@@ -174,3 +174,69 @@ export async function getGalleryImages() {
     caption: (g.caption as string | null) ?? undefined,
   }));
 }
+
+function mapDevotional(d: Record<string, unknown>) {
+  return {
+    date: d.date as string,
+    title: d.title as string,
+    keyVerse: d.key_verse as string,
+    bibleReading: (d.bible_reading as string | null) ?? undefined,
+    body: d.body as string,
+    thoughtOfDay: (d.thought_of_day as string | null) ?? undefined,
+    bibleInOneYear: (d.bible_in_one_year as string | null) ?? undefined,
+    audioUrl: (d.audio_url as string | null) ?? undefined,
+    source: d.source as string,
+  };
+}
+
+export type Devotional = ReturnType<typeof mapDevotional>;
+
+export async function getTodayDevotional() {
+  const supabase = await createClient();
+  const today = new Date().toLocaleDateString("en-CA", {
+    timeZone: "America/New_York",
+  });
+
+  const { data: exact } = await supabase
+    .from("devotionals")
+    .select("*")
+    .eq("date", today)
+    .maybeSingle();
+
+  if (exact) return { devotional: mapDevotional(exact), isToday: true };
+
+  const { data: latest } = await supabase
+    .from("devotionals")
+    .select("*")
+    .lte("date", today)
+    .order("date", { ascending: false })
+    .limit(1)
+    .maybeSingle();
+
+  return latest ? { devotional: mapDevotional(latest), isToday: false } : null;
+}
+
+export async function getDevotionalByDate(date: string) {
+  const supabase = await createClient();
+  const { data } = await supabase
+    .from("devotionals")
+    .select("*")
+    .eq("date", date)
+    .maybeSingle();
+
+  return data ? mapDevotional(data) : null;
+}
+
+export async function getDevotionalArchive() {
+  const supabase = await createClient();
+  const { data } = await supabase
+    .from("devotionals")
+    .select("date, title, key_verse")
+    .order("date", { ascending: false });
+
+  return (data ?? []).map((d) => ({
+    date: d.date as string,
+    title: d.title as string,
+    keyVerse: d.key_verse as string,
+  }));
+}

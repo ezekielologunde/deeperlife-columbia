@@ -38,6 +38,7 @@ const NAV: NavItem[] = [
   {
     label: "Media",
     children: [
+      { href: "/devotional", label: "Daily Devotional" },
       { href: "/sermons", label: "Sermons" },
       { href: "/posts", label: "Posts" },
       { href: "/testimonies", label: "Testimonies" },

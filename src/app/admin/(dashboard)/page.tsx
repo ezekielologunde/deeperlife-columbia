@@ -13,6 +13,7 @@ const CONTENT_CARDS = [
 ];
 
 const ACTIVITY_CARDS = [
+  { href: "/admin/devotional", label: "Daily Devotional", desc: "Auto-synced daily, editable as fallback" },
   { href: "/admin/messages", label: "Messages", desc: "Submissions from the Contact page" },
   { href: "/admin/testimonies", label: "Testimonies", desc: "Member stories, needs your approval to publish" },
   { href: "/admin/rsvps", label: "Event RSVPs", desc: "Who's coming to upcoming events" },
@@ -21,6 +22,10 @@ const ACTIVITY_CARDS = [
 
 export default async function AdminHomePage() {
   const supabase = await createClient();
+  const today = new Date().toLocaleDateString("en-CA", {
+    timeZone: "America/New_York",
+  });
+
   const [
     services,
     ministries,
@@ -29,6 +34,8 @@ export default async function AdminHomePage() {
     events,
     posts,
     gallery,
+    devotionals,
+    todayDevotional,
     messages,
     unreadMessages,
     testimonies,
@@ -43,6 +50,11 @@ export default async function AdminHomePage() {
     supabase.from("events").select("id", { count: "exact", head: true }),
     supabase.from("posts").select("id", { count: "exact", head: true }),
     supabase.from("gallery_images").select("id", { count: "exact", head: true }),
+    supabase.from("devotionals").select("id", { count: "exact", head: true }),
+    supabase
+      .from("devotionals")
+      .select("id", { count: "exact", head: true })
+      .eq("date", today),
     supabase.from("messages").select("id", { count: "exact", head: true }),
     supabase
       .from("messages")
@@ -57,6 +69,8 @@ export default async function AdminHomePage() {
     supabase.from("subscribers").select("id", { count: "exact", head: true }),
   ]);
 
+  const missingTodayDevotional = (todayDevotional.count ?? 0) === 0 ? 1 : 0;
+
   const counts: Record<string, number | null> = {
     "/admin/services": services.count,
     "/admin/ministries": ministries.count,
@@ -65,6 +79,7 @@ export default async function AdminHomePage() {
     "/admin/events": events.count,
     "/admin/posts": posts.count,
     "/admin/gallery": gallery.count,
+    "/admin/devotional": devotionals.count,
     "/admin/messages": messages.count,
     "/admin/testimonies": testimonies.count,
     "/admin/rsvps": rsvps.count,
@@ -74,10 +89,13 @@ export default async function AdminHomePage() {
   const needsAttention: Record<string, number | null> = {
     "/admin/messages": unreadMessages.count,
     "/admin/testimonies": pendingTestimonies.count,
+    "/admin/devotional": missingTodayDevotional,
   };
 
   const totalNeedsAttention =
-    (unreadMessages.count ?? 0) + (pendingTestimonies.count ?? 0);
+    (unreadMessages.count ?? 0) +
+    (pendingTestimonies.count ?? 0) +
+    missingTodayDevotional;
 
   return (
     <div>
@@ -102,6 +120,11 @@ export default async function AdminHomePage() {
             {(pendingTestimonies.count ?? 0) > 0 && (
               <Link href="/admin/testimonies" className="font-semibold text-amber-800 underline">
                 {pendingTestimonies.count} testimon{pendingTestimonies.count === 1 ? "y" : "ies"} awaiting review
+              </Link>
+            )}
+            {missingTodayDevotional > 0 && (
+              <Link href="/admin/devotional" className="font-semibold text-amber-800 underline">
+                Today&apos;s devotional hasn&apos;t synced yet — add it manually
               </Link>
             )}
           </div>

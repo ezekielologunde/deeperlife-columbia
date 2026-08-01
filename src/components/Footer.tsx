@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { getChurchData } from "@/lib/data";
 import Logo from "@/components/Logo";
 import NewsletterForm from "@/components/NewsletterForm";
@@ -30,14 +31,12 @@ export default async function Footer() {
             >
               {CHURCH.regionalSite.label} →
             </a>
-            <a
-              href="https://dailymanna.dclm.org/"
-              target="_blank"
-              rel="noopener noreferrer"
+            <Link
+              href="/devotional"
               className="text-sm font-medium text-amber-300 hover:text-amber-200"
             >
               DCLM Daily Manna Devotional →
-            </a>
+            </Link>
           </div>
         </div>
 

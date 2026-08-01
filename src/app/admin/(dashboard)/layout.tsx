@@ -15,6 +15,7 @@ const NAV = [
   { href: "/admin/posts", label: "Posts" },
   { href: "/admin/testimonies", label: "Testimonies" },
   { href: "/admin/gallery", label: "Gallery" },
+  { href: "/admin/devotional", label: "Daily Devotional" },
   { href: "/admin/messages", label: "Messages" },
   { href: "/admin/subscribers", label: "Subscribers" },
   { href: "/admin/rsvps", label: "RSVPs" },
@@ -31,20 +32,30 @@ export default async function DashboardLayout({
     data: { user },
   } = await supabase.auth.getUser();
 
-  const [unreadMessages, pendingTestimonies] = await Promise.all([
-    supabase
-      .from("messages")
-      .select("id", { count: "exact", head: true })
-      .eq("is_read", false),
-    supabase
-      .from("testimonies")
-      .select("id", { count: "exact", head: true })
-      .eq("published", false),
-  ]);
+  const today = new Date().toLocaleDateString("en-CA", {
+    timeZone: "America/New_York",
+  });
+
+  const [unreadMessages, pendingTestimonies, todayDevotional] =
+    await Promise.all([
+      supabase
+        .from("messages")
+        .select("id", { count: "exact", head: true })
+        .eq("is_read", false),
+      supabase
+        .from("testimonies")
+        .select("id", { count: "exact", head: true })
+        .eq("published", false),
+      supabase
+        .from("devotionals")
+        .select("id", { count: "exact", head: true })
+        .eq("date", today),
+    ]);
 
   const badges: Record<string, number | null> = {
     "/admin/messages": unreadMessages.count,
     "/admin/testimonies": pendingTestimonies.count,
+    "/admin/devotional": todayDevotional.count === 0 ? 1 : 0,
   };
 
   return (
