@@ -4,6 +4,7 @@ import { createClient } from "@supabase/supabase-js";
 const DCLM_API_URL =
   "https://dailymanna-backend-jt33.onrender.com/api/devotionals/date";
 const CRON_HEADER_SECRET = process.env.CRON_SECRET ?? "";
+const NTFY_TOPIC = process.env.NTFY_TOPIC;
 
 type DclmDevotional = {
   date: string;
@@ -21,6 +22,25 @@ type DclmDevotional = {
 function formatBibleReading(d: DclmDevotional) {
   if (!d.book || !d.chapter) return null;
   return `${d.book} ${d.chapter}${d.verse ? `:${d.verse}` : ""}`;
+}
+
+async function notifyFailure(reason: string, today: string) {
+  if (!NTFY_TOPIC) return;
+  try {
+    await fetch(`https://ntfy.sh/${NTFY_TOPIC}`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "text/plain",
+        Title: "Devotional sync failed",
+        Priority: "high",
+        Tags: "warning",
+      },
+      body: `Daily devotional auto-sync failed for ${today}: ${reason}. Add it manually at /admin/devotional.`,
+    });
+  } catch {
+    // Notification is best-effort — never let a failed alert mask the
+    // original sync failure or throw inside the route.
+  }
 }
 
 export async function GET(request: Request) {
@@ -45,20 +65,18 @@ export async function GET(request: Request) {
     });
 
     if (!res.ok) {
-      return NextResponse.json(
-        { status: "error", message: `DCLM API returned ${res.status}` },
-        { status: 200 },
-      );
+      const reason = `DCLM API returned ${res.status}`;
+      await notifyFailure(reason, today);
+      return NextResponse.json({ status: "error", message: reason }, { status: 200 });
     }
 
     const json = await res.json();
     const d: DclmDevotional | undefined = json?.data?.devotional;
 
     if (!d?.topic || !d?.description) {
-      return NextResponse.json(
-        { status: "error", message: "Unexpected DCLM API response shape" },
-        { status: 200 },
-      );
+      const reason = "Unexpected DCLM API response shape";
+      await notifyFailure(reason, today);
+      return NextResponse.json({ status: "error", message: reason }, { status: 200 });
     }
 
     const supabase = createClient(
@@ -83,6 +101,7 @@ export async function GET(request: Request) {
     );
 
     if (error) {
+      await notifyFailure(`Database error: ${error.message}`, today);
       return NextResponse.json(
         { status: "error", message: error.message },
         { status: 200 },
@@ -91,12 +110,8 @@ export async function GET(request: Request) {
 
     return NextResponse.json({ status: "success", date: today });
   } catch (err) {
-    return NextResponse.json(
-      {
-        status: "error",
-        message: err instanceof Error ? err.message : "Unknown error",
-      },
-      { status: 200 },
-    );
+    const reason = err instanceof Error ? err.message : "Unknown error";
+    await notifyFailure(reason, today);
+    return NextResponse.json({ status: "error", message: reason }, { status: 200 });
   }
 }
