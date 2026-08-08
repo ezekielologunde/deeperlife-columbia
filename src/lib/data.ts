@@ -124,10 +124,16 @@ export type ChurchData = Awaited<ReturnType<typeof getChurchData>>;
 
 export async function getMinistriesData() {
   const supabase = await createClient();
-  const { data } = await supabase
+  const { data, error } = await supabase
     .from("ministries")
     .select("*")
     .order("sort_order");
+
+  // Throw on a genuine DB/connection error rather than silently returning
+  // an empty list — callers like getMinistryBySlug() treat "not found" as
+  // a real 404 (which Next.js marks noindex), and a transient outage must
+  // never be mistaken for "this ministry doesn't exist."
+  if (error) throw new Error(`Failed to load ministries: ${error.message}`);
 
   return (data ?? []).map((m) => ({
     slug: m.slug as string,
@@ -200,16 +206,19 @@ export async function getTodayDevotional(category: DevotionalCategory = "Adult")
     timeZone: "America/New_York",
   });
 
-  const { data: exact } = await supabase
+  const { data: exact, error: exactError } = await supabase
     .from("devotionals")
     .select("*")
     .eq("date", today)
     .eq("category", category)
     .maybeSingle();
 
+  if (exactError) {
+    throw new Error(`Failed to load today's devotional: ${exactError.message}`);
+  }
   if (exact) return { devotional: mapDevotional(exact), isToday: true };
 
-  const { data: latest } = await supabase
+  const { data: latest, error: latestError } = await supabase
     .from("devotionals")
     .select("*")
     .eq("category", category)
@@ -217,6 +226,10 @@ export async function getTodayDevotional(category: DevotionalCategory = "Adult")
     .order("date", { ascending: false })
     .limit(1)
     .maybeSingle();
+
+  if (latestError) {
+    throw new Error(`Failed to load latest devotional: ${latestError.message}`);
+  }
 
   return latest ? { devotional: mapDevotional(latest), isToday: false } : null;
 }
@@ -226,12 +239,16 @@ export async function getDevotionalByDate(
   category: DevotionalCategory = "Adult",
 ) {
   const supabase = await createClient();
-  const { data } = await supabase
+  const { data, error } = await supabase
     .from("devotionals")
     .select("*")
     .eq("date", date)
     .eq("category", category)
     .maybeSingle();
+
+  // A genuine DB error must not be mistaken for "no devotional on this
+  // date" — the caller 404s on null, which Next.js marks noindex.
+  if (error) throw new Error(`Failed to load devotional: ${error.message}`);
 
   return data ? mapDevotional(data) : null;
 }
