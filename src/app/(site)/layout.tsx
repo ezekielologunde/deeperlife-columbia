@@ -3,6 +3,7 @@ import Footer from "@/components/Footer";
 import ScrollProgressBar from "@/components/ScrollProgressBar";
 import PageTransition from "@/components/PageTransition";
 import SkipLink from "@/components/SkipLink";
+import SmoothScroll from "@/components/SmoothScroll";
 import { getChurchData } from "@/lib/data";
 
 const SITE_URL = "https://deeperlifecolumbia.org";
@@ -75,6 +76,7 @@ export default async function SiteLayout({
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
       <SkipLink />
+      <SmoothScroll />
       <ScrollProgressBar />
       <Header />
       <main id="main-content" className="flex-1">

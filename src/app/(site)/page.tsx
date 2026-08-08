@@ -11,6 +11,7 @@ import { StaggerGrid, StaggerItem } from "@/components/StaggerGrid";
 import Hero from "@/components/Hero";
 import CountUp from "@/components/CountUp";
 import Lightbox from "@/components/Lightbox";
+import MagneticLink from "@/components/MagneticLink";
 
 export default async function Home() {
   const CHURCH = await getChurchData();
@@ -330,12 +331,14 @@ export default async function Home() {
               Malachi 3:10. Thank you for sowing into the work of God through
               this ministry.
             </p>
-            <a
-              href="/give"
-              className="mt-8 inline-block rounded-full bg-indigo-900 px-8 py-3 text-base font-semibold text-white transition-all hover:scale-105 hover:bg-indigo-800"
-            >
-              Give Now
-            </a>
+            <div className="mt-8">
+              <MagneticLink
+                href="/give"
+                className="inline-block rounded-full bg-indigo-900 px-8 py-3 text-base font-semibold text-white transition-colors hover:bg-indigo-800"
+              >
+                Give Now
+              </MagneticLink>
+            </div>
           </Reveal>
         </div>
       </section>

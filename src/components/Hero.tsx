@@ -1,8 +1,15 @@
 "use client";
 
 import Image from "next/image";
-import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
-import { useEffect, useState } from "react";
+import {
+  AnimatePresence,
+  motion,
+  useReducedMotion,
+  useScroll,
+  useTransform,
+} from "framer-motion";
+import { useEffect, useRef, useState } from "react";
+import MagneticLink from "@/components/MagneticLink";
 
 const SLIDES = [
   "/images/gallery/congregation-wide.jpg",
@@ -22,6 +29,18 @@ export default function Hero({
   const [index, setIndex] = useState(0);
   const prefersReducedMotion = useReducedMotion();
   const [playing, setPlaying] = useState(!prefersReducedMotion);
+  const sectionRef = useRef<HTMLElement>(null);
+
+  const { scrollYProgress } = useScroll({
+    target: sectionRef,
+    offset: ["start start", "end start"],
+  });
+  const parallaxY = useTransform(
+    scrollYProgress,
+    [0, 1],
+    prefersReducedMotion ? [0, 0] : [0, 140],
+  );
+  const contentOpacity = useTransform(scrollYProgress, [0, 0.7], [1, 0]);
 
   useEffect(() => {
     if (!playing) return;
@@ -33,19 +52,20 @@ export default function Hero({
 
   return (
     <section
+      ref={sectionRef}
       className="relative flex min-h-[90vh] items-center overflow-hidden text-white lg:min-h-screen"
       onMouseEnter={() => setPlaying(false)}
       onMouseLeave={() => setPlaying(!prefersReducedMotion)}
       onFocus={() => setPlaying(false)}
       onBlur={() => setPlaying(!prefersReducedMotion)}
     >
-      <div className="absolute inset-0">
+      <motion.div className="absolute inset-0" style={{ y: parallaxY }}>
         <AnimatePresence initial={false}>
           <motion.div
             key={index}
-            className="absolute inset-0"
-            initial={{ opacity: 0, scale: 1.05 }}
-            animate={{ opacity: 1, scale: 1 }}
+            className="absolute inset-0 scale-110"
+            initial={{ opacity: 0, scale: 1.15 }}
+            animate={{ opacity: 1, scale: 1.1 }}
             exit={{ opacity: 0 }}
             transition={{ duration: 1.2, ease: "easeInOut" }}
           >
@@ -59,9 +79,20 @@ export default function Hero({
           </motion.div>
         </AnimatePresence>
         <div className="absolute inset-0 bg-gradient-to-b from-indigo-900/75 via-indigo-800/55 to-indigo-950/80" />
-      </div>
+        <div
+          className="absolute inset-0 opacity-[0.06] mix-blend-overlay"
+          style={{
+            backgroundImage:
+              "url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E\")",
+          }}
+          aria-hidden
+        />
+      </motion.div>
 
-      <div className="relative mx-auto w-full max-w-6xl px-6 py-28 text-center sm:py-36">
+      <motion.div
+        style={{ opacity: contentOpacity }}
+        className="relative mx-auto w-full max-w-6xl px-6 py-28 text-center sm:py-36"
+      >
         <motion.p
           initial={{ opacity: 0, y: 16 }}
           animate={{ opacity: 1, y: 0 }}
@@ -92,18 +123,18 @@ export default function Hero({
           transition={{ duration: 0.6, delay: 0.3 }}
           className="mt-10 flex flex-col items-center justify-center gap-4 sm:flex-row"
         >
-          <a
+          <MagneticLink
             href="/contact"
-            className="rounded-full bg-white px-8 py-3 text-sm font-semibold text-indigo-900 transition-all hover:scale-105 hover:bg-indigo-100"
+            className="inline-block rounded-full bg-white px-8 py-3 text-sm font-semibold text-indigo-900 transition-colors hover:bg-indigo-100"
           >
             Plan a Visit
-          </a>
-          <a
+          </MagneticLink>
+          <MagneticLink
             href="/services"
-            className="rounded-full border border-white/40 px-8 py-3 text-sm font-semibold text-white transition-all hover:scale-105 hover:bg-white/10"
+            className="inline-block rounded-full border border-white/40 px-8 py-3 text-sm font-semibold text-white transition-colors hover:bg-white/10"
           >
             Service Times
-          </a>
+          </MagneticLink>
         </motion.div>
 
         <div className="mt-14 flex items-center justify-center gap-1">
@@ -141,7 +172,7 @@ export default function Hero({
             )}
           </button>
         </div>
-      </div>
+      </motion.div>
 
       <motion.div
         initial={{ opacity: 0 }}
