@@ -16,6 +16,8 @@ type EventRow = {
   phone: string | null;
   email: string | null;
   is_past: boolean;
+  start_datetime: string | null;
+  end_datetime: string | null;
 };
 
 export async function getChurchData() {
@@ -45,6 +47,8 @@ export async function getChurchData() {
       flyer: e.flyer ?? "",
       video: e.video ?? "",
       link: e.link ?? "",
+      startDatetime: e.start_datetime ?? "",
+      endDatetime: e.end_datetime ?? "",
     }));
 
   const pastEvents = events

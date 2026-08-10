@@ -77,6 +77,28 @@ export default async function EventsAdminPage() {
               className="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm"
             />
           </div>
+          <div className="grid gap-4 sm:grid-cols-2">
+            <label className="block text-sm">
+              <span className="mb-1 block text-xs font-medium text-slate-500">
+                Start date &amp; time (for search engines)
+              </span>
+              <input
+                type="datetime-local"
+                name="start_datetime"
+                className="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm"
+              />
+            </label>
+            <label className="block text-sm">
+              <span className="mb-1 block text-xs font-medium text-slate-500">
+                End date &amp; time (optional)
+              </span>
+              <input
+                type="datetime-local"
+                name="end_datetime"
+                className="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm"
+              />
+            </label>
+          </div>
           <input
             name="venue"
             placeholder="Venue (for past events)"

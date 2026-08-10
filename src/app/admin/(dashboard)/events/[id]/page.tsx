@@ -2,6 +2,25 @@ import { createClient } from "@/lib/supabase/server";
 import { updateEvent } from "../actions";
 import ImageUploadField from "@/components/admin/ImageUploadField";
 
+// Renders an ISO instant as a "YYYY-MM-DDTHH:mm" value in America/New_York,
+// the wall-clock format <input type="datetime-local"> expects.
+function isoToEasternInputValue(iso: string | null): string {
+  if (!iso) return "";
+  const dtf = new Intl.DateTimeFormat("en-US", {
+    timeZone: "America/New_York",
+    hourCycle: "h23",
+    year: "numeric",
+    month: "2-digit",
+    day: "2-digit",
+    hour: "2-digit",
+    minute: "2-digit",
+  });
+  const parts = Object.fromEntries(
+    dtf.formatToParts(new Date(iso)).map((p) => [p.type, p.value]),
+  );
+  return `${parts.year}-${parts.month}-${parts.day}T${parts.hour}:${parts.minute}`;
+}
+
 export default async function EditEventPage({
   params,
 }: {
@@ -55,6 +74,26 @@ export default async function EditEventPage({
             <input
               name="event_time"
               defaultValue={event.event_time ?? ""}
+              className="mt-1 w-full rounded-lg border border-slate-300 px-3 py-2 text-sm"
+            />
+          </label>
+        </div>
+        <div className="grid gap-4 sm:grid-cols-2">
+          <label className="block text-sm font-medium text-slate-700">
+            Start date &amp; time (for search engines)
+            <input
+              type="datetime-local"
+              name="start_datetime"
+              defaultValue={isoToEasternInputValue(event.start_datetime)}
+              className="mt-1 w-full rounded-lg border border-slate-300 px-3 py-2 text-sm"
+            />
+          </label>
+          <label className="block text-sm font-medium text-slate-700">
+            End date &amp; time (optional)
+            <input
+              type="datetime-local"
+              name="end_datetime"
+              defaultValue={isoToEasternInputValue(event.end_datetime)}
               className="mt-1 w-full rounded-lg border border-slate-300 px-3 py-2 text-sm"
             />
           </label>

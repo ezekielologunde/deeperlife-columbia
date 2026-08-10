@@ -57,16 +57,35 @@ export default async function SiteLayout({
         "A Nigerian-founded, multinational holiness Christian denomination headquartered in Lagos, Nigeria, with branches across Africa, Europe, Asia, and the Americas.",
       url: "https://dclm.org/",
     },
-    event: CHURCH.upcomingEvents.slice(0, 3).map((e) => ({
-      "@type": "Event",
-      name: e.title,
-      startDate: e.date || undefined,
-      location: {
-        "@type": "Place",
-        name: CHURCH.name,
-        address: `${CHURCH.address.line1}, ${CHURCH.address.line2} ${CHURCH.address.line3}`,
-      },
-    })),
+    event: CHURCH.upcomingEvents
+      .filter((e) => e.startDatetime)
+      .slice(0, 3)
+      .map((e) => ({
+        "@type": "Event",
+        name: e.title,
+        startDate: e.startDatetime,
+        ...(e.endDatetime ? { endDate: e.endDatetime } : {}),
+        description: e.subtitle || CHURCH.description[0] || undefined,
+        image: e.flyer || `${SITE_URL}/images/gallery/congregation-wide.jpg`,
+        eventAttendanceMode: "https://schema.org/OfflineEventAttendanceMode",
+        eventStatus: "https://schema.org/EventScheduled",
+        performer: {
+          "@type": "PerformingGroup",
+          name: CHURCH.name,
+        },
+        location: {
+          "@type": "Place",
+          name: CHURCH.name,
+          address: `${CHURCH.address.line1}, ${CHURCH.address.line2} ${CHURCH.address.line3}`,
+        },
+        offers: {
+          "@type": "Offer",
+          price: "0",
+          priceCurrency: "USD",
+          availability: "https://schema.org/InStock",
+          url: SITE_URL,
+        },
+      })),
   };
 
   return (
