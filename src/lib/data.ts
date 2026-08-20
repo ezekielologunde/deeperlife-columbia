@@ -242,6 +242,12 @@ export async function getDevotionalByDate(
   date: string,
   category: DevotionalCategory = "Adult",
 ) {
+  // The [date] segment is crawler-controlled and Next.js also probes it with
+  // internal values ("Next.Metadata", full URLs); anything that isn't a
+  // YYYY-MM-DD literal would reach Postgres and throw invalid-date-syntax,
+  // so treat it as "no devotional on this date" instead.
+  if (!/^\d{4}-\d{2}-\d{2}$/.test(date)) return null;
+
   const supabase = await createClient();
   const { data, error } = await supabase
     .from("devotionals")
