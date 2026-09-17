@@ -1,13 +1,14 @@
-import { createClient } from "@/lib/supabase/server";
+import { desc } from "drizzle-orm";
+import { db } from "@/lib/db/client";
+import { subscribers as subscribersTable } from "@/lib/db/schema";
 import { deleteSubscriber } from "./actions";
 import DeleteButton from "@/components/admin/DeleteButton";
 
 export default async function SubscribersAdminPage() {
-  const supabase = await createClient();
-  const { data: subscribers } = await supabase
-    .from("subscribers")
-    .select("*")
-    .order("created_at", { ascending: false });
+  const subscribers = await db
+    .select()
+    .from(subscribersTable)
+    .orderBy(desc(subscribersTable.created_at));
 
   return (
     <div className="max-w-2xl">

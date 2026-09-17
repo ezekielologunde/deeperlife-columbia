@@ -1,4 +1,6 @@
-import { createClient } from "@/lib/supabase/server";
+import { eq } from "drizzle-orm";
+import { db } from "@/lib/db/client";
+import { churchSettings } from "@/lib/db/schema";
 import { updateChurchInfo } from "./actions";
 import ImageUploadField from "@/components/admin/ImageUploadField";
 
@@ -27,12 +29,11 @@ function Field({
 }
 
 export default async function ChurchInfoPage() {
-  const supabase = await createClient();
-  const { data: settings } = await supabase
-    .from("church_settings")
-    .select("*")
-    .eq("id", 1)
-    .single();
+  const [settings] = await db
+    .select()
+    .from(churchSettings)
+    .where(eq(churchSettings.id, 1))
+    .limit(1);
 
   const address = (settings?.address ?? {}) as Record<string, string>;
   const zoom = (settings?.zoom ?? {}) as Record<string, string>;

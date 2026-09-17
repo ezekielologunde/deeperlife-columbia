@@ -1,4 +1,6 @@
-import { createClient } from "@/lib/supabase/server";
+import { eq } from "drizzle-orm";
+import { db } from "@/lib/db/client";
+import { devotionals } from "@/lib/db/schema";
 import { updateDevotional } from "../actions";
 
 export default async function EditDevotionalPage({
@@ -7,12 +9,7 @@ export default async function EditDevotionalPage({
   params: Promise<{ id: string }>;
 }) {
   const { id } = await params;
-  const supabase = await createClient();
-  const { data: devotional } = await supabase
-    .from("devotionals")
-    .select("*")
-    .eq("id", id)
-    .single();
+  const [devotional] = await db.select().from(devotionals).where(eq(devotionals.id, id)).limit(1);
 
   if (!devotional) {
     return <p>Devotional not found.</p>;

@@ -1,4 +1,6 @@
-import { createClient } from "@/lib/supabase/server";
+import { eq } from "drizzle-orm";
+import { db } from "@/lib/db/client";
+import { services } from "@/lib/db/schema";
 import { updateService } from "../actions";
 
 export default async function EditServicePage({
@@ -7,12 +9,7 @@ export default async function EditServicePage({
   params: Promise<{ id: string }>;
 }) {
   const { id } = await params;
-  const supabase = await createClient();
-  const { data: service } = await supabase
-    .from("services")
-    .select("*")
-    .eq("id", id)
-    .single();
+  const [service] = await db.select().from(services).where(eq(services.id, id)).limit(1);
 
   if (!service) {
     return <p>Service not found.</p>;

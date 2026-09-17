@@ -1,15 +1,16 @@
 import Image from "next/image";
-import { createClient } from "@/lib/supabase/server";
+import { asc } from "drizzle-orm";
+import { db } from "@/lib/db/client";
+import { galleryImages } from "@/lib/db/schema";
 import { addGalleryImage, deleteGalleryImage } from "./actions";
 import ImageUploadField from "@/components/admin/ImageUploadField";
 import DeleteButton from "@/components/admin/DeleteButton";
 
 export default async function GalleryAdminPage() {
-  const supabase = await createClient();
-  const { data: images } = await supabase
-    .from("gallery_images")
-    .select("*")
-    .order("sort_order");
+  const images = await db
+    .select()
+    .from(galleryImages)
+    .orderBy(asc(galleryImages.sort_order));
 
   return (
     <div className="max-w-3xl">

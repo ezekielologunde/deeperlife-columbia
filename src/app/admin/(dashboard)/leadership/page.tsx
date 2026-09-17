@@ -1,15 +1,16 @@
 import Link from "next/link";
-import { createClient } from "@/lib/supabase/server";
+import { asc } from "drizzle-orm";
+import { db } from "@/lib/db/client";
+import { leadership as leadershipTable } from "@/lib/db/schema";
 import { createLeader, deleteLeader } from "./actions";
 import ImageUploadField from "@/components/admin/ImageUploadField";
 import DeleteButton from "@/components/admin/DeleteButton";
 
 export default async function LeadershipAdminPage() {
-  const supabase = await createClient();
-  const { data: leaders } = await supabase
-    .from("leadership")
-    .select("*")
-    .order("sort_order");
+  const leaders = await db
+    .select()
+    .from(leadershipTable)
+    .orderBy(asc(leadershipTable.sort_order));
 
   return (
     <div className="max-w-3xl">

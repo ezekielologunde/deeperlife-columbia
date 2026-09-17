@@ -1,7 +1,10 @@
 "use server";
 
 import { revalidatePath } from "next/cache";
-import { createClient } from "@/lib/supabase/server";
+import { eq } from "drizzle-orm";
+import { db } from "@/lib/db/client";
+import { services } from "@/lib/db/schema";
+import { requireAdmin } from "@/lib/auth/require-admin";
 import { redirectWithToast } from "@/lib/admin/toast-redirect";
 
 function refresh() {
@@ -10,40 +13,37 @@ function refresh() {
 }
 
 export async function createService(formData: FormData) {
-  const supabase = await createClient();
-  const { error } = await supabase.from("services").insert({
+  await requireAdmin();
+  await db.insert(services).values({
     name: String(formData.get("name") ?? ""),
     time: String(formData.get("time") ?? ""),
     mode: String(formData.get("mode") ?? "In Person"),
     sort_order: Number(formData.get("sort_order") ?? 0),
   });
-  if (error) throw new Error(error.message);
   refresh();
   redirectWithToast("/admin/services", "Service added");
 }
 
 export async function updateService(formData: FormData) {
-  const supabase = await createClient();
+  await requireAdmin();
   const id = String(formData.get("id") ?? "");
-  const { error } = await supabase
-    .from("services")
-    .update({
+  await db
+    .update(services)
+    .set({
       name: String(formData.get("name") ?? ""),
       time: String(formData.get("time") ?? ""),
       mode: String(formData.get("mode") ?? "In Person"),
       sort_order: Number(formData.get("sort_order") ?? 0),
     })
-    .eq("id", id);
-  if (error) throw new Error(error.message);
+    .where(eq(services.id, id));
   refresh();
   redirectWithToast("/admin/services", "Service updated");
 }
 
 export async function deleteService(formData: FormData) {
-  const supabase = await createClient();
+  await requireAdmin();
   const id = String(formData.get("id") ?? "");
-  const { error } = await supabase.from("services").delete().eq("id", id);
-  if (error) throw new Error(error.message);
+  await db.delete(services).where(eq(services.id, id));
   refresh();
   redirectWithToast("/admin/services", "Service deleted");
 }

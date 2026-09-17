@@ -1,7 +1,9 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import Image from "next/image";
-import { createClient } from "@/lib/supabase/server";
+import { desc, eq } from "drizzle-orm";
+import { db } from "@/lib/db/client";
+import { posts as postsTable } from "@/lib/db/schema";
 import Reveal from "@/components/Reveal";
 import { StaggerGrid, StaggerItem } from "@/components/StaggerGrid";
 import PageHero from "@/components/PageHero";
@@ -12,12 +14,11 @@ export const metadata: Metadata = {
 };
 
 export default async function PostsPage() {
-  const supabase = await createClient();
-  const { data: posts } = await supabase
-    .from("posts")
-    .select("*")
-    .eq("published", true)
-    .order("published_at", { ascending: false });
+  const posts = await db
+    .select()
+    .from(postsTable)
+    .where(eq(postsTable.published, true))
+    .orderBy(desc(postsTable.published_at));
 
   return (
     <>

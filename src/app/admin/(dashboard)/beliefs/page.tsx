@@ -1,14 +1,15 @@
 import Link from "next/link";
-import { createClient } from "@/lib/supabase/server";
+import { asc } from "drizzle-orm";
+import { db } from "@/lib/db/client";
+import { statementOfFaith } from "@/lib/db/schema";
 import { createBelief, deleteBelief } from "./actions";
 import DeleteButton from "@/components/admin/DeleteButton";
 
 export default async function BeliefsAdminPage() {
-  const supabase = await createClient();
-  const { data: beliefs } = await supabase
-    .from("statement_of_faith")
-    .select("*")
-    .order("sort_order");
+  const beliefs = await db
+    .select()
+    .from(statementOfFaith)
+    .orderBy(asc(statementOfFaith.sort_order));
 
   return (
     <div className="max-w-3xl">

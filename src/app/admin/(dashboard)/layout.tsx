@@ -1,6 +1,9 @@
 import Link from "next/link";
 import { Suspense } from "react";
-import { createClient } from "@/lib/supabase/server";
+import { eq } from "drizzle-orm";
+import { db } from "@/lib/db/client";
+import { messages, testimonies, devotionals } from "@/lib/db/schema";
+import { getAdminSession } from "@/lib/auth/require-admin";
 import { logout } from "./actions";
 import AdminToast from "@/components/admin/AdminToast";
 
@@ -27,10 +30,7 @@ export default async function DashboardLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const supabase = await createClient();
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
+  const session = await getAdminSession();
 
   const today = new Date().toLocaleDateString("en-CA", {
     timeZone: "America/New_York",
@@ -38,24 +38,18 @@ export default async function DashboardLayout({
 
   const [unreadMessages, pendingTestimonies, todayDevotional] =
     await Promise.all([
-      supabase
-        .from("messages")
-        .select("id", { count: "exact", head: true })
-        .eq("is_read", false),
-      supabase
-        .from("testimonies")
-        .select("id", { count: "exact", head: true })
-        .eq("published", false),
-      supabase
-        .from("devotionals")
-        .select("id", { count: "exact", head: true })
-        .eq("date", today),
+      db.select({ id: messages.id }).from(messages).where(eq(messages.is_read, false)),
+      db
+        .select({ id: testimonies.id })
+        .from(testimonies)
+        .where(eq(testimonies.published, false)),
+      db.select({ id: devotionals.id }).from(devotionals).where(eq(devotionals.date, today)),
     ]);
 
   const badges: Record<string, number | null> = {
-    "/admin/messages": unreadMessages.count,
-    "/admin/testimonies": pendingTestimonies.count,
-    "/admin/devotional": todayDevotional.count === 0 ? 1 : 0,
+    "/admin/messages": unreadMessages.length,
+    "/admin/testimonies": pendingTestimonies.length,
+    "/admin/devotional": todayDevotional.length === 0 ? 1 : 0,
   };
 
   return (
@@ -64,7 +58,7 @@ export default async function DashboardLayout({
         <div className="border-b border-slate-200 px-6 py-5">
           <p className="text-sm font-bold text-indigo-950">Admin Panel</p>
           <p className="mt-0.5 truncate text-xs text-slate-500">
-            {user?.email}
+            {session?.email}
           </p>
         </div>
         <nav className="flex flex-col gap-1 p-4">
