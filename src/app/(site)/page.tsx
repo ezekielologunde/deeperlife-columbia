@@ -13,10 +13,13 @@ import CountUp from "@/components/CountUp";
 import Lightbox from "@/components/Lightbox";
 import MagneticLink from "@/components/MagneticLink";
 
+// Re-render hourly so the featured event moves on once it has ended.
+export const revalidate = 3600;
+
 export default async function Home() {
   const CHURCH = await getChurchData();
   const MINISTRIES = await getMinistriesData();
-  const upcoming = CHURCH.upcomingEvents.slice(0, 3);
+  const [nextEvent, ...laterEvents] = CHURCH.upcomingEvents.slice(0, 3);
   const devotionalResult = await getTodayDevotional("Adult");
   const galleryImages = (await getGalleryImages()).slice(0, 6);
 
@@ -186,63 +189,118 @@ export default async function Home() {
         </div>
       </section>
 
-      {/* Upcoming Events */}
-      {upcoming.length > 0 && (
+      {/* Upcoming Events: the next event gets the large card, the rest are smaller */}
+      {nextEvent && (
         <section className="bg-gradient-to-br from-amber-50 via-white to-indigo-50">
           <div className="mx-auto max-w-6xl px-6 py-24 sm:py-28">
             <Reveal>
-              <h2 className="text-center text-3xl font-bold tracking-tight text-indigo-950 sm:text-4xl">
+              <p className="text-center text-sm font-semibold uppercase tracking-wide text-indigo-700">
+                Coming Up Next
+              </p>
+              <h2 className="mt-2 text-center text-3xl font-bold tracking-tight text-indigo-950 sm:text-4xl">
                 Upcoming Events
               </h2>
             </Reveal>
-            <StaggerGrid
-              className={`mx-auto mt-12 grid gap-8 ${
-                upcoming.length === 1
-                  ? "max-w-md"
-                  : upcoming.length === 2
-                    ? "max-w-3xl sm:grid-cols-2"
-                    : "sm:grid-cols-2 lg:grid-cols-3"
-              }`}
-            >
-              {upcoming.map((event) => (
-                <StaggerItem key={event.id}>
-                  <div className="flex h-full flex-col overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-lg">
-                    {event.flyer && (
-                      <Lightbox src={event.flyer} alt={event.title}>
-                        <Image
-                          src={event.flyer}
-                          alt={event.title}
-                          width={900}
-                          height={1200}
-                          className="h-auto w-full"
-                        />
-                      </Lightbox>
-                    )}
-                    <div className="flex flex-1 flex-col p-6">
-                      <p className="text-sm font-semibold uppercase tracking-wide text-indigo-700">
-                        {[event.date, event.time].filter(Boolean).join(" · ")}
-                      </p>
-                      <h3 className="mt-2 text-xl font-bold text-indigo-950">
-                        {event.title}
-                      </h3>
-                      {event.subtitle && (
-                        <p className="mt-2 text-sm text-slate-600">
-                          {event.subtitle}
-                        </p>
-                      )}
-                    </div>
+
+            <div className="mt-12 grid gap-10 lg:grid-cols-2 lg:items-center">
+              <Reveal direction="left">
+                {nextEvent.flyer && (
+                  <div className="overflow-hidden rounded-2xl border border-slate-200 shadow-xl">
+                    <Lightbox src={nextEvent.flyer} alt={nextEvent.title}>
+                      <Image
+                        src={nextEvent.flyer}
+                        alt={nextEvent.title}
+                        width={900}
+                        height={1200}
+                        className="h-auto w-full"
+                      />
+                    </Lightbox>
                   </div>
-                </StaggerItem>
-              ))}
-            </StaggerGrid>
-            <div className="mt-10 text-center">
-              <a
-                href="/events"
-                className="inline-block rounded-full bg-indigo-900 px-7 py-3 text-base font-semibold text-white transition-all hover:scale-105 hover:bg-indigo-800"
-              >
-                See Upcoming Program
-              </a>
+                )}
+              </Reveal>
+              <Reveal direction="right" delay={0.15}>
+                <div>
+                  <p className="text-sm font-semibold uppercase tracking-wide text-indigo-700">
+                    {[nextEvent.date, nextEvent.time].filter(Boolean).join(" · ")}
+                  </p>
+                  <h3 className="mt-3 text-3xl font-bold tracking-tight text-indigo-950 sm:text-4xl">
+                    {nextEvent.title}
+                  </h3>
+                  {nextEvent.subtitle && (
+                    <p className="mt-3 text-lg text-slate-700">
+                      {nextEvent.subtitle}
+                    </p>
+                  )}
+                  {nextEvent.description && (
+                    <p className="mt-4 leading-7 text-slate-600">
+                      {nextEvent.description}
+                    </p>
+                  )}
+                  {nextEvent.venue && (
+                    <p className="mt-4 text-sm font-medium text-slate-600">
+                      {nextEvent.venue}
+                    </p>
+                  )}
+                  <a
+                    href="/events"
+                    className="mt-8 inline-block rounded-full bg-indigo-900 px-7 py-3 text-base font-semibold text-white transition-all hover:scale-105 hover:bg-indigo-800"
+                  >
+                    See Upcoming Program
+                  </a>
+                </div>
+              </Reveal>
             </div>
+
+            {laterEvents.length > 0 && (
+              <>
+                <h3 className="mt-20 text-center text-xl font-bold text-indigo-950">
+                  Also Coming Up
+                </h3>
+                <StaggerGrid
+                  className={`mx-auto mt-8 grid gap-6 ${
+                    laterEvents.length === 1
+                      ? "max-w-xs"
+                      : "max-w-2xl sm:grid-cols-2"
+                  }`}
+                >
+                  {laterEvents.map((event) => (
+                    <StaggerItem key={event.id}>
+                      <div className="flex h-full flex-col overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-md">
+                        {event.flyer && (
+                          <Lightbox src={event.flyer} alt={event.title}>
+                            <Image
+                              src={event.flyer}
+                              alt={event.title}
+                              width={600}
+                              height={800}
+                              className="h-auto w-full"
+                            />
+                          </Lightbox>
+                        )}
+                        <div className="p-5">
+                          <p className="text-xs font-semibold uppercase tracking-wide text-indigo-700">
+                            {event.date}
+                          </p>
+                          <h4 className="mt-1 text-lg font-bold text-indigo-950">
+                            {event.title}
+                          </h4>
+                          {event.subtitle && (
+                            <p className="mt-1 text-sm text-slate-600">
+                              {event.subtitle}
+                            </p>
+                          )}
+                          {event.description && (
+                            <p className="mt-2 line-clamp-3 text-sm leading-6 text-slate-600">
+                              {event.description}
+                            </p>
+                          )}
+                        </div>
+                      </div>
+                    </StaggerItem>
+                  ))}
+                </StaggerGrid>
+              </>
+            )}
           </div>
         </section>
       )}

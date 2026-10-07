@@ -22,6 +22,8 @@ Reconstructed from `git log`. The repository's visible history currently contain
 - Home page now shows up to three upcoming events as cards (was one).
 - Added `/prayer` and `/resources` pages (nav + sitemap), and a Global DCLM Programs section on `/events`.
 
+- Events: removed the RSVP "Save Your Spot" block from `/events` and added short write-ups (`description`). Upcoming events now drop off automatically once they end (`src/lib/event-dates.ts`, using start/end datetimes or the display date text) and are sorted soonest-first; `/` and `/events` revalidate hourly. The home page features the next event in a large card with later events as smaller cards.
+
 ## Related
 
 [[Project]] · [[Decisions]]

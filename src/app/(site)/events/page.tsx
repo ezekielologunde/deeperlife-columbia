@@ -1,9 +1,9 @@
 import type { Metadata } from "next";
 import Image from "next/image";
+import Link from "next/link";
 import { getChurchData } from "@/lib/data";
 import Reveal from "@/components/Reveal";
 import PageHero from "@/components/PageHero";
-import RsvpForm from "@/components/RsvpForm";
 import Lightbox from "@/components/Lightbox";
 
 export const metadata: Metadata = {
@@ -32,6 +32,9 @@ const GLOBAL_PROGRAMS = [
     cta: "Watch live",
   },
 ];
+
+// Re-render hourly so an event that has ended drops off by itself.
+export const revalidate = 3600;
 
 export default async function EventsPage() {
   const CHURCH = await getChurchData();
@@ -78,6 +81,11 @@ export default async function EventsPage() {
                         {event.venue}
                       </p>
                     )}
+                    {event.description && (
+                      <p className="mt-4 leading-7 text-slate-700">
+                        {event.description}
+                      </p>
+                    )}
                     {event.verse && (
                       <p className="mt-4 text-sm italic leading-6 text-slate-600">
                         {event.verse}
@@ -111,23 +119,19 @@ export default async function EventsPage() {
                         />
                       </div>
                     )}
-
-                    <div className="mt-8 rounded-2xl border border-slate-200 bg-slate-50 p-6">
-                      <h3 className="font-bold text-indigo-950">
-                        Save Your Spot
-                      </h3>
-                      <p className="mt-1 text-sm text-slate-600">
-                        Let us know you&apos;re coming.
-                      </p>
-                      <div className="mt-4">
-                        <RsvpForm eventId={event.id} eventTitle={event.title} />
-                      </div>
-                    </div>
                   </div>
                 </Reveal>
               </div>
             </div>
           ))}
+          <div className="py-10 text-center">
+            <Link
+              href="/"
+              className="text-sm font-semibold text-indigo-700 hover:text-indigo-900"
+            >
+              ← Back to Home
+            </Link>
+          </div>
         </div>
       </section>
 

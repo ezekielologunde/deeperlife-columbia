@@ -11,6 +11,7 @@ export type FeaturedEvent = {
   time: string;
   verse: string;
   host: string;
+  description: string;
   venue: string;
   flyer: string;
   video: string;
@@ -28,6 +29,8 @@ export const FEATURED_EVENTS: FeaturedEvent[] = [
     time: "Thu 5–6:30 PM · Fri & Sat 8 AM–6 PM · Sun 8 AM–12 PM",
     verse: "",
     host: "Pastor Michael Dada (Regional Overseer)",
+    description:
+      "Four days of worship, the Word, and fellowship for our seniors, centered on the theme \"Pilgrims' Progress\": pressing on in the journey of faith with strength, joy, and a clear eye on the finish. Join Pastor Michael Dada, our Regional Overseer, at Deeper Life Bible Church in Kinston, NC.",
     venue:
       "Deeper Life Bible Church, 2000 Dr. Martin Luther King Jr. Blvd, Kinston, NC 28501",
     flyer: "/images/events/seniors-retreat-2026.jpg",
@@ -44,6 +47,8 @@ export const FEATURED_EVENTS: FeaturedEvent[] = [
     time: "",
     verse: "",
     host: "",
+    description:
+      "Men from every walk of life gather for a conference built on the theme \"Valiant Men\", with the call to rise up in faith, courage, and godly character. Come ready to be taught, challenged, and strengthened alongside other men at the DLBC Convention Center in Kinston, NC. For enquiries call +1 (202) 509-7771.",
     venue:
       "DLBC Convention Center, 2000 Dr. Martin Luther King Jr. Blvd, Kinston, NC 28501",
     flyer: "/images/events/mens-conference-2026.jpg",

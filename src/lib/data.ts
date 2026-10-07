@@ -1,6 +1,7 @@
 import { and, asc, desc, eq, lte } from "drizzle-orm";
 import { db } from "@/lib/db/client";
 import { FEATURED_EVENTS } from "@/lib/featured-events";
+import { eventStartMs, isEventOver } from "@/lib/event-dates";
 import {
   churchSettings,
   services,
@@ -36,6 +37,7 @@ export async function getChurchData() {
       time: e.event_time ?? "",
       verse: e.verse ?? "",
       host: e.host ?? "",
+      description: e.description ?? "",
       venue: e.venue ?? "",
       flyer: e.flyer ?? "",
       video: e.video ?? "",
@@ -47,10 +49,22 @@ export async function getChurchData() {
   // Featured (in-code) events lead the list unless the database already has
   // an event with the same title, in which case the database row wins.
   const knownTitles = new Set(allEvents.map((e) => e.title.trim().toLowerCase()));
+  const now = Date.now();
   const upcomingEvents = [
     ...FEATURED_EVENTS.filter((f) => !knownTitles.has(f.title.trim().toLowerCase())),
     ...dbUpcoming,
-  ];
+  ]
+    .filter((e) => !isEventOver(e, now))
+    // Soonest first; events with no usable start time keep their order after
+    // the dated ones. Array.sort is stable.
+    .sort((a, b) => {
+      const sa = eventStartMs(a);
+      const sb = eventStartMs(b);
+      if (sa === null && sb === null) return 0;
+      if (sa === null) return 1;
+      if (sb === null) return -1;
+      return sa - sb;
+    });
 
   const pastEvents = allEvents
     .filter((e) => e.is_past)
