@@ -1,7 +1,10 @@
 "use server";
 
 import { revalidatePath } from "next/cache";
-import { createClient } from "@/lib/supabase/server";
+import { eq } from "drizzle-orm";
+import { db } from "@/lib/db/client";
+import { leadership } from "@/lib/db/schema";
+import { requireAdmin } from "@/lib/auth/require-admin";
 import { redirectWithToast } from "@/lib/admin/toast-redirect";
 
 function refresh() {
@@ -19,30 +22,24 @@ function fields(formData: FormData) {
 }
 
 export async function createLeader(formData: FormData) {
-  const supabase = await createClient();
-  const { error } = await supabase.from("leadership").insert(fields(formData));
-  if (error) throw new Error(error.message);
+  await requireAdmin();
+  await db.insert(leadership).values(fields(formData));
   refresh();
   redirectWithToast("/admin/leadership", "Leader added");
 }
 
 export async function updateLeader(formData: FormData) {
-  const supabase = await createClient();
+  await requireAdmin();
   const id = String(formData.get("id") ?? "");
-  const { error } = await supabase
-    .from("leadership")
-    .update(fields(formData))
-    .eq("id", id);
-  if (error) throw new Error(error.message);
+  await db.update(leadership).set(fields(formData)).where(eq(leadership.id, id));
   refresh();
   redirectWithToast("/admin/leadership", "Leader updated");
 }
 
 export async function deleteLeader(formData: FormData) {
-  const supabase = await createClient();
+  await requireAdmin();
   const id = String(formData.get("id") ?? "");
-  const { error } = await supabase.from("leadership").delete().eq("id", id);
-  if (error) throw new Error(error.message);
+  await db.delete(leadership).where(eq(leadership.id, id));
   refresh();
   redirectWithToast("/admin/leadership", "Leader deleted");
 }

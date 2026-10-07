@@ -1,5 +1,7 @@
 import Link from "next/link";
-import { createClient } from "@/lib/supabase/server";
+import { desc } from "drizzle-orm";
+import { db } from "@/lib/db/client";
+import { devotionals as devotionalsTable } from "@/lib/db/schema";
 import { createDevotional, deleteDevotional } from "./actions";
 import DeleteButton from "@/components/admin/DeleteButton";
 
@@ -10,11 +12,10 @@ const CATEGORY_BADGE: Record<string, string> = {
 };
 
 export default async function DevotionalAdminPage() {
-  const supabase = await createClient();
-  const { data: devotionals } = await supabase
-    .from("devotionals")
-    .select("*")
-    .order("date", { ascending: false });
+  const devotionals = await db
+    .select()
+    .from(devotionalsTable)
+    .orderBy(desc(devotionalsTable.date));
 
   return (
     <div className="max-w-3xl">

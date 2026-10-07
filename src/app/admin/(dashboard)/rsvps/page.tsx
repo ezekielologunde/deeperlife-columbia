@@ -1,16 +1,17 @@
-import { createClient } from "@/lib/supabase/server";
+import { desc } from "drizzle-orm";
+import { db } from "@/lib/db/client";
+import { eventRsvps } from "@/lib/db/schema";
 import { deleteRsvp } from "./actions";
 import DeleteButton from "@/components/admin/DeleteButton";
 
 export default async function RsvpsAdminPage() {
-  const supabase = await createClient();
-  const { data: rsvps } = await supabase
-    .from("event_rsvps")
-    .select("*")
-    .order("created_at", { ascending: false });
+  const rsvps = await db
+    .select()
+    .from(eventRsvps)
+    .orderBy(desc(eventRsvps.created_at));
 
   const groups = new Map<string, typeof rsvps>();
-  for (const r of rsvps ?? []) {
+  for (const r of rsvps) {
     const list = groups.get(r.event_title) ?? [];
     list.push(r);
     groups.set(r.event_title, list);

@@ -1,16 +1,16 @@
 import Link from "next/link";
-import { createClient } from "@/lib/supabase/server";
+import { asc } from "drizzle-orm";
+import { db } from "@/lib/db/client";
+import { events as eventsTable } from "@/lib/db/schema";
 import { createEvent, deleteEvent } from "./actions";
 import ImageUploadField from "@/components/admin/ImageUploadField";
 import DeleteButton from "@/components/admin/DeleteButton";
 
 export default async function EventsAdminPage() {
-  const supabase = await createClient();
-  const { data: events } = await supabase
-    .from("events")
-    .select("*")
-    .order("is_past")
-    .order("sort_order");
+  const events = await db
+    .select()
+    .from(eventsTable)
+    .orderBy(asc(eventsTable.is_past), asc(eventsTable.sort_order));
 
   return (
     <div className="max-w-3xl">

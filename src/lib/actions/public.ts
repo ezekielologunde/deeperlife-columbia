@@ -1,6 +1,7 @@
 "use server";
 
-import { createClient } from "@/lib/supabase/server";
+import { db } from "@/lib/db/client";
+import { messages, subscribers, testimonies, eventRsvps } from "@/lib/db/schema";
 
 export type FormState = { success: boolean; error?: string };
 
@@ -47,16 +48,15 @@ export async function submitMessage(
     return { success: false, error: "Please fill in your name, email, and message." };
   }
 
-  const supabase = await createClient();
-  const { error } = await supabase.from("messages").insert({
-    name,
-    email,
-    phone: phone || null,
-    category,
-    body,
-  });
-
-  if (error) {
+  try {
+    await db.insert(messages).values({
+      name,
+      email,
+      phone: phone || null,
+      category,
+      body,
+    });
+  } catch {
     return { success: false, error: "Something went wrong. Please try again." };
   }
 
@@ -80,11 +80,10 @@ export async function submitSubscriber(
     return { success: false, error: "Please enter a valid email address." };
   }
 
-  const supabase = await createClient();
-  const { error } = await supabase.from("subscribers").insert({ email });
-
-  if (error) {
-    if (error.code === "23505") {
+  try {
+    await db.insert(subscribers).values({ email });
+  } catch (err) {
+    if ((err as { code?: string }).code === "23505") {
       return { success: true };
     }
     return { success: false, error: "Something went wrong. Please try again." };
@@ -106,13 +105,9 @@ export async function submitTestimony(
     return { success: false, error: "Please share your name and testimony." };
   }
 
-  const supabase = await createClient();
-  const { error } = await supabase.from("testimonies").insert({
-    name,
-    content,
-  });
-
-  if (error) {
+  try {
+    await db.insert(testimonies).values({ name, content });
+  } catch {
     return { success: false, error: "Something went wrong. Please try again." };
   }
 
@@ -136,17 +131,16 @@ export async function submitRsvp(
     return { success: false, error: "Please fill in your name and email." };
   }
 
-  const supabase = await createClient();
-  const { error } = await supabase.from("event_rsvps").insert({
-    event_id: eventId || null,
-    event_title: eventTitle,
-    name,
-    email,
-    phone: phone || null,
-    guests: Number.isFinite(guests) && guests > 0 ? guests : 1,
-  });
-
-  if (error) {
+  try {
+    await db.insert(eventRsvps).values({
+      event_id: eventId || null,
+      event_title: eventTitle,
+      name,
+      email,
+      phone: phone || null,
+      guests: Number.isFinite(guests) && guests > 0 ? guests : 1,
+    });
+  } catch {
     return { success: false, error: "Something went wrong. Please try again." };
   }
 

@@ -1,7 +1,10 @@
 "use server";
 
 import { revalidatePath } from "next/cache";
-import { createClient } from "@/lib/supabase/server";
+import { eq } from "drizzle-orm";
+import { db } from "@/lib/db/client";
+import { statementOfFaith } from "@/lib/db/schema";
+import { requireAdmin } from "@/lib/auth/require-admin";
 import { redirectWithToast } from "@/lib/admin/toast-redirect";
 
 function refresh() {
@@ -18,35 +21,24 @@ function fields(formData: FormData) {
 }
 
 export async function createBelief(formData: FormData) {
-  const supabase = await createClient();
-  const { error } = await supabase
-    .from("statement_of_faith")
-    .insert(fields(formData));
-  if (error) throw new Error(error.message);
+  await requireAdmin();
+  await db.insert(statementOfFaith).values(fields(formData));
   refresh();
   redirectWithToast("/admin/beliefs", "Belief added");
 }
 
 export async function updateBelief(formData: FormData) {
-  const supabase = await createClient();
+  await requireAdmin();
   const id = String(formData.get("id") ?? "");
-  const { error } = await supabase
-    .from("statement_of_faith")
-    .update(fields(formData))
-    .eq("id", id);
-  if (error) throw new Error(error.message);
+  await db.update(statementOfFaith).set(fields(formData)).where(eq(statementOfFaith.id, id));
   refresh();
   redirectWithToast("/admin/beliefs", "Belief updated");
 }
 
 export async function deleteBelief(formData: FormData) {
-  const supabase = await createClient();
+  await requireAdmin();
   const id = String(formData.get("id") ?? "");
-  const { error } = await supabase
-    .from("statement_of_faith")
-    .delete()
-    .eq("id", id);
-  if (error) throw new Error(error.message);
+  await db.delete(statementOfFaith).where(eq(statementOfFaith.id, id));
   refresh();
   redirectWithToast("/admin/beliefs", "Belief deleted");
 }

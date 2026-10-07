@@ -1,40 +1,31 @@
-import { createClient } from "@/lib/supabase/server";
-
-type EventRow = {
-  id: string;
-  title: string;
-  subtitle: string | null;
-  event_date: string | null;
-  event_time: string | null;
-  verse: string | null;
-  host: string | null;
-  venue: string | null;
-  description: string | null;
-  flyer: string | null;
-  video: string | null;
-  link: string | null;
-  phone: string | null;
-  email: string | null;
-  is_past: boolean;
-  start_datetime: string | null;
-  end_datetime: string | null;
-};
+import { and, asc, desc, eq, lte } from "drizzle-orm";
+import { db } from "@/lib/db/client";
+import {
+  churchSettings,
+  services,
+  leadership,
+  statementOfFaith,
+  events,
+  ministries,
+  testimonies,
+  galleryImages,
+  devotionals,
+} from "@/lib/db/schema";
 
 export async function getChurchData() {
-  const supabase = await createClient();
-  const [settingsRes, servicesRes, leadershipRes, faithRes, eventsRes] =
+  const [settingsRows, servicesRows, leadershipRows, faithRows, eventsRows] =
     await Promise.all([
-      supabase.from("church_settings").select("*").eq("id", 1).single(),
-      supabase.from("services").select("*").order("sort_order"),
-      supabase.from("leadership").select("*").order("sort_order"),
-      supabase.from("statement_of_faith").select("*").order("sort_order"),
-      supabase.from("events").select("*").order("sort_order"),
+      db.select().from(churchSettings).where(eq(churchSettings.id, 1)).limit(1),
+      db.select().from(services).orderBy(asc(services.sort_order)),
+      db.select().from(leadership).orderBy(asc(leadership.sort_order)),
+      db.select().from(statementOfFaith).orderBy(asc(statementOfFaith.sort_order)),
+      db.select().from(events).orderBy(asc(events.sort_order)),
     ]);
 
-  const s = settingsRes.data;
-  const events = (eventsRes.data ?? []) as EventRow[];
+  const s = settingsRows[0];
+  const allEvents = eventsRows;
 
-  const upcomingEvents = events
+  const upcomingEvents = allEvents
     .filter((e) => !e.is_past)
     .map((e) => ({
       id: e.id,
@@ -51,7 +42,7 @@ export async function getChurchData() {
       endDatetime: e.end_datetime ?? "",
     }));
 
-  const pastEvents = events
+  const pastEvents = allEvents
     .filter((e) => e.is_past)
     .map((e) => ({
       title: e.title,
@@ -80,19 +71,19 @@ export async function getChurchData() {
     pastor: s?.pastor ?? "",
     pastorPhoto: s?.pastor_photo ?? "",
     pastorAndWifePhoto: s?.pastor_and_wife_photo ?? "",
-    leadership: (leadershipRes.data ?? []).map((l) => ({
-      name: l.name as string,
-      title: l.title as string,
-      photoUrl: (l.photo_url as string | null) ?? undefined,
+    leadership: leadershipRows.map((l) => ({
+      name: l.name,
+      title: l.title,
+      photoUrl: l.photo_url ?? undefined,
     })),
-    statementOfFaith: (faithRes.data ?? []).map((f) => ({
-      title: f.title as string,
-      text: f.text as string,
+    statementOfFaith: faithRows.map((f) => ({
+      title: f.title,
+      text: f.text,
     })),
-    services: (servicesRes.data ?? []).map((sv) => ({
-      name: sv.name as string,
-      time: sv.time as string,
-      mode: sv.mode as string,
+    services: servicesRows.map((sv) => ({
+      name: sv.name,
+      time: sv.time,
+      mode: sv.mode,
     })),
     zoom: (s?.zoom as { link: string; meetingId: string; passcode: string } | undefined) ?? {
       link: "",
@@ -127,113 +118,91 @@ export async function getChurchData() {
 export type ChurchData = Awaited<ReturnType<typeof getChurchData>>;
 
 export async function getMinistriesData() {
-  const supabase = await createClient();
-  const { data, error } = await supabase
-    .from("ministries")
-    .select("*")
-    .order("sort_order");
+  // A genuine DB/connection error throws (the postgres client rejects the
+  // promise) rather than silently returning an empty list — callers like
+  // getMinistryBySlug() treat "not found" as a real 404 (which Next.js
+  // marks noindex), and a transient outage must never be mistaken for
+  // "this ministry doesn't exist."
+  const rows = await db.select().from(ministries).orderBy(asc(ministries.sort_order));
 
-  // Throw on a genuine DB/connection error rather than silently returning
-  // an empty list — callers like getMinistryBySlug() treat "not found" as
-  // a real 404 (which Next.js marks noindex), and a transient outage must
-  // never be mistaken for "this ministry doesn't exist."
-  if (error) throw new Error(`Failed to load ministries: ${error.message}`);
-
-  return (data ?? []).map((m) => ({
-    slug: m.slug as string,
-    title: m.title as string,
-    desc: m.description as string,
-    details: (m.details as string | null) ?? undefined,
-    image: (m.image as string | null) ?? undefined,
-    meetingTime: (m.meeting_time as string | null) ?? undefined,
-    ctaText: (m.cta_text as string | null) ?? undefined,
+  return rows.map((m) => ({
+    slug: m.slug,
+    title: m.title,
+    desc: m.description,
+    details: m.details ?? undefined,
+    image: m.image ?? undefined,
+    meetingTime: m.meeting_time ?? undefined,
+    ctaText: m.cta_text ?? undefined,
   }));
 }
 
 export async function getMinistryBySlug(slug: string) {
-  const ministries = await getMinistriesData();
-  return ministries.find((m) => m.slug === slug) ?? null;
+  const allMinistries = await getMinistriesData();
+  return allMinistries.find((m) => m.slug === slug) ?? null;
 }
 
 export async function getTestimonies() {
-  const supabase = await createClient();
-  const { data } = await supabase
-    .from("testimonies")
-    .select("*")
-    .eq("published", true)
-    .order("sort_order")
-    .order("created_at", { ascending: false });
+  const rows = await db
+    .select()
+    .from(testimonies)
+    .where(eq(testimonies.published, true))
+    .orderBy(asc(testimonies.sort_order), desc(testimonies.created_at));
 
-  return (data ?? []).map((t) => ({
-    id: t.id as string,
-    name: t.name as string,
-    content: t.content as string,
+  return rows.map((t) => ({
+    id: t.id,
+    name: t.name,
+    content: t.content,
   }));
 }
 
 export async function getGalleryImages() {
-  const supabase = await createClient();
-  const { data } = await supabase
-    .from("gallery_images")
-    .select("*")
-    .order("sort_order");
+  const rows = await db.select().from(galleryImages).orderBy(asc(galleryImages.sort_order));
 
-  return (data ?? []).map((g) => ({
-    id: g.id as string,
-    url: g.url as string,
-    caption: (g.caption as string | null) ?? undefined,
+  return rows.map((g) => ({
+    id: g.id,
+    url: g.url,
+    caption: g.caption ?? undefined,
   }));
 }
 
 export type DevotionalCategory = "Adult" | "Youth" | "Children";
 
-function mapDevotional(d: Record<string, unknown>) {
+function mapDevotional(d: typeof devotionals.$inferSelect) {
   return {
-    date: d.date as string,
+    date: d.date,
     category: d.category as DevotionalCategory,
-    title: d.title as string,
-    keyVerse: d.key_verse as string,
-    bibleReading: (d.bible_reading as string | null) ?? undefined,
-    body: d.body as string,
-    thoughtOfDay: (d.thought_of_day as string | null) ?? undefined,
-    bibleInOneYear: (d.bible_in_one_year as string | null) ?? undefined,
-    audioUrl: (d.audio_url as string | null) ?? undefined,
-    source: d.source as string,
+    title: d.title,
+    keyVerse: d.key_verse,
+    bibleReading: d.bible_reading ?? undefined,
+    body: d.body,
+    thoughtOfDay: d.thought_of_day ?? undefined,
+    bibleInOneYear: d.bible_in_one_year ?? undefined,
+    audioUrl: d.audio_url ?? undefined,
+    source: d.source,
   };
 }
 
 export type Devotional = ReturnType<typeof mapDevotional>;
 
 export async function getTodayDevotional(category: DevotionalCategory = "Adult") {
-  const supabase = await createClient();
   const today = new Date().toLocaleDateString("en-CA", {
     timeZone: "America/New_York",
   });
 
-  const { data: exact, error: exactError } = await supabase
-    .from("devotionals")
-    .select("*")
-    .eq("date", today)
-    .eq("category", category)
-    .maybeSingle();
+  const [exact] = await db
+    .select()
+    .from(devotionals)
+    .where(and(eq(devotionals.date, today), eq(devotionals.category, category)))
+    .limit(1);
 
-  if (exactError) {
-    throw new Error(`Failed to load today's devotional: ${exactError.message}`);
-  }
   if (exact) return { devotional: mapDevotional(exact), isToday: true };
 
-  const { data: latest, error: latestError } = await supabase
-    .from("devotionals")
-    .select("*")
-    .eq("category", category)
-    .lte("date", today)
-    .order("date", { ascending: false })
-    .limit(1)
-    .maybeSingle();
-
-  if (latestError) {
-    throw new Error(`Failed to load latest devotional: ${latestError.message}`);
-  }
+  const [latest] = await db
+    .select()
+    .from(devotionals)
+    .where(and(eq(devotionals.category, category), lte(devotionals.date, today)))
+    .orderBy(desc(devotionals.date))
+    .limit(1);
 
   return latest ? { devotional: mapDevotional(latest), isToday: false } : null;
 }
@@ -242,34 +211,31 @@ export async function getDevotionalByDate(
   date: string,
   category: DevotionalCategory = "Adult",
 ) {
-  const supabase = await createClient();
-  const { data, error } = await supabase
-    .from("devotionals")
-    .select("*")
-    .eq("date", date)
-    .eq("category", category)
-    .maybeSingle();
+  const [row] = await db
+    .select()
+    .from(devotionals)
+    .where(and(eq(devotionals.date, date), eq(devotionals.category, category)))
+    .limit(1);
 
-  // A genuine DB error must not be mistaken for "no devotional on this
-  // date" — the caller 404s on null, which Next.js marks noindex.
-  if (error) throw new Error(`Failed to load devotional: ${error.message}`);
-
-  return data ? mapDevotional(data) : null;
+  return row ? mapDevotional(row) : null;
 }
 
 export async function getDevotionalArchive(
   category: DevotionalCategory = "Adult",
 ) {
-  const supabase = await createClient();
-  const { data } = await supabase
-    .from("devotionals")
-    .select("date, title, key_verse")
-    .eq("category", category)
-    .order("date", { ascending: false });
+  const rows = await db
+    .select({
+      date: devotionals.date,
+      title: devotionals.title,
+      key_verse: devotionals.key_verse,
+    })
+    .from(devotionals)
+    .where(eq(devotionals.category, category))
+    .orderBy(desc(devotionals.date));
 
-  return (data ?? []).map((d) => ({
-    date: d.date as string,
-    title: d.title as string,
-    keyVerse: d.key_verse as string,
+  return rows.map((d) => ({
+    date: d.date,
+    title: d.title,
+    keyVerse: d.key_verse,
   }));
 }

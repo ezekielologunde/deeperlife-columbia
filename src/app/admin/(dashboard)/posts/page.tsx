@@ -1,14 +1,15 @@
 import Link from "next/link";
-import { createClient } from "@/lib/supabase/server";
+import { desc } from "drizzle-orm";
+import { db } from "@/lib/db/client";
+import { posts as postsTable } from "@/lib/db/schema";
 import { deletePost } from "./actions";
 import DeleteButton from "@/components/admin/DeleteButton";
 
 export default async function PostsAdminPage() {
-  const supabase = await createClient();
-  const { data: posts } = await supabase
-    .from("posts")
-    .select("*")
-    .order("created_at", { ascending: false });
+  const posts = await db
+    .select()
+    .from(postsTable)
+    .orderBy(desc(postsTable.created_at));
 
   return (
     <div className="max-w-3xl">

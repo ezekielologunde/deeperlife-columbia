@@ -1,6 +1,10 @@
 "use server";
 
-import { createClient } from "@/lib/supabase/server";
+import { eq } from "drizzle-orm";
+import { db } from "@/lib/db/client";
+import { admins } from "@/lib/db/schema";
+import { hashPassword } from "@/lib/auth/password";
+import { requireAdmin } from "@/lib/auth/require-admin";
 import type { FormState } from "@/lib/actions/public";
 
 export async function updatePassword(
@@ -17,11 +21,16 @@ export async function updatePassword(
     return { success: false, error: "Passwords do not match." };
   }
 
-  const supabase = await createClient();
-  const { error } = await supabase.auth.updateUser({ password });
+  const session = await requireAdmin();
 
-  if (error) {
-    return { success: false, error: error.message };
+  try {
+    const password_hash = await hashPassword(password);
+    await db.update(admins).set({ password_hash }).where(eq(admins.id, session.sub));
+  } catch (err) {
+    return {
+      success: false,
+      error: err instanceof Error ? err.message : "Something went wrong.",
+    };
   }
 
   return { success: true };

@@ -1,5 +1,20 @@
 import Link from "next/link";
-import { createClient } from "@/lib/supabase/server";
+import { eq } from "drizzle-orm";
+import { db } from "@/lib/db/client";
+import {
+  services,
+  ministries,
+  leadership,
+  statementOfFaith,
+  events,
+  posts,
+  galleryImages,
+  devotionals,
+  messages,
+  testimonies,
+  eventRsvps,
+  subscribers,
+} from "@/lib/db/schema";
 
 const CONTENT_CARDS = [
   { href: "/admin/church-info", label: "Church Info", desc: "Name, address, contact, socials, giving, Zoom" },
@@ -21,81 +36,69 @@ const ACTIVITY_CARDS = [
 ];
 
 export default async function AdminHomePage() {
-  const supabase = await createClient();
   const today = new Date().toLocaleDateString("en-CA", {
     timeZone: "America/New_York",
   });
 
   const [
-    services,
-    ministries,
-    leadership,
-    faith,
-    events,
-    posts,
-    gallery,
-    devotionals,
-    todayDevotional,
-    messages,
-    unreadMessages,
-    testimonies,
-    pendingTestimonies,
-    rsvps,
-    subscribers,
+    servicesRows,
+    ministriesRows,
+    leadershipRows,
+    faithRows,
+    eventsRows,
+    postsRows,
+    galleryRows,
+    devotionalsRows,
+    todayDevotionalRows,
+    messagesRows,
+    unreadMessagesRows,
+    testimoniesRows,
+    pendingTestimoniesRows,
+    rsvpsRows,
+    subscribersRows,
   ] = await Promise.all([
-    supabase.from("services").select("id", { count: "exact", head: true }),
-    supabase.from("ministries").select("id", { count: "exact", head: true }),
-    supabase.from("leadership").select("id", { count: "exact", head: true }),
-    supabase.from("statement_of_faith").select("id", { count: "exact", head: true }),
-    supabase.from("events").select("id", { count: "exact", head: true }),
-    supabase.from("posts").select("id", { count: "exact", head: true }),
-    supabase.from("gallery_images").select("id", { count: "exact", head: true }),
-    supabase.from("devotionals").select("id", { count: "exact", head: true }),
-    supabase
-      .from("devotionals")
-      .select("id", { count: "exact", head: true })
-      .eq("date", today),
-    supabase.from("messages").select("id", { count: "exact", head: true }),
-    supabase
-      .from("messages")
-      .select("id", { count: "exact", head: true })
-      .eq("is_read", false),
-    supabase.from("testimonies").select("id", { count: "exact", head: true }),
-    supabase
-      .from("testimonies")
-      .select("id", { count: "exact", head: true })
-      .eq("published", false),
-    supabase.from("event_rsvps").select("id", { count: "exact", head: true }),
-    supabase.from("subscribers").select("id", { count: "exact", head: true }),
+    db.select({ id: services.id }).from(services),
+    db.select({ id: ministries.id }).from(ministries),
+    db.select({ id: leadership.id }).from(leadership),
+    db.select({ id: statementOfFaith.id }).from(statementOfFaith),
+    db.select({ id: events.id }).from(events),
+    db.select({ id: posts.id }).from(posts),
+    db.select({ id: galleryImages.id }).from(galleryImages),
+    db.select({ id: devotionals.id }).from(devotionals),
+    db.select({ id: devotionals.id }).from(devotionals).where(eq(devotionals.date, today)),
+    db.select({ id: messages.id }).from(messages),
+    db.select({ id: messages.id }).from(messages).where(eq(messages.is_read, false)),
+    db.select({ id: testimonies.id }).from(testimonies),
+    db.select({ id: testimonies.id }).from(testimonies).where(eq(testimonies.published, false)),
+    db.select({ id: eventRsvps.id }).from(eventRsvps),
+    db.select({ id: subscribers.id }).from(subscribers),
   ]);
 
-  const missingTodayDevotional = (todayDevotional.count ?? 0) === 0 ? 1 : 0;
+  const missingTodayDevotional = todayDevotionalRows.length === 0 ? 1 : 0;
 
   const counts: Record<string, number | null> = {
-    "/admin/services": services.count,
-    "/admin/ministries": ministries.count,
-    "/admin/leadership": leadership.count,
-    "/admin/beliefs": faith.count,
-    "/admin/events": events.count,
-    "/admin/posts": posts.count,
-    "/admin/gallery": gallery.count,
-    "/admin/devotional": devotionals.count,
-    "/admin/messages": messages.count,
-    "/admin/testimonies": testimonies.count,
-    "/admin/rsvps": rsvps.count,
-    "/admin/subscribers": subscribers.count,
+    "/admin/services": servicesRows.length,
+    "/admin/ministries": ministriesRows.length,
+    "/admin/leadership": leadershipRows.length,
+    "/admin/beliefs": faithRows.length,
+    "/admin/events": eventsRows.length,
+    "/admin/posts": postsRows.length,
+    "/admin/gallery": galleryRows.length,
+    "/admin/devotional": devotionalsRows.length,
+    "/admin/messages": messagesRows.length,
+    "/admin/testimonies": testimoniesRows.length,
+    "/admin/rsvps": rsvpsRows.length,
+    "/admin/subscribers": subscribersRows.length,
   };
 
   const needsAttention: Record<string, number | null> = {
-    "/admin/messages": unreadMessages.count,
-    "/admin/testimonies": pendingTestimonies.count,
+    "/admin/messages": unreadMessagesRows.length,
+    "/admin/testimonies": pendingTestimoniesRows.length,
     "/admin/devotional": missingTodayDevotional,
   };
 
   const totalNeedsAttention =
-    (unreadMessages.count ?? 0) +
-    (pendingTestimonies.count ?? 0) +
-    missingTodayDevotional;
+    unreadMessagesRows.length + pendingTestimoniesRows.length + missingTodayDevotional;
 
   return (
     <div>
@@ -112,14 +115,14 @@ export default async function AdminHomePage() {
             need{totalNeedsAttention === 1 ? "s" : ""} your attention
           </p>
           <div className="mt-2 flex flex-wrap gap-3 text-sm">
-            {(unreadMessages.count ?? 0) > 0 && (
+            {unreadMessagesRows.length > 0 && (
               <Link href="/admin/messages" className="font-semibold text-amber-800 underline">
-                {unreadMessages.count} unread message{unreadMessages.count === 1 ? "" : "s"}
+                {unreadMessagesRows.length} unread message{unreadMessagesRows.length === 1 ? "" : "s"}
               </Link>
             )}
-            {(pendingTestimonies.count ?? 0) > 0 && (
+            {pendingTestimoniesRows.length > 0 && (
               <Link href="/admin/testimonies" className="font-semibold text-amber-800 underline">
-                {pendingTestimonies.count} testimon{pendingTestimonies.count === 1 ? "y" : "ies"} awaiting review
+                {pendingTestimoniesRows.length} testimon{pendingTestimoniesRows.length === 1 ? "y" : "ies"} awaiting review
               </Link>
             )}
             {missingTodayDevotional > 0 && (

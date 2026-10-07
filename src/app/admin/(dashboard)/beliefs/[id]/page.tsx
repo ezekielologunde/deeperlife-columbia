@@ -1,4 +1,6 @@
-import { createClient } from "@/lib/supabase/server";
+import { eq } from "drizzle-orm";
+import { db } from "@/lib/db/client";
+import { statementOfFaith } from "@/lib/db/schema";
 import { updateBelief } from "../actions";
 
 export default async function EditBeliefPage({
@@ -7,12 +9,11 @@ export default async function EditBeliefPage({
   params: Promise<{ id: string }>;
 }) {
   const { id } = await params;
-  const supabase = await createClient();
-  const { data: belief } = await supabase
-    .from("statement_of_faith")
-    .select("*")
-    .eq("id", id)
-    .single();
+  const [belief] = await db
+    .select()
+    .from(statementOfFaith)
+    .where(eq(statementOfFaith.id, id))
+    .limit(1);
 
   if (!belief) {
     return <p>Belief not found.</p>;
