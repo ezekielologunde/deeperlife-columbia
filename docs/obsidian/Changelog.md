@@ -16,7 +16,7 @@ Reconstructed from `git log`. The repository's visible history currently contain
 
 - Added an Obsidian-compatible documentation knowledge base under `docs/obsidian/` (this file included), plus the `obsidian-sync` skill and `/sync-docs` command for keeping it current. No application code changed.
 
-- Added Seniors' Retreat 2026 and Men's Conference 2026 (Oct 22–25) to the `events` table with flyers in `public/images/`. `/events` now hides the "Learn More" button and video player when an event has no link/video.
+- `/events` now hides the "Learn More" button and video player when an event has no link/video (needed for the Oct 22–25, 2026 Seniors' Retreat and Men's Conference, whose flyers live in `public/images/events/`).
 
 ## Related
 
