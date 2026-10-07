@@ -1,7 +1,10 @@
 "use server";
 
 import { revalidatePath } from "next/cache";
-import { createClient } from "@/lib/supabase/server";
+import { eq } from "drizzle-orm";
+import { db } from "@/lib/db/client";
+import { testimonies } from "@/lib/db/schema";
+import { requireAdmin } from "@/lib/auth/require-admin";
 import { redirectWithToast } from "@/lib/admin/toast-redirect";
 
 function refresh() {
@@ -11,14 +14,10 @@ function refresh() {
 }
 
 export async function togglePublish(formData: FormData) {
-  const supabase = await createClient();
+  await requireAdmin();
   const id = String(formData.get("id") ?? "");
   const published = formData.get("published") === "true";
-  const { error } = await supabase
-    .from("testimonies")
-    .update({ published: !published })
-    .eq("id", id);
-  if (error) throw new Error(error.message);
+  await db.update(testimonies).set({ published: !published }).where(eq(testimonies.id, id));
   refresh();
   redirectWithToast(
     "/admin/testimonies",
@@ -27,10 +26,9 @@ export async function togglePublish(formData: FormData) {
 }
 
 export async function deleteTestimony(formData: FormData) {
-  const supabase = await createClient();
+  await requireAdmin();
   const id = String(formData.get("id") ?? "");
-  const { error } = await supabase.from("testimonies").delete().eq("id", id);
-  if (error) throw new Error(error.message);
+  await db.delete(testimonies).where(eq(testimonies.id, id));
   refresh();
   redirectWithToast("/admin/testimonies", "Testimony deleted");
 }

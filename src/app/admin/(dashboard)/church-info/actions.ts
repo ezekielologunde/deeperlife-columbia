@@ -1,7 +1,10 @@
 "use server";
 
 import { revalidatePath } from "next/cache";
-import { createClient } from "@/lib/supabase/server";
+import { eq } from "drizzle-orm";
+import { db } from "@/lib/db/client";
+import { churchSettings } from "@/lib/db/schema";
+import { requireAdmin } from "@/lib/auth/require-admin";
 import { redirectWithToast } from "@/lib/admin/toast-redirect";
 
 function str(formData: FormData, key: string) {
@@ -9,16 +12,16 @@ function str(formData: FormData, key: string) {
 }
 
 export async function updateChurchInfo(formData: FormData) {
-  const supabase = await createClient();
+  await requireAdmin();
 
   const description = str(formData, "description")
     .split(/\n\s*\n/)
     .map((p) => p.trim())
     .filter(Boolean);
 
-  const { error } = await supabase
-    .from("church_settings")
-    .update({
+  await db
+    .update(churchSettings)
+    .set({
       name: str(formData, "name"),
       tagline: str(formData, "tagline"),
       description,
@@ -66,11 +69,7 @@ export async function updateChurchInfo(formData: FormData) {
       youtube_uploads_playlist_id: str(formData, "youtube_playlist_id"),
       updated_at: new Date().toISOString(),
     })
-    .eq("id", 1);
-
-  if (error) {
-    throw new Error(error.message);
-  }
+    .where(eq(churchSettings.id, 1));
 
   revalidatePath("/", "layout");
   revalidatePath("/admin/church-info");

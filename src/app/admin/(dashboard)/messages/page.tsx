@@ -1,4 +1,6 @@
-import { createClient } from "@/lib/supabase/server";
+import { desc } from "drizzle-orm";
+import { db } from "@/lib/db/client";
+import { messages as messagesTable } from "@/lib/db/schema";
 import { markRead, deleteMessage } from "./actions";
 import DeleteButton from "@/components/admin/DeleteButton";
 
@@ -9,11 +11,10 @@ const CATEGORY_LABEL: Record<string, string> = {
 };
 
 export default async function MessagesAdminPage() {
-  const supabase = await createClient();
-  const { data: messages } = await supabase
-    .from("messages")
-    .select("*")
-    .order("created_at", { ascending: false });
+  const messages = await db
+    .select()
+    .from(messagesTable)
+    .orderBy(desc(messagesTable.created_at));
 
   return (
     <div className="max-w-3xl">

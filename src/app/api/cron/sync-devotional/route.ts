@@ -1,9 +1,9 @@
 import { NextResponse } from "next/server";
-import { createClient } from "@supabase/supabase-js";
+import { db } from "@/lib/db/client";
+import { devotionals } from "@/lib/db/schema";
 
 const DCLM_API_URL =
   "https://dailymanna-backend-jt33.onrender.com/api/devotionals/date";
-const CRON_HEADER_SECRET = process.env.CRON_SECRET ?? "";
 const NTFY_TOPIC = process.env.NTFY_TOPIC;
 const CATEGORIES = ["Adult", "Youth", "Children"] as const;
 
@@ -70,31 +70,31 @@ async function syncCategory(
     return { category, status: "error", message: reason };
   }
 
-  const supabase = createClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
-    { global: { headers: { "x-cron-secret": CRON_HEADER_SECRET } } },
-  );
+  const values = {
+    date: today,
+    category,
+    title: d.topic,
+    key_verse: d.keyVerse,
+    bible_reading: formatBibleReading(d),
+    body: d.description,
+    thought_of_day: d.thoughtOfTheDay ?? null,
+    bible_in_one_year: d.bibleInOneYear ?? null,
+    audio_url: d.audioUrl ?? null,
+    source: "dclm_api",
+  };
 
-  const { error } = await supabase.from("devotionals").upsert(
-    {
-      date: today,
-      category,
-      title: d.topic,
-      key_verse: d.keyVerse,
-      bible_reading: formatBibleReading(d),
-      body: d.description,
-      thought_of_day: d.thoughtOfTheDay ?? null,
-      bible_in_one_year: d.bibleInOneYear ?? null,
-      audio_url: d.audioUrl ?? null,
-      source: "dclm_api",
-    },
-    { onConflict: "date,category" },
-  );
-
-  if (error) {
-    await notifyFailure(`Database error: ${error.message}`, today, category);
-    return { category, status: "error", message: error.message };
+  try {
+    await db
+      .insert(devotionals)
+      .values(values)
+      .onConflictDoUpdate({
+        target: [devotionals.date, devotionals.category],
+        set: values,
+      });
+  } catch (err) {
+    const message = err instanceof Error ? err.message : "Database error";
+    await notifyFailure(`Database error: ${message}`, today, category);
+    return { category, status: "error", message };
   }
 
   return { category, status: "success" };

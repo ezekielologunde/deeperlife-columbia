@@ -1,7 +1,10 @@
 "use server";
 
 import { revalidatePath } from "next/cache";
-import { createClient } from "@/lib/supabase/server";
+import { eq } from "drizzle-orm";
+import { db } from "@/lib/db/client";
+import { events } from "@/lib/db/schema";
+import { requireAdmin } from "@/lib/auth/require-admin";
 import { redirectWithToast } from "@/lib/admin/toast-redirect";
 
 function refresh() {
@@ -77,30 +80,24 @@ function fields(formData: FormData) {
 }
 
 export async function createEvent(formData: FormData) {
-  const supabase = await createClient();
-  const { error } = await supabase.from("events").insert(fields(formData));
-  if (error) throw new Error(error.message);
+  await requireAdmin();
+  await db.insert(events).values(fields(formData));
   refresh();
   redirectWithToast("/admin/events", "Event added");
 }
 
 export async function updateEvent(formData: FormData) {
-  const supabase = await createClient();
+  await requireAdmin();
   const id = String(formData.get("id") ?? "");
-  const { error } = await supabase
-    .from("events")
-    .update(fields(formData))
-    .eq("id", id);
-  if (error) throw new Error(error.message);
+  await db.update(events).set(fields(formData)).where(eq(events.id, id));
   refresh();
   redirectWithToast("/admin/events", "Event updated");
 }
 
 export async function deleteEvent(formData: FormData) {
-  const supabase = await createClient();
+  await requireAdmin();
   const id = String(formData.get("id") ?? "");
-  const { error } = await supabase.from("events").delete().eq("id", id);
-  if (error) throw new Error(error.message);
+  await db.delete(events).where(eq(events.id, id));
   refresh();
   redirectWithToast("/admin/events", "Event deleted");
 }

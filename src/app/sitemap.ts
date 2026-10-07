@@ -1,5 +1,7 @@
 import type { MetadataRoute } from "next";
-import { createClient } from "@/lib/supabase/server";
+import { eq, gte } from "drizzle-orm";
+import { db } from "@/lib/db/client";
+import { posts, ministries, devotionals } from "@/lib/db/schema";
 
 const BASE_URL = "https://deeperlifecolumbia.org";
 
@@ -36,16 +38,17 @@ const NINETY_DAYS_AGO = () => {
 };
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  const supabase = await createClient();
-  const [{ data: posts }, { data: ministries }, { data: devotionals }] =
-    await Promise.all([
-      supabase.from("posts").select("slug, updated_at").eq("published", true),
-      supabase.from("ministries").select("slug"),
-      supabase
-        .from("devotionals")
-        .select("date, category")
-        .gte("date", NINETY_DAYS_AGO()),
-    ]);
+  const [postRows, ministryRows, devotionalRows] = await Promise.all([
+    db
+      .select({ slug: posts.slug, updated_at: posts.updated_at })
+      .from(posts)
+      .where(eq(posts.published, true)),
+    db.select({ slug: ministries.slug }).from(ministries),
+    db
+      .select({ date: devotionals.date, category: devotionals.category })
+      .from(devotionals)
+      .where(gte(devotionals.date, NINETY_DAYS_AGO())),
+  ]);
 
   const staticRoutes = ROUTES.map((route) => ({
     url: `${BASE_URL}${route.path}`,
@@ -54,14 +57,14 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     priority: route.priority,
   }));
 
-  const postRoutes = (posts ?? []).map((post) => ({
+  const postRoutes = postRows.map((post) => ({
     url: `${BASE_URL}/posts/${post.slug}`,
     lastModified: new Date(post.updated_at),
     changeFrequency: "monthly" as const,
     priority: 0.5,
   }));
 
-  const ministryRoutes = (ministries ?? []).map((m) => ({
+  const ministryRoutes = ministryRows.map((m) => ({
     url: `${BASE_URL}/ministries/${m.slug}`,
     lastModified: new Date(),
     changeFrequency: "monthly" as const,
@@ -74,10 +77,10 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     Children: "/devotional/children",
   };
 
-  const devotionalRoutes = (devotionals ?? [])
-    .filter((d) => devotionalCategoryPath[d.category as string])
+  const devotionalRoutes = devotionalRows
+    .filter((d) => devotionalCategoryPath[d.category])
     .map((d) => ({
-      url: `${BASE_URL}${devotionalCategoryPath[d.category as string]}/${d.date}`,
+      url: `${BASE_URL}${devotionalCategoryPath[d.category]}/${d.date}`,
       lastModified: new Date(),
       changeFrequency: "monthly" as const,
       priority: 0.4,

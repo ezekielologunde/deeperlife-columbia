@@ -1,4 +1,6 @@
-import { createClient } from "@/lib/supabase/server";
+import { eq } from "drizzle-orm";
+import { db } from "@/lib/db/client";
+import { ministries } from "@/lib/db/schema";
 import { updateMinistry } from "../actions";
 import ImageUploadField from "@/components/admin/ImageUploadField";
 
@@ -8,12 +10,7 @@ export default async function EditMinistryPage({
   params: Promise<{ id: string }>;
 }) {
   const { id } = await params;
-  const supabase = await createClient();
-  const { data: ministry } = await supabase
-    .from("ministries")
-    .select("*")
-    .eq("id", id)
-    .single();
+  const [ministry] = await db.select().from(ministries).where(eq(ministries.id, id)).limit(1);
 
   if (!ministry) {
     return <p>Ministry not found.</p>;

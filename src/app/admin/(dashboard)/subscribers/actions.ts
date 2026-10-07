@@ -1,11 +1,14 @@
 "use server";
 
 import { revalidatePath } from "next/cache";
-import { createClient } from "@/lib/supabase/server";
+import { eq } from "drizzle-orm";
+import { db } from "@/lib/db/client";
+import { subscribers } from "@/lib/db/schema";
+import { requireAdmin } from "@/lib/auth/require-admin";
 
 export async function deleteSubscriber(formData: FormData) {
-  const supabase = await createClient();
+  await requireAdmin();
   const id = String(formData.get("id") ?? "");
-  await supabase.from("subscribers").delete().eq("id", id);
+  await db.delete(subscribers).where(eq(subscribers.id, id));
   revalidatePath("/admin/subscribers");
 }

@@ -1,4 +1,6 @@
-import { createClient } from "@/lib/supabase/server";
+import { eq } from "drizzle-orm";
+import { db } from "@/lib/db/client";
+import { leadership } from "@/lib/db/schema";
 import { updateLeader } from "../actions";
 import ImageUploadField from "@/components/admin/ImageUploadField";
 
@@ -8,12 +10,7 @@ export default async function EditLeaderPage({
   params: Promise<{ id: string }>;
 }) {
   const { id } = await params;
-  const supabase = await createClient();
-  const { data: leader } = await supabase
-    .from("leadership")
-    .select("*")
-    .eq("id", id)
-    .single();
+  const [leader] = await db.select().from(leadership).where(eq(leadership.id, id)).limit(1);
 
   if (!leader) {
     return <p>Leader not found.</p>;

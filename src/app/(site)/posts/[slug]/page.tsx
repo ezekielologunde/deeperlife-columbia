@@ -1,18 +1,18 @@
 import type { Metadata } from "next";
 import Image from "next/image";
 import { notFound } from "next/navigation";
-import { createClient } from "@/lib/supabase/server";
+import { and, eq } from "drizzle-orm";
+import { db } from "@/lib/db/client";
+import { posts } from "@/lib/db/schema";
 import Reveal from "@/components/Reveal";
 import PageHero from "@/components/PageHero";
 
 async function getPost(slug: string) {
-  const supabase = await createClient();
-  const { data: post } = await supabase
-    .from("posts")
-    .select("*")
-    .eq("slug", slug)
-    .eq("published", true)
-    .single();
+  const [post] = await db
+    .select()
+    .from(posts)
+    .where(and(eq(posts.slug, slug), eq(posts.published, true)))
+    .limit(1);
   return post;
 }
 

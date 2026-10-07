@@ -1,14 +1,15 @@
-import { createClient } from "@/lib/supabase/server";
+import { asc } from "drizzle-orm";
+import { db } from "@/lib/db/client";
+import { services as servicesTable } from "@/lib/db/schema";
 import { createService, deleteService } from "./actions";
 import Link from "next/link";
 import DeleteButton from "@/components/admin/DeleteButton";
 
 export default async function ServicesAdminPage() {
-  const supabase = await createClient();
-  const { data: services } = await supabase
-    .from("services")
-    .select("*")
-    .order("sort_order");
+  const services = await db
+    .select()
+    .from(servicesTable)
+    .orderBy(asc(servicesTable.sort_order));
 
   return (
     <div className="max-w-3xl">

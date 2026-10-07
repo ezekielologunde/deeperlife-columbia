@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import Image from "next/image";
-import { createClient } from "@/lib/supabase/client";
+import { uploadAdminImage } from "@/lib/actions/admin-upload";
 
 export default function ImageUploadField({
   label,
@@ -21,21 +21,15 @@ export default function ImageUploadField({
     setUploading(true);
     setError("");
     try {
-      const supabase = createClient();
-      const ext = file.name.split(".").pop();
-      const path = `${Date.now()}-${Math.random().toString(36).slice(2)}.${ext}`;
+      const formData = new FormData();
+      formData.set("file", file);
+      const result = await uploadAdminImage(formData);
 
-      const { error: uploadError } = await supabase.storage
-        .from("site-images")
-        .upload(path, file);
-
-      if (uploadError) throw uploadError;
-
-      const { data } = supabase.storage
-        .from("site-images")
-        .getPublicUrl(path);
-
-      setUrl(data.publicUrl);
+      if ("error" in result) {
+        setError(result.error);
+      } else {
+        setUrl(result.url);
+      }
     } catch (err) {
       setError(err instanceof Error ? err.message : "Upload failed");
     } finally {

@@ -1,13 +1,14 @@
-import { createClient } from "@/lib/supabase/server";
+import { desc } from "drizzle-orm";
+import { db } from "@/lib/db/client";
+import { testimonies as testimoniesTable } from "@/lib/db/schema";
 import { togglePublish, deleteTestimony } from "./actions";
 import DeleteButton from "@/components/admin/DeleteButton";
 
 export default async function TestimoniesAdminPage() {
-  const supabase = await createClient();
-  const { data: testimonies } = await supabase
-    .from("testimonies")
-    .select("*")
-    .order("created_at", { ascending: false });
+  const testimonies = await db
+    .select()
+    .from(testimoniesTable)
+    .orderBy(desc(testimoniesTable.created_at));
 
   return (
     <div className="max-w-3xl">

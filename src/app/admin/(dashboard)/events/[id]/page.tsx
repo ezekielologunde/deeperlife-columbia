@@ -1,4 +1,6 @@
-import { createClient } from "@/lib/supabase/server";
+import { eq } from "drizzle-orm";
+import { db } from "@/lib/db/client";
+import { events } from "@/lib/db/schema";
 import { updateEvent } from "../actions";
 import ImageUploadField from "@/components/admin/ImageUploadField";
 
@@ -27,12 +29,7 @@ export default async function EditEventPage({
   params: Promise<{ id: string }>;
 }) {
   const { id } = await params;
-  const supabase = await createClient();
-  const { data: event } = await supabase
-    .from("events")
-    .select("*")
-    .eq("id", id)
-    .single();
+  const [event] = await db.select().from(events).where(eq(events.id, id)).limit(1);
 
   if (!event) {
     return <p>Event not found.</p>;

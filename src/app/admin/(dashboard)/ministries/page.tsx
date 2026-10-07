@@ -1,15 +1,16 @@
 import Link from "next/link";
-import { createClient } from "@/lib/supabase/server";
+import { asc } from "drizzle-orm";
+import { db } from "@/lib/db/client";
+import { ministries as ministriesTable } from "@/lib/db/schema";
 import { createMinistry, deleteMinistry } from "./actions";
 import ImageUploadField from "@/components/admin/ImageUploadField";
 import DeleteButton from "@/components/admin/DeleteButton";
 
 export default async function MinistriesAdminPage() {
-  const supabase = await createClient();
-  const { data: ministries } = await supabase
-    .from("ministries")
-    .select("*")
-    .order("sort_order");
+  const ministries = await db
+    .select()
+    .from(ministriesTable)
+    .orderBy(asc(ministriesTable.sort_order));
 
   return (
     <div className="max-w-3xl">

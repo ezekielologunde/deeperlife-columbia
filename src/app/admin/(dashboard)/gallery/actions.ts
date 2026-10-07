@@ -1,7 +1,10 @@
 "use server";
 
 import { revalidatePath } from "next/cache";
-import { createClient } from "@/lib/supabase/server";
+import { eq } from "drizzle-orm";
+import { db } from "@/lib/db/client";
+import { galleryImages } from "@/lib/db/schema";
+import { requireAdmin } from "@/lib/auth/require-admin";
 import { redirectWithToast } from "@/lib/admin/toast-redirect";
 
 function refresh() {
@@ -11,7 +14,7 @@ function refresh() {
 }
 
 export async function addGalleryImage(formData: FormData) {
-  const supabase = await createClient();
+  await requireAdmin();
   const url = String(formData.get("url") ?? "");
   const caption = String(formData.get("caption") ?? "") || null;
   const sort_order = Number(formData.get("sort_order") ?? 0);
@@ -20,19 +23,15 @@ export async function addGalleryImage(formData: FormData) {
     redirectWithToast("/admin/gallery", "Please upload or paste an image URL");
   }
 
-  const { error } = await supabase
-    .from("gallery_images")
-    .insert({ url, caption, sort_order });
-  if (error) throw new Error(error.message);
+  await db.insert(galleryImages).values({ url, caption, sort_order });
   refresh();
   redirectWithToast("/admin/gallery", "Photo added");
 }
 
 export async function deleteGalleryImage(formData: FormData) {
-  const supabase = await createClient();
+  await requireAdmin();
   const id = String(formData.get("id") ?? "");
-  const { error } = await supabase.from("gallery_images").delete().eq("id", id);
-  if (error) throw new Error(error.message);
+  await db.delete(galleryImages).where(eq(galleryImages.id, id));
   refresh();
   redirectWithToast("/admin/gallery", "Photo removed");
 }

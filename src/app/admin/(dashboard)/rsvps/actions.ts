@@ -1,11 +1,14 @@
 "use server";
 
 import { revalidatePath } from "next/cache";
-import { createClient } from "@/lib/supabase/server";
+import { eq } from "drizzle-orm";
+import { db } from "@/lib/db/client";
+import { eventRsvps } from "@/lib/db/schema";
+import { requireAdmin } from "@/lib/auth/require-admin";
 
 export async function deleteRsvp(formData: FormData) {
-  const supabase = await createClient();
+  await requireAdmin();
   const id = String(formData.get("id") ?? "");
-  await supabase.from("event_rsvps").delete().eq("id", id);
+  await db.delete(eventRsvps).where(eq(eventRsvps.id, id));
   revalidatePath("/admin/rsvps");
 }
