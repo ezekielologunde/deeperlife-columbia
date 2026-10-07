@@ -55,26 +55,30 @@ export default async function EventsPage() {
                     </p>
                     <p className="mt-4 text-sm text-slate-500">{event.host}</p>
 
-                    <div className="mt-6 flex flex-wrap gap-4">
-                      <a
-                        href={event.link}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="rounded-full bg-indigo-900 px-6 py-3 text-sm font-semibold text-white transition-all hover:scale-105 hover:bg-indigo-800"
-                      >
-                        Learn More
-                      </a>
-                    </div>
+                    {event.link && (
+                      <div className="mt-6 flex flex-wrap gap-4">
+                        <a
+                          href={event.link}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="rounded-full bg-indigo-900 px-6 py-3 text-sm font-semibold text-white transition-all hover:scale-105 hover:bg-indigo-800"
+                        >
+                          Learn More
+                        </a>
+                      </div>
+                    )}
 
-                    <div className="mt-8 overflow-hidden rounded-2xl border border-slate-200 shadow-sm">
-                      {/* eslint-disable-next-line jsx-a11y/media-has-caption */}
-                      <video
-                        src={event.video}
-                        controls
-                        playsInline
-                        className="w-full"
-                      />
-                    </div>
+                    {event.video && (
+                      <div className="mt-8 overflow-hidden rounded-2xl border border-slate-200 shadow-sm">
+                        {/* eslint-disable-next-line jsx-a11y/media-has-caption */}
+                        <video
+                          src={event.video}
+                          controls
+                          playsInline
+                          className="w-full"
+                        />
+                      </div>
+                    )}
 
                     <div className="mt-8 rounded-2xl border border-slate-200 bg-slate-50 p-6">
                       <h3 className="font-bold text-indigo-950">

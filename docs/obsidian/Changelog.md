@@ -2,7 +2,7 @@
 project: deeperlife-columbia
 type: changelog
 status: active
-last_updated: 2026-08-22
+last_updated: 2026-10-07
 tags: [project/deeperlife-columbia]
 ---
 
@@ -15,6 +15,8 @@ Reconstructed from `git log`. The repository's visible history currently contain
 ## This change
 
 - Added an Obsidian-compatible documentation knowledge base under `docs/obsidian/` (this file included), plus the `obsidian-sync` skill and `/sync-docs` command for keeping it current. No application code changed.
+
+- Added Seniors' Retreat 2026 and Men's Conference 2026 (Oct 22–25) to the `events` table with flyers in `public/images/`. `/events` now hides the "Learn More" button and video player when an event has no link/video.
 
 ## Related
 
