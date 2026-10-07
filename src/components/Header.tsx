@@ -163,14 +163,12 @@ export default function Header() {
 
   return (
     <header
-      className={`sticky top-0 z-50 border-b bg-white/95 backdrop-blur transition-all duration-300 ${
+      className={`sticky top-0 z-50 border-b bg-white/95 backdrop-blur transition-[border-color,box-shadow] duration-300 ${
         scrolled ? "border-slate-200 shadow-sm" : "border-transparent"
       }`}
     >
       <div
-        className={`mx-auto flex max-w-6xl items-center justify-between px-6 transition-all duration-300 ${
-          scrolled ? "py-2.5" : "py-4"
-        }`}
+        className="mx-auto flex max-w-6xl items-center justify-between px-6 py-3"
       >
         <Link href="/" aria-label="Deeper Life Bible Church Columbia home">
           <Logo variant="dark" />
