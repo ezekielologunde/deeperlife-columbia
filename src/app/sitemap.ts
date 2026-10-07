@@ -28,6 +28,8 @@ const ROUTES: { path: string; priority: number; changeFrequency: "daily" | "week
   { path: "/devotional/youth/archive", priority: 0.4, changeFrequency: "daily" },
   { path: "/devotional/children", priority: 0.6, changeFrequency: "daily" },
   { path: "/devotional/children/archive", priority: 0.4, changeFrequency: "daily" },
+  { path: "/prayer", priority: 0.7, changeFrequency: "monthly" },
+  { path: "/resources", priority: 0.6, changeFrequency: "monthly" },
   { path: "/webcast", priority: 0.7, changeFrequency: "daily" },
 ];
 

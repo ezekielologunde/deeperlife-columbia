@@ -2,7 +2,7 @@
 project: deeperlife-columbia
 type: features
 status: active
-last_updated: 2026-08-22
+last_updated: 2026-10-07
 tags: [project/deeperlife-columbia]
 ---
 
@@ -16,6 +16,9 @@ tags: [project/deeperlife-columbia]
 - Sermons and Webcast pages
 - Devotional: separate Adult/Youth/Children tracks, each with today's devotional, a `[date]` route, and an archive listing
 - Events: upcoming/past listing with structured data (JSON-LD) for SEO, event detail with flyer/video/RSVP link, RSVP form
+- Events also merge in-code "featured" events (`src/lib/featured-events.ts`) that appear even without a database row; a DB event with the same title overrides them. Includes a Global DCLM Programs section (GCK, dclm.org events, webcast).
+- Prayer Request page (`/prayer`): reuses the contact form with category `prayer`, so requests land in the admin Messages inbox
+- Resources page (`/resources`): curated links to official DCLM devotionals, Bible study, books/tracts, webcast, and radio
 - Testimonies: public submission form + listing
 - Gallery with lightbox
 - Give (external link out — no in-app payment processing)

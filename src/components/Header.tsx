@@ -26,6 +26,7 @@ const NAV: NavItem[] = [
       { href: "/services", label: "Service Times" },
       { href: "/join-online", label: "Join Online" },
       { href: "/events", label: "Events" },
+      { href: "/prayer", label: "Prayer Request" },
     ],
   },
   { label: "Ministries", href: "/ministries" },
@@ -34,6 +35,7 @@ const NAV: NavItem[] = [
     children: [
       { href: "/devotional", label: "Daily Devotional" },
       { href: "/sermons", label: "Sermons" },
+      { href: "/resources", label: "Resources" },
       { href: "/posts", label: "Posts" },
       { href: "/testimonies", label: "Testimonies" },
       { href: "/gallery", label: "Gallery" },

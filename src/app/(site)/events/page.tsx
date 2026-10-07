@@ -12,6 +12,27 @@ export const metadata: Metadata = {
     "Upcoming programs, conventions, and events at Deeper Life Bible Church, a Bible church in Columbia, Maryland.",
 };
 
+const GLOBAL_PROGRAMS = [
+  {
+    title: "Global Crusade with Kumuyi (GCK)",
+    desc: "Worldwide gospel crusades and revival meetings with Pastor W. F. Kumuyi.",
+    href: "https://gckhq.org/",
+    cta: "Visit GCK",
+  },
+  {
+    title: "DCLM Events",
+    desc: "Conventions, congresses, and special programs from DCLM headquarters.",
+    href: "https://dclm.org/events/",
+    cta: "See all events",
+  },
+  {
+    title: "DCLM Webcast",
+    desc: "Watch live services and global programs from anywhere in the world.",
+    href: "https://webcast.dclm.org/",
+    cta: "Watch live",
+  },
+];
+
 export default async function EventsPage() {
   const CHURCH = await getChurchData();
 
@@ -44,16 +65,27 @@ export default async function EventsPage() {
                 <Reveal direction="right" delay={0.15}>
                   <div>
                     <p className="text-sm font-semibold uppercase tracking-wide text-indigo-700">
-                      {event.date} · {event.time}
+                      {[event.date, event.time].filter(Boolean).join(" · ")}
                     </p>
                     <h2 className="mt-2 text-2xl font-bold text-indigo-950">
                       {event.title}
                     </h2>
-                    <p className="mt-2 text-slate-700">{event.subtitle}</p>
-                    <p className="mt-4 text-sm italic leading-6 text-slate-600">
-                      {event.verse}
-                    </p>
-                    <p className="mt-4 text-sm text-slate-500">{event.host}</p>
+                    {event.subtitle && (
+                      <p className="mt-2 text-slate-700">{event.subtitle}</p>
+                    )}
+                    {event.venue && (
+                      <p className="mt-2 text-sm font-medium text-slate-600">
+                        {event.venue}
+                      </p>
+                    )}
+                    {event.verse && (
+                      <p className="mt-4 text-sm italic leading-6 text-slate-600">
+                        {event.verse}
+                      </p>
+                    )}
+                    {event.host && (
+                      <p className="mt-4 text-sm text-slate-500">{event.host}</p>
+                    )}
 
                     {event.link && (
                       <div className="mt-6 flex flex-wrap gap-4">
@@ -96,6 +128,37 @@ export default async function EventsPage() {
               </div>
             </div>
           ))}
+        </div>
+      </section>
+
+      <section className="bg-slate-50">
+        <div className="mx-auto max-w-6xl px-6 py-16">
+          <Reveal>
+            <h2 className="text-center text-2xl font-bold tracking-tight text-indigo-950">
+              Global DCLM Programs
+            </h2>
+            <p className="mx-auto mt-3 max-w-2xl text-center text-slate-600">
+              Join the wider Deeper Life family in worldwide gatherings led by
+              Pastor W. F. Kumuyi.
+            </p>
+          </Reveal>
+          <div className="mt-8 grid gap-4 sm:grid-cols-3">
+            {GLOBAL_PROGRAMS.map((p) => (
+              <a
+                key={p.href}
+                href={p.href}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm transition-all hover:-translate-y-1 hover:shadow-md"
+              >
+                <h3 className="font-bold text-indigo-950">{p.title}</h3>
+                <p className="mt-2 text-sm leading-6 text-slate-600">{p.desc}</p>
+                <p className="mt-3 text-sm font-semibold text-indigo-700">
+                  {p.cta} →
+                </p>
+              </a>
+            ))}
+          </div>
         </div>
       </section>
 

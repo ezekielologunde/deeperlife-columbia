@@ -1,5 +1,6 @@
 import { and, asc, desc, eq, lte } from "drizzle-orm";
 import { db } from "@/lib/db/client";
+import { FEATURED_EVENTS } from "@/lib/featured-events";
 import {
   churchSettings,
   services,
@@ -25,7 +26,7 @@ export async function getChurchData() {
   const s = settingsRows[0];
   const allEvents = eventsRows;
 
-  const upcomingEvents = allEvents
+  const dbUpcoming = allEvents
     .filter((e) => !e.is_past)
     .map((e) => ({
       id: e.id,
@@ -35,12 +36,21 @@ export async function getChurchData() {
       time: e.event_time ?? "",
       verse: e.verse ?? "",
       host: e.host ?? "",
+      venue: e.venue ?? "",
       flyer: e.flyer ?? "",
       video: e.video ?? "",
       link: e.link ?? "",
       startDatetime: e.start_datetime ?? "",
       endDatetime: e.end_datetime ?? "",
     }));
+
+  // Featured (in-code) events lead the list unless the database already has
+  // an event with the same title, in which case the database row wins.
+  const knownTitles = new Set(allEvents.map((e) => e.title.trim().toLowerCase()));
+  const upcomingEvents = [
+    ...FEATURED_EVENTS.filter((f) => !knownTitles.has(f.title.trim().toLowerCase())),
+    ...dbUpcoming,
+  ];
 
   const pastEvents = allEvents
     .filter((e) => e.is_past)

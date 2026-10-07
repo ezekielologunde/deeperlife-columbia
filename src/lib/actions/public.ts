@@ -3,6 +3,8 @@
 import { db } from "@/lib/db/client";
 import { messages, subscribers, testimonies, eventRsvps } from "@/lib/db/schema";
 
+const UUID_RE = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
+
 export type FormState = { success: boolean; error?: string };
 
 // Honeypot: a field named "website" that's hidden from real visitors via
@@ -133,7 +135,7 @@ export async function submitRsvp(
 
   try {
     await db.insert(eventRsvps).values({
-      event_id: eventId || null,
+      event_id: UUID_RE.test(eventId) ? eventId : null,
       event_title: eventTitle,
       name,
       email,

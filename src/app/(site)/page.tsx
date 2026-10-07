@@ -206,7 +206,7 @@ export default async function Home() {
             <Reveal direction="right" delay={0.15}>
               <div>
                 <p className="text-sm font-semibold uppercase tracking-wide text-indigo-700">
-                  {nextEvent.date} · {nextEvent.time}
+                  {[nextEvent.date, nextEvent.time].filter(Boolean).join(" · ")}
                 </p>
                 <h2 className="mt-3 text-3xl font-bold tracking-tight text-indigo-950 sm:text-4xl">
                   {nextEvent.title}

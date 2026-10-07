@@ -7,7 +7,19 @@ import HoneypotField from "@/components/HoneypotField";
 
 const initialState: FormState = { success: false };
 
-export default function ContactForm() {
+export default function ContactForm({
+  defaultCategory = "general",
+  messageLabel = "Message",
+  submitLabel = "Send Message",
+  successTitle = "Message sent!",
+  successBody = "Thank you for reaching out. We'll get back to you soon.",
+}: {
+  defaultCategory?: "general" | "prayer" | "other";
+  messageLabel?: string;
+  submitLabel?: string;
+  successTitle?: string;
+  successBody?: string;
+}) {
   const [state, formAction, pending] = useActionState(submitMessage, initialState);
 
   if (state.success) {
@@ -17,9 +29,9 @@ export default function ContactForm() {
         animate={{ opacity: 1, y: 0 }}
         className="rounded-2xl border border-emerald-200 bg-emerald-50 p-8 text-center"
       >
-        <p className="text-lg font-bold text-emerald-800">Message sent!</p>
+        <p className="text-lg font-bold text-emerald-800">{successTitle}</p>
         <p className="mt-2 text-sm text-emerald-700">
-          Thank you for reaching out. We&apos;ll get back to you soon.
+          {successBody}
         </p>
       </motion.div>
     );
@@ -58,7 +70,7 @@ export default function ContactForm() {
         This is a
         <select
           name="category"
-          defaultValue="general"
+          defaultValue={defaultCategory}
           className="mt-1 w-full rounded-lg border border-slate-300 px-3 py-2 text-sm focus:border-indigo-500 focus:outline-none"
         >
           <option value="general">General question</option>
@@ -67,7 +79,7 @@ export default function ContactForm() {
         </select>
       </label>
       <label className="block text-sm font-medium text-slate-700">
-        Message
+        {messageLabel}
         <textarea
           name="body"
           required
@@ -87,7 +99,7 @@ export default function ContactForm() {
         disabled={pending}
         className="rounded-full bg-indigo-900 px-6 py-3 text-sm font-semibold text-white transition-all hover:scale-105 hover:bg-indigo-800 disabled:opacity-60 disabled:hover:scale-100"
       >
-        {pending ? "Sending…" : "Send Message"}
+        {pending ? "Sending…" : submitLabel}
       </button>
     </form>
   );

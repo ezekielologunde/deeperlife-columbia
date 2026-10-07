@@ -66,7 +66,11 @@ export default async function SiteLayout({
         startDate: e.startDatetime,
         ...(e.endDatetime ? { endDate: e.endDatetime } : {}),
         description: e.subtitle || CHURCH.description[0] || undefined,
-        image: e.flyer || `${SITE_URL}/images/gallery/congregation-wide.jpg`,
+        image: e.flyer
+          ? e.flyer.startsWith("/")
+            ? `${SITE_URL}${e.flyer}`
+            : e.flyer
+          : `${SITE_URL}/images/gallery/congregation-wide.jpg`,
         eventAttendanceMode: "https://schema.org/OfflineEventAttendanceMode",
         eventStatus: "https://schema.org/EventScheduled",
         performer: {
@@ -75,8 +79,10 @@ export default async function SiteLayout({
         },
         location: {
           "@type": "Place",
-          name: CHURCH.name,
-          address: `${CHURCH.address.line1}, ${CHURCH.address.line2} ${CHURCH.address.line3}`,
+          name: e.venue || CHURCH.name,
+          address:
+            e.venue ||
+            `${CHURCH.address.line1}, ${CHURCH.address.line2} ${CHURCH.address.line3}`,
         },
         offers: {
           "@type": "Offer",
