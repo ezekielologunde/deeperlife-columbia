@@ -16,7 +16,7 @@ import MagneticLink from "@/components/MagneticLink";
 export default async function Home() {
   const CHURCH = await getChurchData();
   const MINISTRIES = await getMinistriesData();
-  const nextEvent = CHURCH.upcomingEvents[0];
+  const upcoming = CHURCH.upcomingEvents.slice(0, 3);
   const devotionalResult = await getTodayDevotional("Adult");
   const galleryImages = (await getGalleryImages()).slice(0, 6);
 
@@ -186,40 +186,63 @@ export default async function Home() {
         </div>
       </section>
 
-      {/* Upcoming Event */}
-      {nextEvent && (
+      {/* Upcoming Events */}
+      {upcoming.length > 0 && (
         <section className="bg-gradient-to-br from-amber-50 via-white to-indigo-50">
-          <div className="mx-auto grid max-w-6xl gap-10 px-6 py-24 sm:py-28 lg:grid-cols-2 lg:items-center">
-            <Reveal direction="left">
-              <div className="overflow-hidden rounded-2xl border border-slate-200 shadow-xl">
-                <Lightbox src={nextEvent.flyer} alt={nextEvent.title}>
-                  <Image
-                    src={nextEvent.flyer}
-                    alt={nextEvent.title}
-                    width={900}
-                    height={1200}
-                    className="h-auto w-full"
-                  />
-                </Lightbox>
-              </div>
+          <div className="mx-auto max-w-6xl px-6 py-24 sm:py-28">
+            <Reveal>
+              <h2 className="text-center text-3xl font-bold tracking-tight text-indigo-950 sm:text-4xl">
+                Upcoming Events
+              </h2>
             </Reveal>
-            <Reveal direction="right" delay={0.15}>
-              <div>
-                <p className="text-sm font-semibold uppercase tracking-wide text-indigo-700">
-                  {[nextEvent.date, nextEvent.time].filter(Boolean).join(" · ")}
-                </p>
-                <h2 className="mt-3 text-3xl font-bold tracking-tight text-indigo-950 sm:text-4xl">
-                  {nextEvent.title}
-                </h2>
-                <p className="mt-4 text-lg text-slate-700">{nextEvent.subtitle}</p>
-                <a
-                  href="/events"
-                  className="mt-8 inline-block rounded-full bg-indigo-900 px-7 py-3 text-base font-semibold text-white transition-all hover:scale-105 hover:bg-indigo-800"
-                >
-                  See Upcoming Program
-                </a>
-              </div>
-            </Reveal>
+            <StaggerGrid
+              className={`mx-auto mt-12 grid gap-8 ${
+                upcoming.length === 1
+                  ? "max-w-md"
+                  : upcoming.length === 2
+                    ? "max-w-3xl sm:grid-cols-2"
+                    : "sm:grid-cols-2 lg:grid-cols-3"
+              }`}
+            >
+              {upcoming.map((event) => (
+                <StaggerItem key={event.id}>
+                  <div className="flex h-full flex-col overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-lg">
+                    {event.flyer && (
+                      <Lightbox src={event.flyer} alt={event.title}>
+                        <Image
+                          src={event.flyer}
+                          alt={event.title}
+                          width={900}
+                          height={1200}
+                          className="h-auto w-full"
+                        />
+                      </Lightbox>
+                    )}
+                    <div className="flex flex-1 flex-col p-6">
+                      <p className="text-sm font-semibold uppercase tracking-wide text-indigo-700">
+                        {[event.date, event.time].filter(Boolean).join(" · ")}
+                      </p>
+                      <h3 className="mt-2 text-xl font-bold text-indigo-950">
+                        {event.title}
+                      </h3>
+                      {event.subtitle && (
+                        <p className="mt-2 text-sm text-slate-600">
+                          {event.subtitle}
+                        </p>
+                      )}
+                    </div>
+                  </div>
+                </StaggerItem>
+              ))}
+            </StaggerGrid>
+            <div className="mt-10 text-center">
+              <a
+                href="/events"
+                className="inline-block rounded-full bg-indigo-900 px-7 py-3 text-base font-semibold text-white transition-all hover:scale-105 hover:bg-indigo-800"
+              >
+                See Upcoming Program
+              </a>
+            </div>
           </div>
         </section>
       )}

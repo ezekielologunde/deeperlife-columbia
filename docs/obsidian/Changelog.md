@@ -19,6 +19,7 @@ Reconstructed from `git log`. The repository's visible history currently contain
 - `/events` now hides the "Learn More" button and video player when an event has no link/video (needed for the Oct 22–25, 2026 Seniors' Retreat and Men's Conference, whose flyers live in `public/images/events/`).
 
 - Seniors' Retreat 2026 and Men's Conference 2026 are now defined in `src/lib/featured-events.ts` and shown on `/events` and the home page regardless of the Neon `events` table (flyers in `public/images/events/`). Events JSON-LD now uses each event's venue and absolute flyer URLs; RSVP only stores a real UUID `event_id`.
+- Home page now shows up to three upcoming events as cards (was one).
 - Added `/prayer` and `/resources` pages (nav + sitemap), and a Global DCLM Programs section on `/events`.
 
 ## Related
