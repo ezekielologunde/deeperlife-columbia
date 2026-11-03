@@ -2,21 +2,21 @@
 project: deeperlife-columbia
 type: backend
 status: active
-last_updated: 2026-08-22
+last_updated: 2026-11-03
 tags: [project/deeperlife-columbia]
 ---
 
 # Backend
 
-There is no separate backend service — "backend" here means Next.js Server Actions, one API route, and Supabase as the data/auth layer. See [[Database]] for tables and [[Security]] for auth.
+There is no separate backend service — "backend" here means Next.js Server Actions, one API route, and a Neon Postgres database accessed through Drizzle ORM (`src/lib/db/client.ts`, `DATABASE_URL`). Auth is app-owned: bcrypt password check plus a signed JWT session cookie. See [[Database]] for tables and [[Security]] for auth.
 
 ## Server Actions
 
 Colocated `actions.ts` files, one per feature area, all marked `"use server"`:
 
 - **Public-facing**: `src/lib/actions/public.ts` (contact form `submitMessage`, honeypot bot check, best-effort ntfy.sh notification), plus page-local actions for newsletter signup, RSVP, and testimony submission.
-- **Admin CMS**: one `actions.ts` per section under `src/app/admin/(dashboard)/*` (account, beliefs, church-info, devotional, events, gallery, leadership, messages, ministries, posts, rsvps, services, subscribers, testimonies) — standard CRUD against the matching Supabase table.
-- **Auth**: `src/app/admin/login/actions.ts` (`login`, via `supabase.auth.signInWithPassword`) and `src/app/admin/(dashboard)/actions.ts` (`logout`, via `supabase.auth.signOut`).
+- **Admin CMS**: one `actions.ts` per section under `src/app/admin/(dashboard)/*` (account, beliefs, church-info, devotional, events, gallery, leadership, messages, ministries, posts, rsvps, services, subscribers, testimonies) — standard CRUD against the matching table through the Drizzle `db` client.
+- **Auth**: `src/app/admin/login/actions.ts` (`login`: looks up the admin in the `admins` table, checks the password with bcrypt via `src/lib/auth/password.ts`, then sets an HS256 JWT in the `admin_session` cookie signed with `SESSION_SECRET`, 30-day expiry, via `src/lib/auth/session.ts`) and `src/app/admin/(dashboard)/actions.ts` (`logout`: deletes that cookie). `src/proxy.ts` verifies the cookie on `/admin/*` requests.
 
 ## API routes
 
