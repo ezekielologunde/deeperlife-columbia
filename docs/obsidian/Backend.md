@@ -24,7 +24,7 @@ Colocated `actions.ts` files, one per feature area, all marked `"use server"`:
 
 ## External integrations
 
-- **DCLM devotional API** (third-party, unauthenticated by us but presumably guarded by `CRON_SECRET` on the cron trigger side) — daily devotional content source.
+- **DCLM devotional API** (third-party, unauthenticated by us but presumably guarded by `CRON_SECRET` on the cron trigger side) — daily devotional content source. The cron fetch uses a 15s timeout per attempt with up to 3 attempts and exponential backoff (retries network errors, timeouts, 5xx, 429); categories sync in parallel (`maxDuration = 60`).
 - **ntfy.sh** — lightweight push notifications for form submissions and sync failures (`NTFY_TOPIC` env var; entirely best-effort/non-blocking by design).
 - **Google Analytics** — client-side only, via `GoogleAnalytics.tsx`.
 

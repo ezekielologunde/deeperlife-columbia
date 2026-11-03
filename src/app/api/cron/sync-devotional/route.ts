@@ -2,6 +2,8 @@ import { NextResponse } from "next/server";
 import { db } from "@/lib/db/client";
 import { devotionals } from "@/lib/db/schema";
 
+export const maxDuration = 60;
+
 const DCLM_API_URL =
   "https://dailymanna-backend-jt33.onrender.com/api/devotionals/date";
 const NTFY_TOPIC = process.env.NTFY_TOPIC;
@@ -44,16 +46,52 @@ async function notifyFailure(reason: string, today: string, category: string) {
   }
 }
 
+// The DCLM backend is on a host that cold-starts (Render), so the first
+// request can be slow or fail. Each attempt gets its own timeout; transient
+// failures are retried with backoff. Worst case per category is
+// 3 * 15s + 2s + 4s = 51s, which fits maxDuration because categories run
+// in parallel.
+const FETCH_TIMEOUT_MS = 15_000;
+const MAX_ATTEMPTS = 3;
+const RETRY_BASE_DELAY_MS = 2_000;
+
+const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms));
+
+async function fetchDclm(today: string, category: string): Promise<Response> {
+  let lastError: unknown;
+  for (let attempt = 1; attempt <= MAX_ATTEMPTS; attempt++) {
+    try {
+      const res = await fetch(`${DCLM_API_URL}/${today}`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ date: today, category }),
+        cache: "no-store",
+        signal: AbortSignal.timeout(FETCH_TIMEOUT_MS),
+      });
+      // Retry only transient statuses; other 4xx won't change on retry.
+      const transient = res.status >= 500 || res.status === 429;
+      if (!transient || attempt === MAX_ATTEMPTS) return res;
+      lastError = new Error(`DCLM API returned ${res.status}`);
+    } catch (err) {
+      // Network error or timeout.
+      lastError = err;
+      if (attempt === MAX_ATTEMPTS) break;
+    }
+    await sleep(RETRY_BASE_DELAY_MS * 2 ** (attempt - 1));
+  }
+  const name = lastError instanceof Error ? lastError.name : "";
+  throw new Error(
+    name === "TimeoutError"
+      ? `DCLM API timed out after ${MAX_ATTEMPTS} attempts`
+      : `DCLM API unreachable after ${MAX_ATTEMPTS} attempts`,
+  );
+}
+
 async function syncCategory(
   category: (typeof CATEGORIES)[number],
   today: string,
 ) {
-  const res = await fetch(`${DCLM_API_URL}/${today}`, {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ date: today, category }),
-    cache: "no-store",
-  });
+  const res = await fetchDclm(today, category);
 
   if (!res.ok) {
     const reason = `DCLM API returned ${res.status}`;
@@ -113,16 +151,17 @@ export async function GET(request: Request) {
     timeZone: "America/New_York",
   });
 
-  const results = [];
-  for (const category of CATEGORIES) {
-    try {
-      results.push(await syncCategory(category, today));
-    } catch (err) {
-      const reason = err instanceof Error ? err.message : "Unknown error";
-      await notifyFailure(reason, today, category);
-      results.push({ category, status: "error", message: reason });
-    }
-  }
+  const results = await Promise.all(
+    CATEGORIES.map(async (category) => {
+      try {
+        return await syncCategory(category, today);
+      } catch (err) {
+        const reason = err instanceof Error ? err.message : "Unknown error";
+        await notifyFailure(reason, today, category);
+        return { category, status: "error", message: reason };
+      }
+    }),
+  );
 
   return NextResponse.json({ date: today, results });
 }
