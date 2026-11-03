@@ -2,7 +2,7 @@
 project: deeperlife-columbia
 type: features
 status: active
-last_updated: 2026-10-07
+last_updated: 2026-11-03
 tags: [project/deeperlife-columbia]
 ---
 
@@ -29,7 +29,7 @@ tags: [project/deeperlife-columbia]
 
 ## Admin CMS (implemented)
 
-Password-protected dashboard (`/admin`, Supabase Auth) with CRUD screens for:
+Password-protected dashboard (`/admin`, email/password with a signed session cookie) with CRUD screens for:
 - Church info / settings
 - Services, Leadership, Statement of Faith (Beliefs)
 - Events (create/edit/delete, RSVP list per event)
