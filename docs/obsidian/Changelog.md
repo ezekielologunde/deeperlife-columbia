@@ -14,6 +14,8 @@ Reconstructed from `git log`. The repository's visible history currently contain
 
 ## This change
 
+- Docs: removed the remaining stale Supabase descriptions from [[Architecture]], [[Database]], [[Security]], [[Project]], [[Features]], [[Decisions]] and [[Tasks]]. They now describe Neon/Drizzle, the bcrypt + JWT cookie auth, `requireAdmin()` as the authorization boundary (no RLS), Vercel Blob uploads, and the env vars in `.env.example`. Supabase is mentioned only as migration history. Flagged in [[Security]]: `CRON_SECRET` is only enforced when set.
+
 - [[Backend]]: removed stale Supabase references; now describes the Neon/Drizzle data layer and the bcrypt + JWT cookie admin auth. Other notes ([[Architecture]], [[Database]], [[Security]], [[Project]], [[Features]], [[Decisions]], [[Tasks]]) still mention Supabase and are not yet updated.
 
 - Devotional cron (`/api/cron/sync-devotional`): DCLM fetch now has a 15s per-attempt timeout and up to 3 attempts (2s/4s backoff) on network errors, timeouts, 5xx and 429; other 4xx fail immediately. The three categories now sync in parallel and the route sets `maxDuration = 60`. See [[Backend]].
