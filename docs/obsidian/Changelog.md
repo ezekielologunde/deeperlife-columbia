@@ -14,6 +14,8 @@ Reconstructed from `git log`. The repository's visible history currently contain
 
 ## This change
 
+- [[Backend]]: removed stale Supabase references; now describes the Neon/Drizzle data layer and the bcrypt + JWT cookie admin auth. Other notes ([[Architecture]], [[Database]], [[Security]], [[Project]], [[Features]], [[Decisions]], [[Tasks]]) still mention Supabase and are not yet updated.
+
 - Devotional cron (`/api/cron/sync-devotional`): DCLM fetch now has a 15s per-attempt timeout and up to 3 attempts (2s/4s backoff) on network errors, timeouts, 5xx and 429; other 4xx fail immediately. The three categories now sync in parallel and the route sets `maxDuration = 60`. See [[Backend]].
 
 - Added an Obsidian-compatible documentation knowledge base under `docs/obsidian/` (this file included), plus the `obsidian-sync` skill and `/sync-docs` command for keeping it current. No application code changed.
