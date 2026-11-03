@@ -14,6 +14,8 @@ Reconstructed from `git log`. The repository's visible history currently contain
 
 ## This change
 
+- Devotional cron (`/api/cron/sync-devotional`): DCLM fetch now has a 15s per-attempt timeout and up to 3 attempts (2s/4s backoff) on network errors, timeouts, 5xx and 429; other 4xx fail immediately. The three categories now sync in parallel and the route sets `maxDuration = 60`. See [[Backend]].
+
 - Added an Obsidian-compatible documentation knowledge base under `docs/obsidian/` (this file included), plus the `obsidian-sync` skill and `/sync-docs` command for keeping it current. No application code changed.
 
 - `/events` now hides the "Learn More" button and video player when an event has no link/video (needed for the Oct 22–25, 2026 Seniors' Retreat and Men's Conference, whose flyers live in `public/images/events/`).
